@@ -1,10 +1,9 @@
 <?php
 
+use App\Http\Controllers\PageHomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', PageHomeController::class)->name('welcome');
 
 Route::middleware([
     'auth:sanctum',

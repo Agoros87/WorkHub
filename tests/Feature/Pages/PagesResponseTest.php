@@ -1,7 +1,8 @@
 <?php
 
-it('gives back successful response for home page', function () {
-    $response = $this->get('/');
+use function Pest\Laravel\get;
 
-    $response->assertStatus(200);
+it('gives back successful response for home page', function () {
+    get(route('welcome'))
+        ->assertOk();
 });
