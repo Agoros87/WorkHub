@@ -10,9 +10,21 @@ return new class extends Migration {
         Schema::create('advertisements', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
+            $table->enum('type', ['employer', 'worker']);
             $table->string('title');
             $table->text('description');
             $table->string('slug');
+            $table->json('skills')->nullable();
+            $table->string('experience')->nullable();
+            // Campos específicos para anuncios de empleador
+            $table->string('schedule')->nullable();
+            $table->string('contract_type')->nullable();
+            $table->decimal('salary', 10, 2)->nullable();
+            // Campos específicos para anuncios de trabajador
+            $table->string('availability')->nullable();
+            $table->decimal('salary_expectation', 10, 2)->nullable();
+            // Campos comunes
+            $table->string('location');
             $table->timestamps();
         });
     }

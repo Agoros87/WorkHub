@@ -43,8 +43,8 @@
         <!-- Login y Register para invitados -->
         @guest
             <nav class="hidden md:flex space-x-6">
-                <a href="{{ route('login') }}" class="hover:text-blue-300">Login</a>
-                <a href="{{ route('register') }}" class="hover:text-blue-300">Register</a>
+                <a href="{{ route('login') }}" class="hover:text-blue-300">Inicio de Sesión</a>
+                <a href="{{ route('register') }}" class="hover:text-blue-300">Registrarse</a>
             </nav>
         @endguest
 
@@ -93,8 +93,8 @@
             @endauth
             <!-- Login y Register para invitados -->
             @guest
-                <a href="{{ route('login') }}" class="hover:text-blue-300">Login</a>
-                <a href="{{ route('register') }}" class="hover:text-blue-300">Register</a>
+                <a href="{{ route('login') }}" class="hover:text-blue-300">Inicio Sesión</a>
+                <a href="{{ route('register') }}" class="hover:text-blue-300">Registrarse</a>
             @endguest
         </nav>
     </div>
