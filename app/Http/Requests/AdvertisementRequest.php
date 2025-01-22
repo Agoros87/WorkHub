@@ -16,24 +16,16 @@ class AdvertisementRequest extends FormRequest
             'skills' => 'nullable|array',
             'skills.*' => 'string|max:255',
             'experience' => 'nullable|string|max:255',
+
+            // Campos condicionales para empleador
+            'schedule' => 'required_if:type,employer|string|max:255|nullable',
+            'contract_type' => 'required_if:type,employer|string|max:255|nullable',
+            'salary' => 'nullable|numeric|min:0|prohibited_if:type,worker',
+
+            // Campos condicionales para trabajador
+            'availability' => 'required_if:type,worker|string|max:255|nullable',
+            'salary_expectation' => 'nullable|numeric|min:0|prohibited_if:type,employer',
         ];
-
-        // Reglas específicas para anuncios de empleador
-        if ($this->type === 'employer') {
-            $rules = array_merge($rules, [
-                'schedule' => 'required|string|max:255',
-                'contract_type' => 'required|string|max:255',
-                'salary' => 'nullable|numeric|min:0',
-            ]);
-        }
-
-        // Reglas específicas para anuncios de trabajador
-        if ($this->type === 'worker') {
-            $rules = array_merge($rules, [
-                'availability' => 'required|string|max:255',
-                'salary_expectation' => 'nullable|numeric|min:0',
-            ]);
-        }
 
         return $rules;
     }
