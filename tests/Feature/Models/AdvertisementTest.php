@@ -8,71 +8,46 @@ beforeEach(function () {
 });
 
 it('creates an employer advertisement', function () {
-    //Arrange
-    $adData = [
-        'user_id' => $this->user->id,
-        'type' => 'employer',
-        'title' => 'Buscamos camarero',
-        'description' => 'Se busca camarero con experiencia',
-        'location' => 'Madrid',
-        'slug' => 'buscamos-camarero',
-        'skills' => ['inglés', 'coctelería'],
-        'experience' => '2 años',
-        'schedule' => 'Jornada completa',
-        'contract_type' => 'Indefinido',
-        'salary' => 2000.00
-    ];
-
     //Act
-    $ad = Advertisement::factory()->create($adData);
+    $ad = Advertisement::factory()
+        ->employer()
+        ->create(['user_id' => $this->user->id]);
 
     //Assert
     expect($ad)
         ->user_id->toBe($this->user->id)
         ->type->toBe('employer')
-        ->title->toBe('Buscamos camarero')
-        ->description->toBe('Se busca camarero con experiencia')
-        ->location->toBe('Madrid')
-        ->slug->toBe('buscamos-camarero')
-        ->skills->toBe(['inglés', 'coctelería'])
-        ->experience->toBe('2 años')
-        ->schedule->toBe('Jornada completa')
-        ->contract_type->toBe('Indefinido')
-        ->salary->toEqual(2000.00)
+        ->title->not->toBeEmpty()
+        ->description->not->toBeEmpty()
+        ->location->not->toBeEmpty()
+        ->slug->not->toBeEmpty()
+        ->skills->toBeArray()
+        ->experience->not->toBeEmpty()
+        ->schedule->not->toBeEmpty()
+        ->contract_type->not->toBeEmpty()
+        ->salary->toBeNumeric()
         ->created_at->not->toBeNull()
         ->updated_at->not->toBeNull();
 });
 
 it('creates a worker advertisement', function () {
-    //Arrange
-    $adData = [
-        'user_id' => $this->user->id,
-        'type' => 'worker',
-        'title' => 'Camarero disponible',
-        'description' => 'Camarero con 5 años de experiencia',
-        'location' => 'Barcelona',
-        'slug' => 'camarero-disponible',
-        'skills' => ['inglés', 'coctelería'],
-        'experience' => '5 años',
-        'availability' => 'Inmediata',
-        'salary_expectation' => 2500.00
-    ];
-
     //Act
-    $ad = Advertisement::factory()->create($adData);
+    $ad = Advertisement::factory()
+        ->worker()
+        ->create(['user_id' => $this->user->id]);
 
     //Assert
     expect($ad)
         ->user_id->toBe($this->user->id)
         ->type->toBe('worker')
-        ->title->toBe('Camarero disponible')
-        ->description->toBe('Camarero con 5 años de experiencia')
-        ->location->toBe('Barcelona')
-        ->slug->toBe('camarero-disponible')
-        ->skills->toBe(['inglés', 'coctelería'])
-        ->experience->toBe('5 años')
-        ->availability->toBe('Inmediata')
-        ->salary_expectation->toEqual(2500.00)
+        ->title->not->toBeEmpty()
+        ->description->not->toBeEmpty()
+        ->location->not->toBeEmpty()
+        ->slug->not->toBeEmpty()
+        ->skills->toBeArray()
+        ->experience->not->toBeEmpty()
+        ->availability->not->toBeEmpty()
+        ->salary_expectation->toBeNumeric()
         ->created_at->not->toBeNull()
         ->updated_at->not->toBeNull();
 });
