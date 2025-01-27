@@ -24,7 +24,7 @@
         @guest
             <nav class="hidden md:flex space-x-6">
                 <a href="{{ route('login') }}" class="hover:text-blue-300">Inicio de Sesión</a>
-                <a href="{{ route('register') }}" class="hover:text-blue-300">Registrarse</a>
+                <a href="{{ route('select-role') }}" class="hover:text-blue-300">Registrarse</a>
             </nav>
         @endguest
 
@@ -74,7 +74,7 @@
             <!-- Login y Register para invitados -->
             @guest
                 <a href="{{ route('login') }}" class="hover:text-blue-300">Inicio Sesión</a>
-                <a href="{{ route('register') }}" class="hover:text-blue-300">Registrarse</a>
+                <a href="{{ route('select-role') }}" class="hover:text-blue-300">Registrarse</a>
             @endguest
         </nav>
     </div>

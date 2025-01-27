@@ -6,6 +6,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', PageHomeController::class)->name('welcome');
 
+Route::get('/select-role', function () {
+    return view('select-role');
+})->name('select-role');
+
+Route::get('/register/employer', function () {
+    return view('auth.register-employer');
+})->name('register.employer');
+
+Route::get('/register/worker', function () {
+    return view('auth.register-worker');
+})->name('register.worker');
+
 Route::resource('jobs', AdvertisementController::class)
     ->names('advertisements')
     ->parameters(['jobs' => 'advertisement'])
