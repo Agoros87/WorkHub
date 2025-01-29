@@ -1,6 +1,7 @@
 <x-guest-layout>
+    <x-header />
     <div class="min-h-screen bg-gradient-to-r from-blue-50 to-gray-50 pt-20">
-        <div class="container mx-auto px-4 py-12">
+        <div class="container mx-auto px-4 py-0">
             <div class="max-w-4xl mx-auto">
                 <div class="bg-white rounded-xl shadow-lg p-8">
                     <div class="text-center mb-12">

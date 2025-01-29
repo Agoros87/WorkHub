@@ -15,30 +15,44 @@
                     </p>
                 </div>
 
+                <!-- Mensaje de error personalizado -->
+                @session('error')
+                <div class="bg-red-600 p-4 text-xl text-red-50 dark:bg-red-800 mb-6 rounded-lg">
+                    {{ $value }}
+                </div>
+                @endsession
+
                 <!-- Formulario de registro -->
                 <div class="bg-white rounded-xl shadow-lg p-6"> <!-- Cambiado p-8 a p-6 -->
-                    <form class="space-y-6" action="{{ route('register.worker') }}" method="POST">
+                    <form class="space-y-6" action="{{ route('register') }}" method="POST">
                         @csrf
+                        <input type="hidden" name="role" value="creator">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Nombre -->
                             <div>
                                 <label for="name" class="block text-sm font-medium text-gray-700">Nombre</label>
                                 <input id="name" name="name" type="text" autocomplete="name" required
                                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
-                                       placeholder="Nombre">
+                                       placeholder="Nombre"
+                                       value="{{ old('name') }}">
+                                <x-input-error for="name" class="mt-2" />
                             </div>
                             <!-- Apellidos -->
                             <div>
                                 <label for="lastname" class="block text-sm font-medium text-gray-700">Apellidos</label>
                                 <input id="lastname" name="lastname" type="text" autocomplete="lastname" required
                                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
-                                       placeholder="Apellidos">
+                                       placeholder="Apellidos"
+                                       value="{{ old('lastname') }}">
+                                <x-input-error for="lastname" class="mt-2" />
                             </div>
                             <!-- Fecha de Nacimiento -->
                             <div>
-                                <label for="birthdate" class="block text-sm font-medium text-gray-700">Fecha de Nacimiento</label>
-                                <input id="birthdate" name="birthdate" type="date" autocomplete="birthdate" required
-                                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300">
+                                <label for="date_of_birth" class="block text-sm font-medium text-gray-700">Fecha de Nacimiento</label>
+                                <input id="date_of_birth" name="date_of_birth" type="date" autocomplete="date_of_birth" required
+                                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
+                                       value="{{ old('date_of_birth') }}">
+                                <x-input-error for="date_of_birth" class="mt-2" />
                             </div>
                             <!-- Género -->
                             <div>
@@ -46,31 +60,38 @@
                                 <select id="gender" name="gender" required
                                         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300">
                                     <option value="" disabled selected>Selecciona tu género</option>
-                                    <option value="male">Masculino</option>
-                                    <option value="female">Femenino</option>
-                                    <option value="other">Otro</option>
+                                    <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Masculino</option>
+                                    <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Femenino</option>
+                                    <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Otro</option>
                                 </select>
+                                <x-input-error for="gender" class="mt-2" />
                             </div>
                             <!-- Teléfono -->
                             <div>
                                 <label for="phone" class="block text-sm font-medium text-gray-700">Teléfono</label>
                                 <input id="phone" name="phone" type="tel" autocomplete="phone" required
                                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
-                                       placeholder="Teléfono">
+                                       placeholder="Teléfono"
+                                       value="{{ old('phone') }}">
+                                <x-input-error for="phone" class="mt-2" />
                             </div>
                             <!-- Población -->
                             <div>
                                 <label for="city" class="block text-sm font-medium text-gray-700">Población</label>
                                 <input id="city" name="city" type="text" autocomplete="city" required
                                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
-                                       placeholder="Población">
+                                       placeholder="Población"
+                                       value="{{ old('city') }}">
+                                <x-input-error for="city" class="mt-2" />
                             </div>
                             <!-- Email -->
                             <div class="md:col-span-2">
                                 <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                                 <input id="email" name="email" type="email" autocomplete="email" required
                                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
-                                       placeholder="Email">
+                                       placeholder="Email"
+                                       value="{{ old('email') }}">
+                                <x-input-error for="email" class="mt-2" />
                             </div>
                             <!-- Contraseña -->
                             <div class="md:col-span-2">
@@ -78,7 +99,28 @@
                                 <input id="password" name="password" type="password" autocomplete="new-password" required
                                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
                                        placeholder="Contraseña">
+                                <x-input-error for="password" class="mt-2" />
                             </div>
+                            <!-- Confirmar Contraseña -->
+                            <div class="md:col-span-2">
+                                <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmar Contraseña</label>
+                                <input id="password_confirmation" name="password_confirmation" type="password" required
+                                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
+                                       placeholder="Confirmar Contraseña">
+                                <x-input-error for="password_confirmation" class="mt-2" />
+                            </div>
+                        </div>
+
+                        <!-- Términos y condiciones -->
+                        <div class="mt-4">
+                            <label class="flex items-center">
+                                <input type="checkbox" name="terms" class="form-checkbox h-4 w-4 text-blue-600" required {{ old('terms') ? 'checked' : '' }}>
+                                <span class="ml-2 text-sm text-gray-600">
+                                    Acepto los <a href="{{ route('terms.show') }}" class="text-blue-600 hover:text-blue-500">términos y condiciones</a>
+                                    y la <a href="{{ route('policy.show') }}" class="text-blue-600 hover:text-blue-500">política de privacidad</a>
+                                </span>
+                            </label>
+                            <x-input-error for="terms" class="mt-2" />
                         </div>
 
                         <!-- Botón de registro -->
@@ -104,4 +146,3 @@
         </div>
     </div>
 </x-guest-layout>
-
