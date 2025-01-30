@@ -9,7 +9,6 @@ use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
 use Spatie\Permission\Models\Role;
 use Illuminate\Validation\ValidationException;
-
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
@@ -27,7 +26,6 @@ class CreateNewUser implements CreatesNewUsers
 
         // Asignar el rol al usuario
         $this->assignRole($user, $input['role']);
-
         return $user;
     }
 
