@@ -97,5 +97,20 @@
     "Whoops!": "¡Ups!",
     "You are receiving this email because we received a password reset request for your account.": "Ha recibido este mensaje porque se solicitó un restablecimiento de contraseña para su cuenta.",
     "You're logged in!": "¡Usted está conectado!",
-    "Your email address is unverified.": "Su dirección de correo electrónico no está verificada."
+    "Your email address is unverified.": "Su dirección de correo electrónico no está verificada.",
+    "Birth Date": "Fecha de Nacimiento",
+    "City": "Población",
+    "Company Name": "Nombre de la empresa",
+    "Female": "Femenino",
+    "First Name": "Nombre",
+    "Gender": "Género",
+    "Last Name": "Apellidos",
+    "Male": "Masculino",
+    "Other": "Otro",
+    "Phone": "Teléfono",
+    "Photo": "Foto",
+    "Remove Photo": "Eliminar Foto",
+    "Select A New Photo": "Seleccionar Nueva Foto",
+    "Select your gender": "Selecciona tu género",
+    "Tax ID": "Identificador fiscal (C.I.F o N.I.F)"
 }

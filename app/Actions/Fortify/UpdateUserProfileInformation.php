@@ -17,11 +17,25 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      */
     public function update(User $user, array $input): void
     {
-        Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
+        $rules = [
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
-        ])->validateWithBag('updateProfileInformation');
+            'phone' => ['required', 'string', 'max:20'],
+            'city' => ['required', 'string', 'max:100'],
+        ];
+
+        // Reglas específicas según el tipo de usuario
+        if ($user->type === 'worker') {
+            $rules['name'] = ['required', 'string', 'max:255'];
+            $rules['lastname'] = ['required', 'string', 'max:255'];
+            $rules['date_of_birth'] = ['required', 'date', 'before_or_equal:' . now()->subYears(16)->toDateString()];
+            $rules['gender'] = ['required', 'string', 'in:male,female,other'];
+        } else {
+            $rules['company_name'] = ['required', 'string', 'max:255'];
+            $rules['tax_id'] = ['required', 'string', 'max:20'];
+        }
+
+        Validator::make($input, $rules)->validateWithBag('updateProfileInformation');
 
         if (isset($input['photo'])) {
             $user->updateProfilePhoto($input['photo']);
@@ -31,10 +45,27 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $user instanceof MustVerifyEmail) {
             $this->updateVerifiedUser($user, $input);
         } else {
-            $user->forceFill([
-                'name' => $input['name'],
+            $userData = [
                 'email' => $input['email'],
-            ])->save();
+                'phone' => $input['phone'],
+                'city' => $input['city'],
+            ];
+
+            if ($user->type === 'worker') {
+                $userData = array_merge($userData, [
+                    'name' => $input['name'],
+                    'lastname' => $input['lastname'],
+                    'date_of_birth' => $input['date_of_birth'],
+                    'gender' => $input['gender'],
+                ]);
+            } else {
+                $userData = array_merge($userData, [
+                    'company_name' => $input['company_name'],
+                    'tax_id' => $input['tax_id'],
+                ]);
+            }
+
+            $user->forceFill($userData)->save();
         }
     }
 

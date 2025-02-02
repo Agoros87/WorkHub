@@ -26,7 +26,7 @@
                 <div class="bg-white rounded-xl shadow-lg p-6"> <!-- Cambiado p-8 a p-6 -->
                     <form class="space-y-6" action="{{ route('register') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="role" value="creator">
+                        <input type="hidden" name="type" value="worker">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Nombre -->
                             <div>
