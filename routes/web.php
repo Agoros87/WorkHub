@@ -30,22 +30,14 @@ Route::get('/register/worker', function () {
     return view('auth.register-worker');
 })->name('register.worker');
 
-Route::resource('jobs', AdvertisementController::class)
-    ->names('advertisements')
-    ->parameters(['jobs' => 'advertisement'])
-    ->only(['index', 'show']);
-
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::resource('jobs', AdvertisementController::class)
-        ->names('advertisements')
-        ->parameters(['jobs' => 'advertisement'])
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
+    Route::resource('advertisements', AdvertisementController::class)
         ->except(['index', 'show']);
 
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 });
+
+Route::resource('advertisements', AdvertisementController::class)
+    ->only(['index', 'show']);

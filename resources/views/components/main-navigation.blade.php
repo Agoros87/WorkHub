@@ -12,7 +12,7 @@
                 <a href="{{ url('/') }}" class="hover:text-blue-300">Inicio</a>
                 <a href="{{ url('/buscar') }}" class="hover:text-blue-300">Buscar Trabajo</a>
                 @auth
-                    <a href="{{ url('/publicar') }}" class="hover:text-blue-300">Publicar Oferta</a>
+                    <a href="{{ route('advertisements.create') }}" class="hover:text-blue-300">Publicar Oferta</a>
                     <a href="{{ url('/contacto') }}" class="hover:text-blue-300">Contacto</a>
                 @else
                     <a href="{{ url('/contacto') }}" class="hover:text-blue-300">Contacto</a>
@@ -49,11 +49,9 @@
             <a href="{{ url('/') }}" class="hover:text-blue-300">Inicio</a>
             <a href="{{ url('/buscar') }}" class="hover:text-blue-300">Buscar Trabajo</a>
             @auth
-                <a href="{{ url('/publicar') }}" class="hover:text-blue-300">Publicar Oferta</a>
-                <a href="{{ url('/contacto') }}" class="hover:text-blue-300">Contacto</a>
-            @else
-                <a href="{{ url('/contacto') }}" class="hover:text-blue-300">Contacto</a>
+                <a href="{{ route('advertisements.create') }}" class="hover:text-blue-300">Publicar Oferta</a>
             @endauth
+            <a href="{{ url('/contacto') }}" class="hover:text-blue-300">Contacto</a>
             <!-- Login y Register para invitados -->
             @guest
                 <a href="{{ route('login') }}" class="hover:text-blue-300">Inicio Sesión</a>
