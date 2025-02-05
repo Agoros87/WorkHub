@@ -29,7 +29,7 @@ uses(TestCase::class, LazilyRefreshDatabase::class)->in('Feature');
 |
 */
 
-function loginAsUser(User $user = null)
+function loginAsUser(?User $user = null)
 {
     $user = $user ?? User::factory()->create();
 

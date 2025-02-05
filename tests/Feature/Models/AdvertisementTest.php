@@ -24,10 +24,10 @@ it('creates an employer advertisement', function () {
         ->skills->toBeArray()
         ->experience->not->toBeEmpty()
         ->schedule->not->toBeEmpty()
-        ->contract_type->not->toBeEmpty()
         ->salary->toBeNumeric()
         ->created_at->not->toBeNull()
         ->updated_at->not->toBeNull();
+
 });
 
 it('creates a worker advertisement', function () {

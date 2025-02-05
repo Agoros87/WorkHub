@@ -6,6 +6,15 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class AdvertisementRequest extends FormRequest
 {
+
+    protected function prepareForValidation()
+    {
+        if ($this->has('skills')) {
+            $this->merge([
+                'skills' => array_map('trim', explode(',', $this->input('skills')))
+            ]);
+        }
+    }
     public function rules(): array
     {
         $rules = [

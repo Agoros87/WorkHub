@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->enum('type', ['employer', 'worker']);
             $table->string('title');
             $table->text('description');
-            $table->string('slug');
+            $table->string('slug')->default('');
             $table->json('skills')->nullable();
             $table->string('experience')->nullable();
             // Campos específicos para anuncios de empleador

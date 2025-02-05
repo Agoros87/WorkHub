@@ -26,7 +26,17 @@ class AdvertisementController extends Controller
 
     public function store(AdvertisementRequest $request)
     {
-        $advertisement = new Advertisement($request->validated());
+        $validated = $request->validated();
+
+        // Procesar las habilidades si existen y son una cadena
+        if (isset($validated['skills']) && is_string($validated['skills'])) {
+            $validated['skills'] = array_map('trim', explode(',', $validated['skills']));
+        }
+
+        // Generar un valor único para el campo 'slug'
+        $validated['slug'] = \Illuminate\Support\Str::slug($validated['title'] . '-' . \Illuminate\Support\Str::random(6));
+
+        $advertisement = new Advertisement($validated);
         $advertisement->user_id = Auth::id();
         $advertisement->save();
 
@@ -54,7 +64,14 @@ class AdvertisementController extends Controller
     {
         $this->authorize('update', $advertisement);
 
-        $advertisement->update($request->validated());
+        $validated = $request->validated();
+
+        // Procesar las habilidades si existen
+        if (isset($validated['skills']) && is_string($validated['skills'])) {
+            $validated['skills'] = array_map('trim', explode(',', $validated['skills']));
+        }
+
+        $advertisement->update($validated);
 
         return redirect()
             ->route('advertisements.show', $advertisement)
