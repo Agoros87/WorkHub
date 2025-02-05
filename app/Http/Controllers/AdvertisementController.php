@@ -6,9 +6,11 @@ use App\Models\Advertisement;
 use App\Http\Requests\AdvertisementRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class AdvertisementController extends Controller
 {
+    use AuthorizesRequests;
     public function index()
     {
         $advertisements = Advertisement::with('user')
@@ -56,6 +58,11 @@ class AdvertisementController extends Controller
     {
         $this->authorize('update', $advertisement);
 
+        // Convert skills array to a comma-separated string
+        if (is_array($advertisement->skills)) {
+            $advertisement->skills = implode(',', $advertisement->skills);
+        }
+
         return view('advertisements.edit', compact('advertisement'));
     }
 
@@ -86,7 +93,7 @@ class AdvertisementController extends Controller
         $advertisement->delete();
 
         return redirect()
-            ->route('advertisements.index')
+            ->route('welcome')
             ->with('success', 'Anuncio eliminado correctamente');
     }
 }

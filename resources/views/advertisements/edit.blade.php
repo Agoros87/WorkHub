@@ -8,34 +8,37 @@
                 <!-- Encabezado del formulario -->
                 <div class="text-center mb-8">
                     <h2 class="mt-0 text-4xl font-bold text-gray-800">
-                        {{ auth()->user()->type === 'employer' ? 'Publicar Oferta de Trabajo' : 'Publicar Búsqueda de Empleo' }}
+                        {{ auth()->user()->type === 'employer' ? 'Editar Oferta de Trabajo' : 'Editar Búsqueda de Empleo' }}
                     </h2>
                     <p class="mt-2 text-lg text-gray-600">
-                        {{ auth()->user()->type === 'employer' ? 'Completa el formulario para publicar tu oferta de trabajo' : 'Completa el formulario para publicar tu búsqueda de empleo' }}
+                        {{ auth()->user()->type === 'employer' ? 'Modifica los campos que desees actualizar' : 'Modifica los campos que desees actualizar' }}
                     </p>
                 </div>
 
                 <!-- Mensaje de error personalizado -->
                 @if ($errors->any())
-                <div class="bg-red-600 p-4 text-xl text-red-50 dark:bg-red-800 mb-6 rounded-lg">
-                    Por favor, corrige los errores en el formulario.
-                </div>
+                    <div class="bg-red-600 p-4 text-xl text-red-50 dark:bg-red-800 mb-6 rounded-lg">
+                        Por favor, corrige los errores en el formulario.
+                    </div>
                 @endif
 
-                <!-- Formulario de publicación -->
+                <!-- Formulario de edición -->
                 <div class="bg-white rounded-xl shadow-lg p-6">
-                    <form class="space-y-6" action="{{ route('advertisements.store') }}" method="POST">
+                    <form class="space-y-6" action="{{ route('advertisements.update', $advertisement->id) }}" method="POST">
                         @csrf
+                        @method('PUT')
                         <input type="hidden" name="type" value="{{ auth()->user()->type }}">
 
                         <!-- Formulario -->
-                        <x-advertisement-form :advertisement="new App\Models\Advertisement()" />
-
-                        <!-- Botón de publicación -->
-                        <x-custom-button>Publicar Anuncio</x-custom-button>
+                        <x-advertisement-form :advertisement="$advertisement" />
+                        <!-- Botón de actualización -->
+                            <x-custom-button>Actualizar Anuncio</x-custom-button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    <!-- Complemento footer con fondo azul y texto blanco -->
 </x-app-layout>
+
+

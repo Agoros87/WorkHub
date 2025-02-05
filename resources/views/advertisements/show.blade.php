@@ -1,5 +1,4 @@
 <x-app-layout>
-
     <div class="min-h-screen bg-gradient-to-r from-blue-50 to-gray-50 pt-8">
         <div class="container mx-auto px-4 py-8">
             <div class="max-w-4xl mx-auto">
@@ -11,7 +10,7 @@
 
                 <div class="bg-white rounded-xl shadow-lg p-8">
                     <div class="mb-6">
-                        <h1 class="text-3xl font-bold text-gray-800 mb-2">{{ $advertisement->title }}</h1>
+                        <h1 class="text-3xl font-bold text-gray-800 mb-2 break-words">{{ $advertisement->title }}</h1>
                         <p class="text-gray-600">
                             Publicado por
                             {{ $advertisement->user->company_name ?? $advertisement->user->name }} -
@@ -20,73 +19,81 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Descripción -->
                         <div class="col-span-2">
                             <h2 class="text-xl font-semibold text-gray-700 mb-2">Descripción</h2>
-                            <p class="text-gray-600 whitespace-pre-line">{{ $advertisement->description }}</p>
+                            <p class="text-gray-600 whitespace-pre-line break-words">{{ $advertisement->description }}</p>
                         </div>
 
+                        <!-- Ubicación -->
                         <div class="col-span-2">
                             <h2 class="text-xl font-semibold text-gray-700 mb-2">Ubicación</h2>
-                            <p class="text-gray-600">{{ $advertisement->location }}</p>
+                            <p class="text-gray-600 break-words">{{ $advertisement->location }}</p>
                         </div>
 
+                        <!-- Habilidades -->
                         @if($advertisement->skills)
                             <div class="col-span-2">
                                 <h2 class="text-xl font-semibold text-gray-700 mb-2">Habilidades</h2>
                                 <div class="flex flex-wrap gap-2">
                                     @foreach(is_array($advertisement->skills) ? $advertisement->skills : explode(',', $advertisement->skills) as $skill)
-                                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                    {{ trim($skill) }}
-                </span>
+                                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm break-words">
+                                            {{ trim($skill) }}
+                                        </span>
                                     @endforeach
                                 </div>
                             </div>
                         @endif
+
+                        <!-- Experiencia -->
                         @if($advertisement->experience)
                             <div class="col-span-2">
                                 <h2 class="text-xl font-semibold text-gray-700 mb-2">Experiencia</h2>
-                                <p class="text-gray-600">{{ $advertisement->experience }}</p>
+                                <p class="text-gray-600 break-words">{{ $advertisement->experience }}</p>
                             </div>
                         @endif
 
+                        <!-- Campos específicos para empleador -->
                         @if($advertisement->type === 'employer')
                             @if($advertisement->schedule)
                                 <div>
                                     <h2 class="text-xl font-semibold text-gray-700 mb-2">Horario</h2>
-                                    <p class="text-gray-600">{{ $advertisement->schedule }}</p>
+                                    <p class="text-gray-600 break-words">{{ $advertisement->schedule }}</p>
                                 </div>
                             @endif
 
                             @if($advertisement->contract_type)
                                 <div>
                                     <h2 class="text-xl font-semibold text-gray-700 mb-2">Tipo de Contrato</h2>
-                                    <p class="text-gray-600">{{ $advertisement->contract_type }}</p>
+                                    <p class="text-gray-600 break-words">{{ $advertisement->contract_type }}</p>
                                 </div>
                             @endif
 
                             @if($advertisement->salary)
                                 <div class="col-span-2">
                                     <h2 class="text-xl font-semibold text-gray-700 mb-2">Salario</h2>
-                                    <p class="text-gray-600">{{ number_format($advertisement->salary, 2, ',', '.') }} €/año</p>
+                                    <p class="text-gray-600 break-words">{{ number_format($advertisement->salary, 2, ',', '.') }} €/año</p>
                                 </div>
                             @endif
                         @else
+                            <!-- Campos específicos para trabajador -->
                             @if($advertisement->availability)
                                 <div>
                                     <h2 class="text-xl font-semibold text-gray-700 mb-2">Disponibilidad</h2>
-                                    <p class="text-gray-600">{{ $advertisement->availability }}</p>
+                                    <p class="text-gray-600 break-words">{{ $advertisement->availability }}</p>
                                 </div>
                             @endif
 
                             @if($advertisement->salary_expectation)
                                 <div>
                                     <h2 class="text-xl font-semibold text-gray-700 mb-2">Expectativa Salarial</h2>
-                                    <p class="text-gray-600">{{ number_format($advertisement->salary_expectation, 2, ',', '.') }} €/año</p>
+                                    <p class="text-gray-600 break-words">{{ number_format($advertisement->salary_expectation, 2, ',', '.') }} €/año</p>
                                 </div>
                             @endif
                         @endif
                     </div>
 
+                    <!-- Botones de editar y eliminar -->
                     @if(auth()->id() === $advertisement->user_id)
                         <div class="mt-8 flex gap-4">
                             <a href="{{ route('advertisements.edit', $advertisement) }}"
