@@ -10,8 +10,12 @@
             <!-- Navigation -->
             <nav class="hidden md:flex space-x-6">
                 <a href="{{ url('/') }}" class="hover:text-blue-300">Inicio</a>
-                <a href="{{ url('/buscar') }}" class="hover:text-blue-300">Buscar Trabajo</a>
                 @auth
+                    @if(auth()->user()->type === 'worker')
+                        <a href="{{ url('/buscar') }}" class="hover:text-blue-300">Buscar Trabajo</a>
+                    @elseif(auth()->user()->type === 'employer')
+                        <a href="{{ url('/buscar') }}" class="hover:text-blue-300">Buscar Empleados</a>
+                    @endif
                     <a href="{{ route('advertisements.create') }}" class="hover:text-blue-300">Publicar Oferta</a>
                     <a href="{{ url('/contacto') }}" class="hover:text-blue-300">Contacto</a>
                 @else
@@ -47,8 +51,12 @@
     <div id="mobile-menu" class="hidden md:hidden bg-blue-700">
         <nav class="flex flex-col space-y-2 py-4 px-6">
             <a href="{{ url('/') }}" class="hover:text-blue-300">Inicio</a>
-            <a href="{{ url('/buscar') }}" class="hover:text-blue-300">Buscar Trabajo</a>
             @auth
+                @if(auth()->user()->type === 'worker')
+                    <a href="{{ url('/buscar') }}" class="hover:text-blue-300">Buscar Trabajo</a>
+                @elseif(auth()->user()->type === 'employer')
+                    <a href="{{ url('/buscar') }}" class="hover:text-blue-300">Buscar Empleados</a>
+                @endif
                 <a href="{{ route('advertisements.create') }}" class="hover:text-blue-300">Publicar Oferta</a>
             @endauth
             <a href="{{ url('/contacto') }}" class="hover:text-blue-300">Contacto</a>
@@ -62,13 +70,13 @@
 </header>
 
 @push('scripts')
-<script>
-    // Menú móvil toggle
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
+    <script>
+        // Menú móvil toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
 
-    menuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
-</script>
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
 @endpush

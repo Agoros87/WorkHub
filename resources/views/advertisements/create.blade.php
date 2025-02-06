@@ -1,6 +1,4 @@
 <x-app-layout>
-    <!-- Complemento header con fondo azul y texto centrado -->
-    <x-main-navigation />
     <!-- Contenido principal -->
     <div class="min-h-screen bg-gradient-to-r from-blue-50 to-gray-50 pt-8">
         <div class="container mx-auto px-4 py-8">

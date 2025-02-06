@@ -48,11 +48,11 @@
         <x-input-error for="experience" class="mt-2" />
     </div>
 
-    @if(auth()->user()->type === 'employer')
+    @if($advertisement->type === 'employer')
         <!-- Campos específicos para empleador -->
         <div>
             <label for="schedule" class="block text-sm font-medium text-gray-700">Horario</label>
-            <input id="schedule" name="schedule" type="text" required
+            <input id="schedule" name="schedule" type="text"
                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
                    placeholder="Ej: Tiempo completo, Media jornada"
                    value="{{ old('schedule', $advertisement->schedule) }}">
@@ -61,7 +61,7 @@
 
         <div>
             <label for="contract_type" class="block text-sm font-medium text-gray-700">Tipo de Contrato</label>
-            <input id="contract_type" name="contract_type" type="text" required
+            <input id="contract_type" name="contract_type" type="text"
                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
                    placeholder="Ej: Indefinido, Temporal"
                    value="{{ old('contract_type', $advertisement->contract_type) }}">
@@ -76,11 +76,12 @@
                    value="{{ old('salary', $advertisement->salary) }}">
             <x-input-error for="salary" class="mt-2" />
         </div>
-    @else
+    @endif
+    @if($advertisement->type === 'worker')
         <!-- Campos específicos para trabajador -->
         <div>
             <label for="availability" class="block text-sm font-medium text-gray-700">Disponibilidad</label>
-            <input id="availability" name="availability" type="text" required
+            <input id="availability" name="availability" type="text"
                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
                    placeholder="Ej: Inmediata, En 2 semanas"
                    value="{{ old('availability', $advertisement->availability) }}">
@@ -97,4 +98,3 @@
         </div>
     @endif
 </div>
-
