@@ -12,9 +12,9 @@
                 <a href="{{ url('/') }}" class="hover:text-blue-300">Inicio</a>
                 @auth
                     @if(auth()->user()->type === 'worker')
-                        <a href="{{ url('/buscar') }}" class="hover:text-blue-300">Buscar Trabajo</a>
+                        <a href="{{ route('search') }}" class="hover:text-blue-300">Buscar Trabajo</a>
                     @elseif(auth()->user()->type === 'employer')
-                        <a href="{{ url('/buscar') }}" class="hover:text-blue-300">Buscar Empleados</a>
+                        <a href="{{ route('search') }}" class="hover:text-blue-300">Buscar Empleados</a>
                     @endif
                     <a href="{{ route('advertisements.create') }}" class="hover:text-blue-300">Publicar Oferta</a>
                     <a href="{{ url('/contacto') }}" class="hover:text-blue-300">Contacto</a>
@@ -53,9 +53,9 @@
             <a href="{{ url('/') }}" class="hover:text-blue-300">Inicio</a>
             @auth
                 @if(auth()->user()->type === 'worker')
-                    <a href="{{ url('/buscar') }}" class="hover:text-blue-300">Buscar Trabajo</a>
+                    <a href="{{ route('search') }}" class="hover:text-blue-300">Buscar Trabajo</a>
                 @elseif(auth()->user()->type === 'employer')
-                    <a href="{{ url('/buscar') }}" class="hover:text-blue-300">Buscar Empleados</a>
+                    <a href="{{ route('search') }}" class="hover:text-blue-300">Buscar Empleados</a>
                 @endif
                 <a href="{{ route('advertisements.create') }}" class="hover:text-blue-300">Publicar Oferta</a>
             @endauth

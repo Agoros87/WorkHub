@@ -30,6 +30,10 @@ Route::get('/register/worker', function () {
     return view('auth.register-worker');
 })->name('register.worker');
 
+Route::get('/search', function () {
+    return view('search');
+})->name('search');
+
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::resource('advertisements', AdvertisementController::class)
         ->except(['index', 'show']);
