@@ -1,14 +1,14 @@
 <x-guest-layout>
     <!-- Contenido principal -->
-    <div class="min-h-screen bg-gradient-to-r from-blue-50 to-gray-50 pt-8"> <!-- Cambiado pt-12 a pt-8 -->
-        <div class="container mx-auto px-4 py-8"> <!-- Cambiado py-12 a py-8 -->
+    <div class="min-h-screen bg-gradient-to-r from-blue-50 to-gray-50 pt-8">
+        <div class="container mx-auto px-4 py-8">
             <div class="max-w-4xl mx-auto">
                 <!-- Encabezado del formulario -->
-                <div class="text-center mb-8"> <!-- Cambiado mb-12 a mb-8 -->
-                    <h2 class="mt-0 text-4xl font-bold text-gray-800"> <!-- mt-0 para eliminar margen superior -->
+                <div class="text-center mb-8">
+                    <h2 class="mt-0 text-4xl font-bold text-gray-800">
                         Registro del Empleador
                     </h2>
-                    <p class="mt-2 text-lg text-gray-600"> <!-- Reducido mt-4 a mt-2 -->
+                    <p class="mt-2 text-lg text-gray-600">
                         Completa el formulario para crear tu perfil de empresa en WorkHub
                     </p>
                 </div>
@@ -21,7 +21,7 @@
                 @endsession
 
                 <!-- Formulario de registro -->
-                <div class="bg-white rounded-xl shadow-lg p-6"> <!-- Cambiado p-8 a p-6 -->
+                <div class="bg-white rounded-xl shadow-lg p-6">
                     <form class="space-y-6" action="{{ route('register') }}" method="POST">
                         @csrf
                         <input type="hidden" name="type" value="employer">
@@ -56,10 +56,15 @@
                             <!-- Población -->
                             <div class="md:col-span-2">
                                 <label for="city" class="block text-sm font-medium text-gray-700">Población</label>
-                                <input id="city" name="city" type="text" autocomplete="city" required
-                                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
-                                       placeholder="Población"
-                                       value="{{ old('city') }}">
+                                <select id="city" name="city" autocomplete="city" required
+                                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300">
+                                    <option value="" disabled selected>Selecciona tu población</option>
+                                    @foreach (config('locations') as $city)
+                                        <option value="{{ $city }}" {{ old('city') === $city ? 'selected' : '' }}>
+                                            {{ $city }}
+                                        </option>
+                                    @endforeach
+                                </select>
                                 <x-input-error for="city" class="mt-2" />
                             </div>
                             <!-- Correo electrónico -->

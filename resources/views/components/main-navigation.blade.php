@@ -19,6 +19,7 @@
                     <a href="{{ route('advertisements.create') }}" class="hover:text-blue-300">Publicar Oferta</a>
                     <a href="{{ url('/contacto') }}" class="hover:text-blue-300">Contacto</a>
                 @else
+                    <a href="{{ route('search') }}" class="hover:text-blue-300">Buscar Anuncios</a>
                     <a href="{{ url('/contacto') }}" class="hover:text-blue-300">Contacto</a>
                 @endauth
             </nav>

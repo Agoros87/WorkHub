@@ -123,7 +123,14 @@
             <!-- City -->
             <div class="col-span-6 sm:col-span-4">
                 <x-label for="city" value="{{ __('City') }}" />
-                <x-input id="city" type="text" class="mt-1 block w-full" wire:model="state.city" required autocomplete="city" />
+                <select id="city" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" wire:model="state.city" required>
+                    <option value="" disabled selected>{{ __('Select your city') }}</option>
+                    @foreach (config('locations') as $city)
+                        <option value="{{ $city }}" {{ $city === old('city', $state['city'] ?? '') ? 'selected' : '' }}>
+                            {{ $city }}
+                        </option>
+                    @endforeach
+                </select>
                 <x-input-error for="city" class="mt-2" />
             </div>
         @endif

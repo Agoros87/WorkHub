@@ -11,20 +11,9 @@ class SearchAdvertisements extends Component
     use WithPagination;
 
     public $keyword = '';
+    public $locations = [];
     public $location = '';
     public $selectedCategories = [];
-    public $locations = [
-        'Ávila', 'Alicante', 'Albacete', 'Almería', 'Barcelona',
-        'Badajoz', 'Bilbao', 'Burgos', 'Cádiz', 'Castellón de la Plana',
-        'Ceuta', 'Córdoba', 'Cuenca', 'Granada', 'Gijón',
-        'Guadalajara', 'Huesca', 'Huelva', 'Jaén', 'Lleida',
-        'Lugo', 'Las Palmas de Gran Canaria', 'Lorca', 'Logroño', 'Madrid',
-        'Málaga', 'Melilla', 'Mérida', 'Murcia', 'Palma de Mallorca',
-        'Pontevedra', 'Palencia', 'Ronda', 'Salamanca', 'San Sebastián',
-        'Segovia', 'Santiago de Compostela', 'Sevilla', 'Soria', 'Tarragona',
-        'Teruel', 'Toledo', 'Valladolid', 'Valencia', 'Vigo',
-        'Zaragoza'
-    ];
     public $type;
 
     protected $queryString = [
@@ -33,41 +22,38 @@ class SearchAdvertisements extends Component
         'selectedCategories' => ['except' => []],
     ];
 
+    protected $listeners = ['search' => 'performSearch'];
+
     public function mount()
     {
-        $this->type = auth()->check() && auth()->user()->role === 'employer' ? 'worker' : 'job';
+        // Solo asignar el tipo si el usuario está logueado
+        if (auth()->check()) {
+            $this->type = auth()->user()->role === 'employer' ? 'worker' : 'employer';
+        }
+        $this->locations = config('locations');
     }
 
-    public function updating($property)
+    public function updated($property)
     {
         $this->resetPage();
     }
 
     public function render()
     {
-        $query = Advertisement::query()->ofType($this->type);
+        $query = Advertisement::query()
+            ->ofType(auth()->check() ? $this->type : null)
+            ->inLocation($this->location)
+            ->withSkills($this->selectedCategories)
+            ->searchKeyword($this->keyword);
 
-        if ($this->keyword) {
-            $query->where(function ($q) {
-                $q->where('title', 'like', "%{$this->keyword}%")
-                  ->orWhere('description', 'like', "%{$this->keyword}%");
-            });
-        }
-
-        if ($this->location) {
-            $query->inLocation($this->location);
-        }
-
-        if (!empty($this->selectedCategories)) {
-            $query->where(function ($q) {
-                foreach ($this->selectedCategories as $category) {
-                    $q->orWhereJsonContains('skills', $category);
-                }
-            });
-        }
+        $total = $query->count();
+        $perPage = 4;
+        $results = $query->latest()->paginate($perPage);
 
         return view('livewire.search-advertisements', [
-            'results' => $query->latest()->paginate(10),
+            'results' => $results,
+            'total' => $total
         ]);
     }
+
 }

@@ -36,23 +36,42 @@ class Advertisement extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function scopeOfType($query, string $type)
+    public function scopeOfType($query, ?string $type)
     {
-        return $query->where('type', $type);
+        if (!empty($type)) {
+            return $query->where('type', $type);
+        }
+        return $query;
     }
 
-    public function scopeInLocation($query, string $location)
+    public function scopeInLocation($query, ?string $location)
     {
-        return $query->where('location', 'like', "%{$location}%");
+        if (!empty($location)) {
+            return $query->where('location', 'like', "%{$location}%");
+        }
+        return $query;
     }
 
     public function scopeWithSkills($query, array $skills)
     {
-        return $query->where(function ($query) use ($skills) {
+        if (!empty($skills)) {
             foreach ($skills as $skill) {
-                $query->whereJsonContains('skills', $skill);
+                $query->whereJsonContains('skills', trim($skill));
             }
-        });
+        }
+        return $query;
+    }
+
+    public function scopeSearchKeyword($query, ?string $keyword)
+    {
+        if (!empty($keyword)) {
+            $keyword = '%' . trim($keyword) . '%';
+            return $query->where(function ($q) use ($keyword) {
+                $q->where('title', 'like', $keyword)
+                    ->orWhere('description', 'like', $keyword);
+            });
+        }
+        return $query;
     }
 
     public function scopeLatest($query)

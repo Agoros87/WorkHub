@@ -27,13 +27,11 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->firstName(),
-            'lastname' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'phone' => fake()->phoneNumber(),
-            'city' => fake()->city(),
+            'phone' => fake()->numerify('6########'),
+            'city' => fake()->randomElement(config('locations')),
             'date_of_birth' => fake()->dateTimeBetween('-70 years', '-16 years')->format('Y-m-d'),
             'gender' => fake()->randomElement(['male', 'female', 'other']),
             'two_factor_secret' => null,
@@ -42,6 +40,30 @@ class UserFactory extends Factory
             'profile_photo_path' => null,
             'current_team_id' => null,
         ];
+    }
+
+    public function worker(): static
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'type' => 'worker',
+                'name' => fake()->firstName(),
+                'lastname' => fake()->lastName(),
+                'company_name' => null
+            ];
+        });
+    }
+
+    public function employer(): static
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'type' => 'employer',
+                'name' => null,
+                'lastname' => null,
+                'company_name' => fake()->company()
+            ];
+        });
     }
 
     /**

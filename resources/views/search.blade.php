@@ -1,3 +1,3 @@
-<x-guest-layout>
+<x-app-layout>
     @livewire('search-advertisements')
-</x-guest-layout>
+</x-app-layout>

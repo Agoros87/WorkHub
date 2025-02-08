@@ -3,10 +3,10 @@
         <div class="flex justify-center space-x-6 mb-4">
             <!-- SVG 1 -->
             <a href="#" class="text-white hover:text-gray-400">
-                <svg width='40' height='40' viewBox='0 0 100 100' class="rounded hover:bg-white hover:*:fill-black hover:[&_path:last-child]:fill-white">
-                    <path d="M10 90 h10 L90 10 h-10 L10 90" fill="white" />
-                    <path d="M10 10 h30 L90 90 h-30 L10 10" fill="white" />
-                    <path d="M25 20 h10 L75 80 h-10 L25 20" fill="black" />
+                <svg width='40' height='40' viewBox='0 0 100 100' class="rounded hover:bg-white *:hover:fill-black [&_path:last-child]:hover:fill-white transition-colors">
+                    <path d="M10 90 h10 L90 10 h-10 L10 90" fill="white"/>
+                    <path d="M10 10 h30 L90 90 h-30 L10 10" fill="white"/>
+                    <path d="M25 20 h10 L75 80 h-10 L25 20" fill="black"/>
                 </svg>
             </a>
 

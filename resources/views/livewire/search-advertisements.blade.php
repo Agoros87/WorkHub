@@ -6,10 +6,10 @@
                     <div class="text-center mb-12">
                         <h2 class="text-4xl font-bold text-gray-800">
                             @svg('heroicon-o-map-pin', 'h-5 w-5 text-gray-500 mr-2')
-                            Buscar {{ auth()->check() && auth()->user()->role == 'employer' ? 'Camareros' : 'Trabajo de Camarero' }}
+                            {{ auth()->check() ? (auth()->user()->type == 'employer' ? 'Buscar Camareros' : 'Buscar Trabajo de Camarero') : 'Buscar Anuncios' }}
                         </h2>
                         <p class="mt-4 text-lg text-gray-600">
-                            Utiliza los filtros para encontrar {{ auth()->check() && auth()->user()->role == 'employer' ? 'el personal de hostelería' : 'el trabajo en hostelería' }} que mejor se ajuste a tus necesidades
+                            {{ auth()->check() ? (auth()->user()->type == 'employer' ? 'Utiliza los filtros para encontrar personal de hostelería' : 'Utiliza los filtros para encontrar trabajo en hostelería') : 'Utiliza los filtros para encontrar anuncios de hostelería' }}
                         </p>
                     </div>
 
@@ -22,7 +22,7 @@
                                     @svg('heroicon-o-magnifying-glass', 'h-5 w-5 mr-2')
                                     Palabra Clave
                                 </label>
-                                <input wire:model.debounce.300ms="keyword" id="search-keyword" type="text"
+                                <input wire:model.live.debounce.300ms="keyword" id="search-keyword" type="text"
                                        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
                                        placeholder="Ej: Camarero de sala, Barman">
                             </div>
@@ -34,78 +34,38 @@
                                 @svg('heroicon-o-map-pin', 'h-5 w-5 mr-2')
                                 Ubicación
                             </label>
-                            <input wire:model="location" list="location-list" id="search-location"
-                                   class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300"
-                                   placeholder="Ej: Madrid, Barcelona">
-                            <datalist id="location-list" style="max-height: 150px; overflow-y: auto;">
+                            <select wire:model.live="location" id="search-location" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300" style="max-height: 200px; overflow-y: auto;">
+                                <option value="">Selecciona una ubicación</option>
                                 @foreach($locations as $city)
                                     <option value="{{ $city }}">{{ $city }}</option>
                                 @endforeach
-                            </datalist>
+                            </select>
                         </div>
+
 
                         <!-- Filtro de Categorías -->
                         <div class="group">
                             <div class="border-2 border-gray-100 rounded-xl p-8">
-                                <span class="flex items-center text-sm font-medium text-gray-700 mb-4">
-                                    @svg('heroicon-o-briefcase', 'h-5 w-5 mr-2')
-                                    Tipos de Puesto
-                                </span>
+        <span class="flex items-center text-sm font-medium text-gray-700 mb-4">
+            @svg('heroicon-o-briefcase', 'h-5 w-5 mr-2')
+            Tipos de Puesto
+        </span>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <label for="category-barra" class="flex items-center space-x-3 cursor-pointer">
-                                        <input type="checkbox" wire:model="selectedCategories" value="camarero_barra"
-                                               id="category-barra"
-                                               class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
-                                        <span class="text-gray-700">Camarero de barra</span>
-                                    </label>
-                                    <label for="category-sala" class="flex items-center space-x-3 cursor-pointer">
-                                        <input type="checkbox" wire:model="selectedCategories" value="camarero_sala"
-                                               id="category-sala"
-                                               class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
-                                        <span class="text-gray-700">Camarero de sala</span>
-                                    </label>
-                                    <label for="category-ayudante" class="flex items-center space-x-3 cursor-pointer">
-                                        <input type="checkbox" wire:model="selectedCategories" value="ayudante_camarero"
-                                               id="category-ayudante"
-                                               class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
-                                        <span class="text-gray-700">Ayudante de camarero</span>
-                                    </label>
-                                    <label for="category-barman" class="flex items-center space-x-3 cursor-pointer">
-                                        <input type="checkbox" wire:model="selectedCategories" value="barman"
-                                               id="category-barman"
-                                               class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
-                                        <span class="text-gray-700">Barman / Coctelero</span>
-                                    </label>
-                                    <label for="category-eventos" class="flex items-center space-x-3 cursor-pointer">
-                                        <input type="checkbox" wire:model="selectedCategories" value="camarero_eventos"
-                                               id="category-eventos"
-                                               class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
-                                        <span class="text-gray-700">Camarero de eventos</span>
-                                    </label>
-                                    <label for="category-barista" class="flex items-center space-x-3 cursor-pointer">
-                                        <input type="checkbox" wire:model="selectedCategories" value="barista"
-                                               id="category-barista"
-                                               class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
-                                        <span class="text-gray-700">Barista</span>
-                                    </label>
-                                    <label for="category-encargado" class="flex items-center space-x-3 cursor-pointer">
-                                        <input type="checkbox" wire:model="selectedCategories" value="encargado_sala"
-                                               id="category-encargado"
-                                               class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
-                                        <span class="text-gray-700">Encargado de sala</span>
-                                    </label>
-                                    <label for="category-catering" class="flex items-center space-x-3 cursor-pointer">
-                                        <input type="checkbox" wire:model="selectedCategories" value="personal_catering"
-                                               id="category-catering"
-                                               class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
-                                        <span class="text-gray-700">Personal de catering</span>
-                                    </label>
+                                    @foreach (config('skills') as $skill)
+                                        @php $id = Str::slug($skill); @endphp
+                                        <label for="category-{{ $id }}" class="flex items-center space-x-3 cursor-pointer">
+                                            <input type="checkbox" wire:model.live="selectedCategories" value="{{ $skill }}"
+                                                   id="category-{{ $id }}"
+                                                   class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                                            <span class="text-gray-700">{{ $skill }}</span>
+                                        </label>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Resultados de la Búsqueda con Loading States -->
+
+                        <!-- Resultados de la Búsqueda con Loading States -->
                     <div class="mt-12">
                         <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
                             @svg('heroicon-o-rectangle-stack', 'h-6 w-6 mr-2')
@@ -149,8 +109,13 @@
                             @endforelse
                         </div>
 
-                        <div class="mt-8" wire:ignore>
-                            {{ $results->links() }}
+                        <div class="mt-8">
+                            <div class="flex justify-between items-center mb-4">
+                                <p class="text-gray-600">
+                                    Mostrando {{ $results->firstItem() ?? 0 }} - {{ $results->lastItem() ?? 0 }} de {{ $total }} resultados
+                                </p>
+                            </div>
+                            {{ $results->onEachSide(2)->links() }}
                         </div>
                     </div>
                 </div>

@@ -27,7 +27,7 @@
                         <input type="hidden" name="type" value="{{ auth()->user()->type }}">
 
                         <!-- Formulario -->
-                        <x-advertisement-form :advertisement="new App\Models\Advertisement()" />
+                        <x-advertisement-form/>
 
                         <!-- Botón de publicación -->
                         <x-custom-button>Publicar Anuncio</x-custom-button>

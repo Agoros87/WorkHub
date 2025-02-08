@@ -30,7 +30,7 @@
                         <input type="hidden" name="type" value="{{ auth()->user()->hasRole('admin') ? $advertisement->type : auth()->user()->type }}">
 
                         <!-- Formulario -->
-                        <x-advertisement-form :advertisement="$advertisement" />
+                        <x-advertisement-form/>
                         <!-- Botón de actualización -->
                             <x-custom-button>Actualizar Anuncio</x-custom-button>
                     </form>
