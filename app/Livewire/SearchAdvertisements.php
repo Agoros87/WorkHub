@@ -9,36 +9,33 @@ use Livewire\WithPagination;
 class SearchAdvertisements extends Component
 {
     use WithPagination;
-
     public $keyword = '';
     public $locations = [];
     public $location = '';
     public $selectedCategories = [];
     public $type;
 
-    protected $queryString = [
+    protected $queryString = [ // Para que los parametros de la URL sean persistentes y visibles
         'keyword' => ['except' => ''],
         'location' => ['except' => ''],
         'selectedCategories' => ['except' => []],
     ];
 
-    protected $listeners = ['search' => 'performSearch'];
 
-    public function mount()
+    public function mount() //Guardo el type del usuario autenticado y cargo las ubicaciones
     {
-        // Solo asignar el tipo si el usuario está logueado
         if (auth()->check()) {
-            $this->type = auth()->user()->role === 'employer' ? 'worker' : 'employer';
+            $this->type = auth()->user()->type;
         }
         $this->locations = config('locations');
     }
 
-    public function updated($property)
+    public function updated($property) //Para que la paginación se reinicie al cambiar los filtros
     {
         $this->resetPage();
     }
 
-    public function render()
+    public function render() //hago la consulta a la base de datos con los filtros seleccionados
     {
         $query = Advertisement::query()
             ->ofType(auth()->check() ? $this->type : null)
@@ -47,13 +44,11 @@ class SearchAdvertisements extends Component
             ->searchKeyword($this->keyword);
 
         $total = $query->count();
-        $perPage = 4;
-        $results = $query->latest()->paginate($perPage);
+        $results = $query->latest()->paginate(4);
 
         return view('livewire.search-advertisements', [
             'results' => $results,
             'total' => $total
         ]);
     }
-
 }

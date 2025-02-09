@@ -10,9 +10,11 @@ class AdvertisementRequest extends FormRequest
     protected function prepareForValidation()
     {
         if ($this->has('skills')) {
-            $this->merge([
-                'skills' => array_map('trim', explode(',', $this->input('skills')))
-            ]);
+            $skills = $this->input('skills');
+            if (is_string($skills)) {
+                $skills = array_map('trim', explode(',', $skills));
+            }
+            $this->merge(['skills' => $skills]);
         }
     }
     public function rules(): array

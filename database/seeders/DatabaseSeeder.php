@@ -19,11 +19,11 @@ class DatabaseSeeder extends Seeder
 
         // Usuario trabajador para pruebas
         $worker = User::factory()->worker()->create([
-            'name' => 'pepe',
+            'name' => 'Pepe',
             'lastname' => 'User',
             'email' => 'pepe@mail.es',
             'phone' => '12345678',
-            'city' => 'Murcia',
+            'location' => 'Murcia',
             'date_of_birth' => '1990-01-01',
             'gender' => 'male',
             'password' => bcrypt('12345678'),
@@ -36,9 +36,10 @@ class DatabaseSeeder extends Seeder
             'company_name' => 'Pepitos SL',
             'email' => 'pepito@mail.es',
             'phone' => '12345678',
-            'city' => 'Murcia',
+            'location' => 'Murcia',
             'date_of_birth' => '1990-01-01',
             'gender' => 'male',
+            'tax_id' => '12345678A',
             'password' => bcrypt('12345678'),
             'email_verified_at' => now(),
         ]);

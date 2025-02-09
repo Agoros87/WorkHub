@@ -50,7 +50,7 @@ class AdvertisementFactory extends Factory
             'slug' => $this->faker->slug,
             'location' => function (array $attributes) {
                 $user = User::find($attributes['user_id']);
-                return $user ? $user->city : fake()->randomElement(config('locations'));
+                return $user ? $user->location : fake()->randomElement(config('locations'));
             },
             'skills' => [$this->faker->randomElement([
                 'Camarero de barra', 'Camarero de sala', 'Ayudante de camarero',

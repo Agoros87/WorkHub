@@ -29,7 +29,7 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
             'phone' => ['required', 'string', 'max:20'],
-            'city' => ['required', 'string', 'max:100'],
+            'location' => ['required'],
         ];
 
         // Reglas específicas según el tipo de usuario
@@ -53,7 +53,7 @@ class CreateNewUser implements CreatesNewUsers
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
             'phone' => $input['phone'],
-            'city' => $input['city'],
+            'location' => $input['location'],
         ];
 
         if ($input['type'] === 'worker') {
@@ -67,7 +67,7 @@ class CreateNewUser implements CreatesNewUsers
         }
 
         $user = User::create($userData);
-        
+
         // Asignar rol creator directamente
         $role = Role::where('name', 'creator')->firstOrFail();
         $user->assignRole($role);

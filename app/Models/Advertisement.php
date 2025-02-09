@@ -39,10 +39,13 @@ class Advertisement extends Model
     public function scopeOfType($query, ?string $type)
     {
         if (!empty($type)) {
-            return $query->where('type', $type);
+            $oppositeType = $type === 'employer' ? 'worker' : 'employer';
+            return $query->where('type', $oppositeType);
         }
+
         return $query;
     }
+
 
     public function scopeInLocation($query, ?string $location)
     {
@@ -78,4 +81,7 @@ class Advertisement extends Model
     {
         return $query->orderBy('created_at', 'desc');
     }
+
 }
+
+

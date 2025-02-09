@@ -55,17 +55,17 @@
                             </div>
                             <!-- Población -->
                             <div class="md:col-span-2">
-                                <label for="city" class="block text-sm font-medium text-gray-700">Población</label>
-                                <select id="city" name="city" autocomplete="city" required
+                                <label for="location" class="block text-sm font-medium text-gray-700">Población</label>
+                                <select id="location" name="location" autocomplete="location" required
                                         class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300">
                                     <option value="" disabled selected>Selecciona tu población</option>
-                                    @foreach (config('locations') as $city)
-                                        <option value="{{ $city }}" {{ old('city') === $city ? 'selected' : '' }}>
-                                            {{ $city }}
+                                    @foreach (config('locations') as $location)
+                                        <option value="{{ $location }}" {{ old('location') == $location ? 'selected' : '' }}>
+                                            {{ $location }}
                                         </option>
                                     @endforeach
                                 </select>
-                                <x-input-error for="city" class="mt-2" />
+                                <x-input-error for="location" class="mt-2" />
                             </div>
                             <!-- Correo electrónico -->
                             <div class="md:col-span-2">

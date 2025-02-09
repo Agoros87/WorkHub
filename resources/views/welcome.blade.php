@@ -44,21 +44,65 @@
 </section>
 
 <main class="main-content">
-    <div class="container mx-auto py-6 px-6">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Anuncios</h1>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
-            @foreach($advertisements as $advertisement)
-                <a href="{{ route('advertisements.show', $advertisement) }}" class="block w-full max-w-sm">
-                    <div class="bg-gradient-to-r from-purple-100 to-indigo-200 p-6 rounded-lg shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform duration-300">
-                        <h2 class="text-2xl font-extrabold text-gray-900 break-words">{{ $advertisement->title }}</h2>
-                        <p class="text-gray-700 mt-2 break-words">{{ $advertisement->description }}</p>
-                    </div>
-                </a>
-            @endforeach
+    <div class="container mx-auto py-12 px-6">
+        <!-- Encabezado con animación de transformación y movimiento -->
+        <h1 class="text-4xl font-extrabold text-gray-800 mb-10 text-center transform transition-all duration-500 hover:scale-110 hover:text-indigo-600 hover:translate-x-4">
+            Anuncios más recientes
+        </h1>
+
+        <!-- Contenedor de dos columnas -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Columna de Trabajadores -->
+            <div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center transform transition-all duration-500 hover:text-indigo-600 hover:translate-y-2 hover:scale-105">
+                    Anuncios para empresas
+                </h2>
+                @foreach($workerAdvertisements as $advertisement)
+                    <a href="{{ route('advertisements.show', $advertisement) }}" class="block w-full mb-6">
+                        <div class="bg-gradient-to-r from-purple-100 to-indigo-200 p-6 rounded-lg shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform duration-300 w-full max-w-sm mx-auto h-full flex flex-col">
+                            <h3 class="text-xl font-extrabold text-gray-900 break-words flex-grow transform transition-transform duration-500 hover:translate-y-2">
+                                {{ $advertisement->title }}
+                            </h3>
+                            <p class="text-gray-700 mt-2 break-words flex-grow transform transition-transform duration-300 hover:translate-x-2">
+                                {{ $advertisement->description }}
+                            </p>
+                            <p class="text-sm text-gray-500 mt-2">Publicado el: {{ $advertisement->created_at->format('d/m/Y H:i') }}</p>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+
+            <!-- Columna de Empleadores -->
+            <div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center transform transition-all duration-500 hover:text-indigo-600 hover:translate-y-2 hover:scale-105">
+                    Anuncios de trabajo
+                </h2>
+                @foreach($employerAdvertisements as $advertisement)
+                    <a href="{{ route('advertisements.show', $advertisement) }}" class="block w-full mb-6">
+                        <div class="bg-gradient-to-r from-purple-100 to-indigo-200 p-6 rounded-lg shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform duration-300 w-full max-w-sm mx-auto h-full flex flex-col">
+                            <h3 class="text-xl font-extrabold text-gray-900 break-words flex-grow transform transition-transform duration-500 hover:translate-y-2">
+                                {{ $advertisement->title }}
+                            </h3>
+                            <p class="text-gray-700 mt-2 break-words flex-grow transform transition-transform duration-300 hover:translate-x-2">
+                                {{ $advertisement->description }}
+                            </p>
+                            <p class="text-sm text-gray-500 mt-2">Publicado el: {{ $advertisement->created_at->format('d/m/Y H:i') }}</p>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Paginación de anuncios -->
+        <div class="mt-6">
+            <div class="flex justify-between">
+                <div>
+                    {{ $workerAdvertisements->links() }}
+                </div>
+            </div>
         </div>
     </div>
 </main>
-
 <x-footer />
 
 </body>

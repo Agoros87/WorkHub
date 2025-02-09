@@ -31,7 +31,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'phone' => fake()->numerify('6########'),
-            'city' => fake()->randomElement(config('locations')),
+            'location' => fake()->randomElement(config('locations')),
             'date_of_birth' => fake()->dateTimeBetween('-70 years', '-16 years')->format('Y-m-d'),
             'gender' => fake()->randomElement(['male', 'female', 'other']),
             'two_factor_secret' => null,

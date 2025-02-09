@@ -8,7 +8,10 @@ class PageHomeController extends Controller
 {
     public function __invoke()
     {
-        $advertisements = Advertisement::all();
-        return view('welcome', compact('advertisements'));
+        $workerAdvertisements = Advertisement::ofType('worker')->latest()->paginate(5);
+
+        $employerAdvertisements = Advertisement::ofType('employer')->latest()->paginate(5);
+
+        return view('welcome', compact('workerAdvertisements', 'employerAdvertisements'));
     }
 }
