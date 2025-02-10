@@ -12,6 +12,20 @@ class DashboardController extends Controller
         $totalAds = $user->advertisements()->count();
         $dependsOfTypeText = $user->type == 'employer' ? 'Encuentra camareros' : 'Encuentra trabajo';
 
-        return view('dashboard', compact('totalAds', 'dependsOfTypeText'));
+        // Obtener aplicaciones recibidas y enviadas
+        $receivedApplications = $user->receivedApplications()->with(['user', 'messages'])->latest()->take(5)->get();
+        $sentApplications = $user->jobApplications()->with(['advertisement.user', 'messages'])->latest()->take(5)->get();
+        
+        $totalReceivedApplications = $user->receivedApplications()->count();
+        $totalSentApplications = $user->jobApplications()->count();
+
+        return view('dashboard', compact(
+            'totalAds',
+            'dependsOfTypeText',
+            'receivedApplications',
+            'sentApplications',
+            'totalReceivedApplications',
+            'totalSentApplications'
+        ));
     }
 }

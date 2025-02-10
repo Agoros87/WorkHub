@@ -14,13 +14,16 @@ class SearchAdvertisements extends Component
     public $location = '';
     public $selectedCategories = [];
     public $type;
+    public $sortField = 'created_at';
+    public $sortDirection = 'desc';
 
     protected $queryString = [ // Para que los parametros de la URL sean persistentes y visibles
         'keyword' => ['except' => ''],
         'location' => ['except' => ''],
         'selectedCategories' => ['except' => []],
+        'sortField' => ['except' => 'created_at'],
+        'sortDirection' => ['except' => 'desc'],
     ];
-
 
     public function mount() //Guardo el type del usuario autenticado y cargo las ubicaciones
     {
@@ -38,13 +41,13 @@ class SearchAdvertisements extends Component
     public function render() //hago la consulta a la base de datos con los filtros seleccionados
     {
         $query = Advertisement::query()
-            ->ofType(auth()->check() ? $this->type : null)
+            ->returnOppositeType(auth()->check() ? $this->type : null)
             ->inLocation($this->location)
             ->withSkills($this->selectedCategories)
             ->searchKeyword($this->keyword);
 
         $total = $query->count();
-        $results = $query->latest()->paginate(4);
+        $results = $query->orderBy($this->sortField, $this->sortDirection)->paginate(4);
 
         return view('livewire.search-advertisements', [
             'results' => $results,

@@ -18,7 +18,7 @@
     "Confirm Password": "Confirmar contraseña",
     "Create a new Post": "Crear un nuevo post",
     "Current Password": "Contraseña actual",
-    "Dashboard": "Panel",
+    "Dashboard": "Panel de control",
     "Delete Account": "Borrar cuenta",
     "Edit Profile": "Editar perfil",
     "Email": "Correo electrónico",
@@ -112,5 +112,9 @@
     "Remove Photo": "Eliminar Foto",
     "Select A New Photo": "Seleccionar Nueva Foto",
     "Select your gender": "Selecciona tu género",
-    "Tax ID": "Identificador fiscal (C.I.F o N.I.F)"
+    "Tax ID": "Identificador fiscal (C.I.F o N.I.F)",
+    "pending": "Pendiente",
+    "accepted": "Aceptada",
+    "rejected": "Rechazada"
+
 }

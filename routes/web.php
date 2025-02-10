@@ -3,6 +3,7 @@
 use App\Http\Controllers\PageHomeController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\JobApplicationController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', PageHomeController::class)->name('welcome');
@@ -44,3 +45,12 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
 Route::resource('advertisements', AdvertisementController::class)
     ->only(['index', 'show']);
+
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
+    Route::post('/advertisements/{advertisement}/apply', [JobApplicationController::class, 'store'])
+        ->name('advertisements.apply');
+    Route::get('/job-applications/{jobApplication}', [JobApplicationController::class, 'show'])
+        ->name('job-applications.show');
+    Route::delete('/job-applications/{jobApplication}', [JobApplicationController::class, 'destroy'])
+        ->name('job-applications.destroy');
+});

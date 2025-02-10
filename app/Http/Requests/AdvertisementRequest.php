@@ -6,17 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class AdvertisementRequest extends FormRequest
 {
-
-    protected function prepareForValidation()
-    {
-        if ($this->has('skills')) {
-            $skills = $this->input('skills');
-            if (is_string($skills)) {
-                $skills = array_map('trim', explode(',', $skills));
-            }
-            $this->merge(['skills' => $skills]);
-        }
-    }
     public function rules(): array
     {
         $isAdmin = auth()->user()->hasRole('admin');
@@ -27,7 +16,7 @@ class AdvertisementRequest extends FormRequest
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'location' => 'required|string|max:255',
-            'skills' => 'nullable|array',
+            'skills' => 'required|array',
             'skills.*' => 'string|max:255',
             'experience' => 'nullable|string|max:255',
         ];

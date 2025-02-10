@@ -12,8 +12,8 @@
         <div class="block px-4 py-2 text-xs text-gray-400">
             Gestionar Cuenta
         </div>
-        
-        <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Dashboard</a>
+
+        <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">{{ __('Dashboard') }}</a>
         <a href="{{ route('profile.show') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Perfil</a>
 
         <div class="border-t border-gray-200"></div>

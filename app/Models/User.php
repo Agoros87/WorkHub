@@ -79,4 +79,19 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Advertisement::class);
     }
+
+    public function jobApplications()
+    {
+        return $this->hasMany(JobApplication::class, 'user_id');
+    }
+
+    public function receivedApplications()
+    {
+        return $this->hasManyThrough(
+            JobApplication::class,
+            Advertisement::class,
+            'user_id', // Clave foránea en advertisements
+            'advertisement_id' // Clave foránea en job_applications
+        );
+    }
 }

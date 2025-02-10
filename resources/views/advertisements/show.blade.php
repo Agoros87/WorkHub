@@ -113,6 +113,29 @@
                     @endif
                 </div>
             </div>
+
+            @auth
+                @if(($advertisement->type === 'employer' && auth()->user()->type === 'worker' || 
+                     $advertisement->type === 'worker' && auth()->user()->type === 'employer') && 
+                    !$hasApplied)
+                    <div class="mt-4 flex justify-end">
+                        <form action="{{ route('advertisements.apply', $advertisement) }}" method="POST">
+                            @csrf
+                            <x-button type="submit">
+                                Aplicar a esta oferta
+                            </x-button>
+                        </form>
+                    </div>
+                @elseif($hasApplied)
+                    <div class="mt-4">
+                        <p class="text-green-600">Ya has aplicado a esta oferta</p>
+                    </div>
+                @endif
+            @else
+                <div class="mt-4">
+                    <p class="text-gray-600">Debes <a href="{{ route('login') }}" class="text-indigo-600 hover:text-indigo-900">iniciar sesión</a> para aplicar a esta oferta</p>
+                </div>
+            @endauth
         </div>
     </div>
 </x-app-layout>

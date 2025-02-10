@@ -7,6 +7,7 @@ use App\Http\Requests\AdvertisementRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Str;
 
 class AdvertisementController extends Controller
 {
@@ -30,11 +31,7 @@ class AdvertisementController extends Controller
     {
         $validated = $request->validated();
 
-        if (isset($validated['skills']) && is_string($validated['skills'])) {
-            $validated['skills'] = array_map('trim', explode(',', $validated['skills']));
-        }
-
-        $validated['slug'] = \Illuminate\Support\Str::slug($validated['title'] . '-' . \Illuminate\Support\Str::random(6));
+        $validated['slug'] = Str::slug($validated['title'] . '-' . Str::random(6));
 
         $advertisement = new Advertisement($validated);
         $advertisement->user_id = Auth::id();
@@ -47,30 +44,23 @@ class AdvertisementController extends Controller
 
     public function show(Advertisement $advertisement)
     {
-        return view('advertisements.show', compact('advertisement'));
+        $hasApplied = auth()->check() ?
+            $advertisement->applications()->where('user_id', auth()->id())->exists() :
+            false;
+
+        return view('advertisements.show', compact('advertisement', 'hasApplied'));
     }
 
     public function edit(Advertisement $advertisement)
     {
         $this->authorize('update', $advertisement);
-
-        if (is_array($advertisement->skills)) {
-            $advertisement->skills = implode(',', $advertisement->skills);
-        }
-
         return view('advertisements.edit', compact('advertisement'));
     }
 
     public function update(AdvertisementRequest $request, Advertisement $advertisement)
     {
         $this->authorize('update', $advertisement);
-
         $validated = $request->validated();
-
-        if (isset($validated['skills']) && is_string($validated['skills'])) {
-            $validated['skills'] = array_map('trim', explode(',', $validated['skills']));
-        }
-
         $advertisement->update($validated);
 
         return redirect()

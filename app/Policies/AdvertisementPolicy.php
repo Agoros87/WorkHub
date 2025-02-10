@@ -21,4 +21,13 @@ class AdvertisementPolicy
     {
         return $user->hasRole('admin') || $user->id === $advertisement->user_id;
     }
+
+    public function apply(User $user, Advertisement $advertisement)
+    {
+        if ($advertisement->type === 'employer') {
+            return $user->type === 'worker' && $user->id !== $advertisement->user_id;
+        } else {
+            return $user->type === 'employer' && $user->id !== $advertisement->user_id;
+        }
+    }
 }

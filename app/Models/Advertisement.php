@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Advertisement extends Model
 {
@@ -36,7 +37,15 @@ class Advertisement extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function scopeOfType($query, ?string $type)
+    public function scopeofType($query, ?string $type)
+    {
+        if (!empty($type)) {
+            return $query->where('type', $type);
+        }
+        return $query;
+    }
+
+    public function scopereturnOppositeType($query, ?string $type)
     {
         if (!empty($type)) {
             $oppositeType = $type === 'employer' ? 'worker' : 'employer';
@@ -82,6 +91,8 @@ class Advertisement extends Model
         return $query->orderBy('created_at', 'desc');
     }
 
+    public function applications(): HasMany
+    {
+        return $this->hasMany(JobApplication::class);
+    }
 }
-
-
