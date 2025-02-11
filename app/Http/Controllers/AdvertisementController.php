@@ -17,7 +17,7 @@ class AdvertisementController extends Controller
     {
         $advertisements = Advertisement::where('user_id', Auth::id())
             ->latest()
-            ->paginate(10);
+            ->paginate(3);
 
         return view('advertisements.index', compact('advertisements'));
     }
@@ -61,6 +61,11 @@ class AdvertisementController extends Controller
     {
         $this->authorize('update', $advertisement);
         $validated = $request->validated();
+
+        if ($validated['title'] !== $advertisement->title) {
+            $validated['slug'] = Str::slug($validated['title'] . '-' . Str::random(6));
+        }
+
         $advertisement->update($validated);
 
         return redirect()

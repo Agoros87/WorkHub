@@ -6,6 +6,7 @@ use App\Models\Advertisement;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class AdvertisementFactory extends Factory
 {
@@ -38,16 +39,22 @@ class AdvertisementFactory extends Factory
                     'Encargado de sala' => 'Gestión de equipo, organización de turnos, control de stock y atención al cliente. Capacidad de liderazgo.',
                     'Personal de catering' => 'Experiencia en montaje de buffets, servicio de banquetes y eventos especiales.'
                 ];
-                $puesto = explode(' con experiencia', $attributes['title'])[0];
-                $puesto = explode('Disponible como ', $puesto)[0];
-                $puesto = trim($puesto);
-                $baseDesc = $puestos[$puesto] ?? '';
+
+                // Extraer el puesto eliminando "Se busca" y "Disponible como" del título y " con experiencia" del final
+                $puesto = str_replace(['Se busca ', 'Disponible como '], '', $attributes['title']);
+                $puesto = str_replace(' con experiencia', '', $puesto);
+                $puesto = trim($puesto); // Elimina espacios sobrantes
+
+                $baseDesc = $puestos[$puesto] ?? ''; // Descripción base del puesto de trabajo según el array $puestos
 
                 return $attributes['type'] === 'employer'
                     ? "Importante establecimiento de hostelería necesita incorporar $puesto. $baseDesc"
                     : "Profesional con experiencia como $puesto. $baseDesc";
             },
-            'slug' => $this->faker->slug,
+            'slug' => function (array $attributes) {
+                return Str::slug($attributes['title'] . '-' . Str::random(6));
+            },
+
             'location' => function (array $attributes) {
                 $user = User::find($attributes['user_id']);
                 return $user ? $user->location : fake()->randomElement(config('locations'));

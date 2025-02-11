@@ -10,6 +10,11 @@ class Advertisement extends Model
 {
     use HasFactory;
 
+    public function getRouteKeyName() // Me ahorro cambiar la ruta para que sea por slug en lugar de id
+    {
+        return 'slug';
+    }
+
     protected $fillable = [
         'user_id',
         'type',
