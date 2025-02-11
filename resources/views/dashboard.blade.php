@@ -1,5 +1,12 @@
 <x-app-layout>
-    <div class="min-h-screen bg-gradient-to-r from-blue-50 to-gray-50 pt-20">
+    @if (session('success'))
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                <span class="block sm:inline">{{ session('success') }}</span>
+            </div>
+        </div>
+    @endif
+    <div class="min-h-screen bg-gradient-to-r from-blue-50 to-gray-50 pt-16">
         <div class="container mx-auto px-4 py-0">
             <div class="max-w-4xl mx-auto">
                 <div class="bg-white rounded-xl shadow-lg p-8">

@@ -42,14 +42,13 @@
                             </select>
                         </div>
 
-
                         <!-- Filtro de Categorías -->
                         <div class="group">
                             <div class="border-2 border-gray-100 rounded-xl p-8">
-        <span class="flex items-center text-sm font-medium text-gray-700 mb-4">
-            @svg('heroicon-o-briefcase', 'h-5 w-5 mr-2')
-            Tipos de Puesto
-        </span>
+                                <span class="flex items-center text-sm font-medium text-gray-700 mb-4">
+                                    @svg('heroicon-o-briefcase', 'h-5 w-5 mr-2')
+                                    Tipos de Puesto
+                                </span>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     @foreach (config('skills') as $skill)
                                         @php $id = Str::slug($skill); @endphp
@@ -63,9 +62,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-
-                        <!-- Resultados de la Búsqueda con Loading States -->
+                    <!-- Resultados de la Búsqueda con Loading States -->
                     <div class="mt-12">
                         <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
                             @svg('heroicon-o-rectangle-stack', 'h-6 w-6 mr-2')

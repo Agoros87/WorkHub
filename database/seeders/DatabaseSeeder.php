@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('12345678'),
             'email_verified_at' => now(),
         ]);
+        $worker->assignRole('creator');
         Advertisement::factory()->worker()->create(['user_id' => $worker->id]);
 
         // Usuario empleador para pruebas
@@ -43,11 +44,13 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('12345678'),
             'email_verified_at' => now(),
         ]);
+        $employer->assignRole('creator');
         Advertisement::factory()->employer()->create(['user_id' => $employer->id]);
 
         // Crear usuarios empleadores y sus anuncios
         User::factory()->employer()->count(20)->create()
             ->each(function ($user) {
+                $user->assignRole('creator');
                 Advertisement::factory()->employer()
                     ->count(rand(1, 3))
                     ->create(['user_id' => $user->id]);
@@ -56,6 +59,7 @@ class DatabaseSeeder extends Seeder
         // Crear usuarios trabajadores y sus anuncios
         User::factory()->worker()->count(30)->create()
             ->each(function ($user) {
+                $user->assignRole('creator');
                 Advertisement::factory()->worker()
                     ->count(rand(1, 2))
                     ->create(['user_id' => $user->id]);
