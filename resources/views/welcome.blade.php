@@ -38,7 +38,7 @@
             </p>
         </div>
         <div class="mt-10 md:mt-0 md:ml-64">
-            <img src="/images/backgrounds/mifoto.svg" alt="WorkHub" class="w-72 h-72 rounded-lg shadow-lg">
+            <x-main-photo />
         </div>
     </div>
 </section>

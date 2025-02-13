@@ -115,6 +115,7 @@
     "Tax ID": "Identificador fiscal (C.I.F o N.I.F)",
     "pending": "Pendiente",
     "accepted": "Aceptada",
-    "rejected": "Rechazada"
+    "rejected": "Rechazada",
+    "schedule": "Horario"
 
 }

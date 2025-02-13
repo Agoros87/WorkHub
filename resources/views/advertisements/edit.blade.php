@@ -24,11 +24,9 @@
 
                 <!-- Formulario de edición -->
                 <div class="bg-white rounded-xl shadow-lg p-6">
-                    <form class="space-y-6" action="{{ route('advertisements.update', $advertisement->id) }}" method="POST">
+                    <form class="space-y-6" action="{{ route('advertisements.update', $advertisement) }}" method="POST">
                         @csrf
                         @method('PUT')
-                        <input type="hidden" name="type" value="{{ auth()->user()->hasRole('admin') ? $advertisement->type : auth()->user()->type }}">
-
                         <!-- Formulario -->
                         <x-advertisement-form/>
                         <!-- Botón de actualización -->

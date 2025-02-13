@@ -14,12 +14,12 @@ class AdvertisementPolicy
 
     public function update(User $user, Advertisement $advertisement)
     {
-        return ($user->hasRole('admin') || $user->id === $advertisement->user_id) && $user->hasRole('creator');
+        return $user->hasRole('admin') || ($user->id === $advertisement->user_id && $user->hasRole('creator'));
     }
 
     public function delete(User $user, Advertisement $advertisement)
     {
-        return ($user->hasRole('admin') || $user->id === $advertisement->user_id) && $user->hasRole('creator');
+        return $user->hasRole('admin') || ($user->id === $advertisement->user_id && $user->hasRole('creator'));
     }
 
     public function apply(User $user, Advertisement $advertisement)
@@ -35,4 +35,3 @@ class AdvertisementPolicy
         }
     }
 }
-

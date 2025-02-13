@@ -65,7 +65,7 @@
         <x-input-error for="experience" class="mt-2" />
     </div>
 
-    @if(auth()->user()->type === 'employer')
+    @if(auth()->user()->type === 'employer' || $advertisement->type === 'employer')
         <!-- Campos específicos para empleador -->
         <div>
             <label for="schedule" class="block text-sm font-medium text-gray-700">Horario</label>
@@ -94,7 +94,7 @@
             <x-input-error for="salary" class="mt-2" />
         </div>
     @endif
-    @if(auth()->user()->type === 'worker')
+    @if(auth()->user()->type === 'worker' || $advertisement->type === 'worker')
         <!-- Campos específicos para trabajador -->
         <div>
             <label for="availability" class="block text-sm font-medium text-gray-700">Disponibilidad</label>

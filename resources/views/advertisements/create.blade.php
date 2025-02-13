@@ -24,8 +24,6 @@
                 <div class="bg-white rounded-xl shadow-lg p-6">
                     <form class="space-y-6" action="{{ route('advertisements.store') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="type" value="{{ auth()->user()->type }}">
-
                         <!-- Formulario -->
                         <x-advertisement-form/>
 

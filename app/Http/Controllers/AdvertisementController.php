@@ -30,7 +30,7 @@ class AdvertisementController extends Controller
     public function store(AdvertisementRequest $request)
     {
         $validated = $request->validated();
-
+        $validated['type'] = auth()->user()->type;
         $validated['slug'] = Str::slug($validated['title'] . '-' . Str::random(6));
 
         $advertisement = new Advertisement($validated);
@@ -61,6 +61,11 @@ class AdvertisementController extends Controller
     {
         $this->authorize('update', $advertisement);
         $validated = $request->validated();
+        
+        // Si es admin dejo el type del anuncio o del usuario
+        $validated['type'] = auth()->user()->hasRole('admin') 
+            ? $advertisement->type 
+            : auth()->user()->type;
 
         if ($validated['title'] !== $advertisement->title) {
             $validated['slug'] = Str::slug($validated['title'] . '-' . Str::random(6));
