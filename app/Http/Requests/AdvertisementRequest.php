@@ -7,8 +7,13 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class AdvertisementRequest extends FormRequest
 {
+    public function authorize(): bool
+    {
+        return auth()->user()->can('update', $this->route('advertisement'));
+    }
     public function rules(): array
     {
+
         return [
             'title' => [new ValidAdvertisement(),'required','string','max:255'],
             'description' => [new ValidAdvertisement(),'required','string'],
@@ -24,8 +29,4 @@ class AdvertisementRequest extends FormRequest
         ];
     }
 
-    public function authorize(): bool
-    {
-        return true;
-    }
 }

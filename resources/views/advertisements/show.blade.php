@@ -94,7 +94,7 @@
                     </div>
 
                     <!-- Botones de editar y eliminar -->
-                    @if(auth()->id() === $advertisement->user_id || (auth()->check() && auth()->user()->hasRole('admin')))
+                    @can('update', $advertisement)
                     <div class="mt-8 flex gap-4">
                             <a href="{{ route('advertisements.edit', $advertisement) }}"
                                class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
@@ -110,14 +110,12 @@
                                 </button>
                             </form>
                         </div>
-                    @endif
+                    @endcan
                 </div>
             </div>
 
             @auth
-                @if(($advertisement->type === 'employer' && auth()->user()->type === 'worker' || 
-                     $advertisement->type === 'worker' && auth()->user()->type === 'employer') && 
-                    !$hasApplied)
+                @can('apply', [$advertisement, $hasApplied])
                     <div class="mt-4 flex justify-end">
                         <form action="{{ route('advertisements.apply', $advertisement) }}" method="POST">
                             @csrf
@@ -126,11 +124,13 @@
                             </x-button>
                         </form>
                     </div>
-                @elseif($hasApplied)
-                    <div class="mt-4">
-                        <p class="text-green-600">Ya has aplicado a esta oferta</p>
-                    </div>
-                @endif
+                @else
+                    @if($hasApplied)
+                        <div class="mt-4">
+                            <p class="text-green-600">Ya has aplicado a esta oferta</p>
+                        </div>
+                    @endif
+                @endcan
             @else
                 <div class="mt-4">
                     <p class="text-gray-600">Debes <a href="{{ route('login') }}" class="text-indigo-600 hover:text-indigo-900">iniciar sesión</a> para aplicar a esta oferta</p>

@@ -4,7 +4,7 @@ namespace App\Actions\Fortify;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\CreateNewUserRequest;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
 use Spatie\Permission\Models\Role;
@@ -15,38 +15,24 @@ class CreateNewUser implements CreatesNewUsers
 
     public function create(array $input): User
     {
-        // Validar los datos de entrada
-        $this->validateInput($input);
+        $request = app(CreateNewUserRequest::class); // Uso el contenedor de servicios de Laravel para inyectar las dependencias necesarias como el validador, el traductor, etc.
+        $request->replace($input);
+        $request->validateResolved();
 
-        return $this->createUser($input);
-    }
-
-    protected function validateInput(array $input): void
-    {
-        $rules = [
-            'type' => ['required', 'string', 'in:worker,employer'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => $this->passwordRules(),
-            'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
-            'phone' => ['required', 'string', 'max:20'],
-            'location' => ['required'],
-        ];
-
-        // Reglas específicas según el tipo de usuario
-        if ($input['type'] === 'worker') {
-            $rules['name'] = ['required', 'string', 'max:255'];
-            $rules['lastname'] = ['required', 'string', 'max:255'];
-            $rules['date_of_birth'] = ['required', 'date', 'before_or_equal:' . now()->subYears(16)->toDateString()];
-            $rules['gender'] = ['required', 'string', 'in:male,female,other'];
-        } else {
-            $rules['company_name'] = ['required', 'string', 'max:255'];
-            $rules['tax_id'] = ['required', 'string', 'max:20'];
-        }
-
-        Validator::make($input, $rules)->validate();
+        return $this->createUser($request->validated());
     }
 
     protected function createUser(array $input): User
+    {
+        $userData = $this->buildUserData($input);
+        $user = User::create($userData);
+
+        $this->assignCreatorRole($user);
+
+        return $user;
+    }
+
+    private function buildUserData(array $input): array
     {
         $userData = [
             'type' => $input['type'],
@@ -66,12 +52,16 @@ class CreateNewUser implements CreatesNewUsers
             $userData['tax_id'] = $input['tax_id'];
         }
 
-        $user = User::create($userData);
+        return $userData;
+    }
 
+    public function assignCreatorRole(User $user): void
+    {
         // Asignar rol creator directamente
         $role = Role::where('name', 'creator')->firstOrFail();
         $user->assignRole($role);
 
-        return $user;
     }
+
+
 }

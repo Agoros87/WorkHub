@@ -8,7 +8,6 @@
     <script src="https://unpkg.com/alpinejs" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body class="relative bg-[url('/images/backgrounds/mifoto.svg')] bg-no-repeat bg-[length:350px_250px]">
 
 <x-main-navigation />
 

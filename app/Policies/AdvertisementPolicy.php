@@ -22,9 +22,13 @@ class AdvertisementPolicy
         return $user->hasRole('admin') || ($user->id === $advertisement->user_id && $user->hasRole('creator'));
     }
 
-    public function apply(User $user, Advertisement $advertisement)
+    public function apply(User $user, Advertisement $advertisement, bool $hasApplied)
     {
         if (!$user->hasRole('creator')) {
+            return false;
+        }
+
+        if ($hasApplied) {
             return false;
         }
 
@@ -35,3 +39,4 @@ class AdvertisementPolicy
         }
     }
 }
+

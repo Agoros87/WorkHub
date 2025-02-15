@@ -4,14 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
 use App\Http\Requests\AdvertisementRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Str;
 
 class AdvertisementController extends Controller
 {
-    use AuthorizesRequests;
 
     public function index()
     {
@@ -37,8 +34,7 @@ class AdvertisementController extends Controller
         $advertisement->user_id = Auth::id();
         $advertisement->save();
 
-        return redirect()
-            ->route('advertisements.show', $advertisement)
+        return to_route('advertisements.show', $advertisement)
             ->with('success', 'Anuncio creado correctamente');
     }
 
@@ -53,18 +49,16 @@ class AdvertisementController extends Controller
 
     public function edit(Advertisement $advertisement)
     {
-        $this->authorize('update', $advertisement);
         return view('advertisements.edit', compact('advertisement'));
     }
 
     public function update(AdvertisementRequest $request, Advertisement $advertisement)
     {
-        $this->authorize('update', $advertisement);
         $validated = $request->validated();
-        
+
         // Si es admin dejo el type del anuncio o del usuario
-        $validated['type'] = auth()->user()->hasRole('admin') 
-            ? $advertisement->type 
+        $validated['type'] = auth()->user()->hasRole('admin')
+            ? $advertisement->type
             : auth()->user()->type;
 
         if ($validated['title'] !== $advertisement->title) {
@@ -73,19 +67,16 @@ class AdvertisementController extends Controller
 
         $advertisement->update($validated);
 
-        return redirect()
-            ->route('advertisements.show', $advertisement)
+        return to_route('advertisements.show', $advertisement)
             ->with('success', 'Anuncio actualizado correctamente');
     }
 
     public function destroy(Advertisement $advertisement)
     {
         $this->authorize('delete', $advertisement);
-
         $advertisement->delete();
 
-        return redirect()
-            ->route('welcome')
+        return to_route('welcome')
             ->with('success', 'Anuncio eliminado correctamente');
     }
 }
