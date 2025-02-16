@@ -13,7 +13,8 @@ class JobApplicationController extends Controller
 
     public function store(Advertisement $advertisement)
     {
-        $this->authorize('apply', $advertisement);
+        $hasApplied = $advertisement->applications()->where('user_id', auth()->id())->exists();
+        $this->authorize('apply', [$advertisement, $hasApplied]);
 
         $jobApplication = JobApplication::create([
             'user_id' => auth()->id(),

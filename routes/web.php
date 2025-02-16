@@ -16,6 +16,10 @@ Route::get('/register/employer', function () {
     return view('auth.register-employer');
 })->name('register.employer');
 
+Route::get('/register/worker', function () {
+    return view('auth.register-worker');
+})->name('register.worker');
+
 Route::get('/terms-of-service', function () {
     return view('terms', [
         'terms' => Illuminate\Support\Str::markdown(file_get_contents(resource_path('markdown/terms.md'))),
@@ -27,10 +31,6 @@ Route::get('/privacy-policy', function () {
         'policy' => Illuminate\Support\Str::markdown(file_get_contents(resource_path('markdown/policy.md'))),
     ]);
 })->name('policy.show');
-
-Route::get('/register/worker', function () {
-    return view('auth.register-worker');
-})->name('register.worker');
 
 Route::get('/search', function () {
     return view('search');

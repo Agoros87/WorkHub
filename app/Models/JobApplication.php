@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Events\ApplicationStatusNotification;
 
 class JobApplication extends Model
 {
@@ -17,6 +18,19 @@ class JobApplication extends Model
         'cv_path',
         'status'
     ];
+
+    protected static function booted()
+    {
+        static::updating(function ($jobApplication) {
+            if ($jobApplication->isDirty('status')) {
+                event(new ApplicationStatusNotification(
+                    $jobApplication,
+                    $jobApplication->getOriginal('status'),
+                    $jobApplication->status
+                ));
+            }
+        });
+    }
 
     public function user(): BelongsTo
     {
