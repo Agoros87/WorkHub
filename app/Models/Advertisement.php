@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Advertisement extends Model
 {
@@ -42,7 +43,7 @@ class Advertisement extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function scopeofType($query, ?string $type)
+    public function scopeOfType($query, ?string $type)
     {
         if (!empty($type)) {
             return $query->where('type', $type);
@@ -99,5 +100,11 @@ class Advertisement extends Model
     public function applications(): HasMany
     {
         return $this->hasMany(JobApplication::class);
+    }
+
+    public function favoritedBy(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'favorites')
+                    ->withPivot(['notes', 'priority']);
     }
 }

@@ -26,6 +26,7 @@ class AdvertisementController extends Controller
 
     public function store(AdvertisementRequest $request)
     {
+        $this->authorize('create', Advertisement::class);
         $validated = $request->validated();
         $validated['type'] = auth()->user()->type;
         $validated['slug'] = Str::slug($validated['title'] . '-' . Str::random(6));

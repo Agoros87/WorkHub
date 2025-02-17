@@ -10,6 +10,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -31,7 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'phone',
-        'city',
+        'location',
         'date_of_birth',
         'gender',
         'company_name',
@@ -73,6 +74,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'date_of_birth' => 'datetime',
         ];
     }
 
@@ -91,8 +93,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasManyThrough(
             JobApplication::class,
             Advertisement::class,
-            'user_id', // Clave foránea en advertisements
-            'advertisement_id' // Clave foránea en job_applications
+            'user_id',
+            'advertisement_id'
         );
+    }
+
+    public function favoriteAdvertisements(): BelongsToMany
+    {
+        return $this->belongsToMany(Advertisement::class, 'favorites')
+                    ->withPivot(['notes', 'priority'])
+                    ->orderByRaw("FIELD(favorites.priority, 'high', 'medium', 'low')");
     }
 }

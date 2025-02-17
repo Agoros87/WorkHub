@@ -21,7 +21,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
             'phone' => ['required', 'string', 'max:20'],
-            'city' => ['required', 'string', 'max:100'],
+            'location' => ['required', 'string', 'max:100'],
         ];
 
         // Reglas específicas según el tipo de usuario
@@ -48,7 +48,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $userData = [
                 'email' => $input['email'],
                 'phone' => $input['phone'],
-                'city' => $input['city'],
+                'location' => $input['location'],
             ];
 
             if ($user->type === 'worker') {

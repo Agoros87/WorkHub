@@ -21,7 +21,7 @@
                     </div>
 
                     <!-- Grid de Accesos Rápidos -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
                         <!-- Mis Anuncios -->
                         <div class="group transform transition-transform duration-300 hover:scale-105">
                             <a href="{{ route('advertisements.index') }}" class="block">
@@ -46,6 +46,19 @@
                                     <p class="mt-2 text-center text-gray-600">
                                         {{ $dependsOfTypeText }}
                                     </p>
+                                </div>
+                            </a>
+                        </div>
+
+                        <!-- Mis Favoritos -->
+                        <div class="group transform transition-transform duration-300 hover:scale-105">
+                            <a href="{{ route('favorites.index') }}" class="block">
+                                <div class="border-2 border-gray-100 rounded-xl p-8 transition-all duration-500 group-hover:bg-gradient-to-r group-hover:from-blue-50 group-hover:to-blue-400">
+                                    <div class="flex items-center justify-center mb-4">
+                                        @svg('heroicon-o-heart', 'h-12 w-12 text-blue-600 transform transition-transform duration-300 group-hover:rotate-12')
+                                    </div>
+                                    <h3 class="text-xl font-semibold text-center text-gray-800">Mis Favoritos</h3>
+                                    <p class="mt-2 text-center text-gray-600">Gestiona tus anuncios favoritos</p>
                                 </div>
                             </a>
                         </div>
@@ -207,6 +220,17 @@
                                     {{ $totalSentApplications }}
                                 </p>
                                 <p class="text-center text-gray-600">Aplicaciones Enviadas</p>
+                            </div>
+
+                            <!-- Total de Favoritos -->
+                            <div class="bg-red-50 rounded-lg p-6">
+                                <div class="flex items-center justify-center mb-2">
+                                    @svg('heroicon-o-heart', 'h-8 w-8 text-red-600')
+                                </div>
+                                <p class="text-center text-2xl font-bold text-gray-800">
+                                    {{ $totalFavorites }}
+                                </p>
+                                <p class="text-center text-gray-600">Anuncios Favoritos</p>
                             </div>
                         </div>
                     </div>

@@ -14,9 +14,9 @@ class AdvertisementController extends Controller
 {
     public function index(Request $request)
     {
-    
+
         $advertisements = Advertisement::query()
-            ->ofType($request->query('type'))
+            ->OfType($request->query('type'))
             ->inLocation($request->query('location'))
             ->withSkills($request->query('skills', []))
             ->searchKeyword($request->query('keyword'))

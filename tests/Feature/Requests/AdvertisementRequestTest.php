@@ -3,18 +3,32 @@
 use App\Http\Requests\AdvertisementRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Advertisement;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
     $this->request = new AdvertisementRequest();
+    
+    Role::create(['name' => 'admin']);
+    Role::create(['name' => 'employer']);
+    Role::create(['name' => 'worker']);
+    
+    $this->employer = User::factory()->create(['type' => 'employer']);
+    $this->worker = User::factory()->create(['type' => 'worker']);
+    $this->admin = User::factory()->create(['type' => 'admin']);
+    
+    $this->employer->assignRole('employer');
+    $this->worker->assignRole('worker');
+    $this->admin->assignRole('admin');
 });
 
-it('validates required fields for employer advertisement', function () {
+it('validates required fields', function () {
     //Arrange
+    auth()->login($this->employer);
     $rules = $this->request->rules();
     $data = Advertisement::factory()
-        ->employer()
         ->make()
-        ->only(['type', 'title', 'description', 'location', 'schedule', 'contract_type']);
+        ->only(['title', 'description', 'location', 'skills', 'experience']);
 
     //Act
     $validator = Validator::make($data, $rules);
@@ -23,13 +37,13 @@ it('validates required fields for employer advertisement', function () {
     expect($validator->passes())->toBeTrue();
 });
 
-it('validates required fields for worker advertisement', function () {
+it('validates all fields for admin', function () {
     //Arrange
+    auth()->login($this->admin);
     $rules = $this->request->rules();
     $data = Advertisement::factory()
-        ->worker()
         ->make()
-        ->only(['type', 'title', 'description', 'location', 'availability']);
+        ->only(['title', 'description', 'location', 'skills', 'experience']);
 
     //Act
     $validator = Validator::make($data, $rules);
@@ -38,43 +52,13 @@ it('validates required fields for worker advertisement', function () {
     expect($validator->passes())->toBeTrue();
 });
 
-it('validates optional fields for employer advertisement', function () {
+it('fails validation when required fields are missing', function () {
     //Arrange
+    auth()->login($this->employer);
     $rules = $this->request->rules();
     $data = Advertisement::factory()
-        ->employer()
         ->make()
-        ->toArray();
-
-    //Act
-    $validator = Validator::make($data, $rules);
-
-    //Assert
-    expect($validator->passes())->toBeTrue();
-});
-
-it('validates optional fields for worker advertisement', function () {
-    //Arrange
-    $rules = $this->request->rules();
-    $data = Advertisement::factory()
-        ->worker()
-        ->make()
-        ->toArray();
-
-    //Act
-    $validator = Validator::make($data, $rules);
-
-    //Assert
-    expect($validator->passes())->toBeTrue();
-});
-
-it('fails validation when required fields are missing for employer', function () {
-    //Arrange
-    $rules = $this->request->rules();
-    $data = Advertisement::factory()
-        ->employer()
-        ->make()
-        ->only(['type', 'title']);
+        ->only(['title']);
 
     //Act
     $validator = Validator::make($data, $rules);
@@ -83,30 +67,13 @@ it('fails validation when required fields are missing for employer', function ()
     expect($validator->passes())->toBeFalse()
         ->and($validator->errors()->keys())->toContain('description')
         ->and($validator->errors()->keys())->toContain('location')
-        ->and($validator->errors()->keys())->toContain('schedule')
-        ->and($validator->errors()->keys())->toContain('contract_type');
+        ->and($validator->errors()->keys())->toContain('skills')
+        ->and($validator->errors()->keys())->toContain('experience');
 });
 
-it('fails validation when required fields are missing for worker', function () {
+it('validates salary is numeric and positive', function () {
     //Arrange
-    $rules = $this->request->rules();
-    $data = Advertisement::factory()
-        ->worker()
-        ->make()
-        ->only(['type', 'title']);
-
-    //Act
-    $validator = Validator::make($data, $rules);
-
-    //Assert
-    expect($validator->passes())->toBeFalse()
-        ->and($validator->errors()->keys())->toContain('description')
-        ->and($validator->errors()->keys())->toContain('location')
-        ->and($validator->errors()->keys())->toContain('availability');
-});
-
-it('validates salary is numeric and positive for employer', function () {
-    //Arrange
+    auth()->login($this->employer);
     $rules = $this->request->rules();
     $data = Advertisement::factory()
         ->employer()
@@ -121,8 +88,9 @@ it('validates salary is numeric and positive for employer', function () {
         ->and($validator->errors()->keys())->toContain('salary');
 });
 
-it('validates salary expectation is numeric and positive for worker', function () {
+it('validates salary_expectation is numeric and positive', function () {
     //Arrange
+    auth()->login($this->worker);
     $rules = $this->request->rules();
     $data = Advertisement::factory()
         ->worker()
@@ -139,18 +107,19 @@ it('validates salary expectation is numeric and positive for worker', function (
 
 it('validates max length for string fields', function () {
     //Arrange
+    auth()->login($this->employer);
     $rules = $this->request->rules();
     $tooLongString = str_repeat('a', 256);
 
     $data = Advertisement::factory()
-        ->employer()
         ->make([
             'title' => $tooLongString,
             'location' => $tooLongString,
             'skills' => [$tooLongString],
             'experience' => $tooLongString,
             'schedule' => $tooLongString,
-            'contract_type' => $tooLongString
+            'contract_type' => $tooLongString,
+            'availability' => $tooLongString
         ])
         ->toArray();
 
@@ -164,76 +133,13 @@ it('validates max length for string fields', function () {
         ->and($validator->errors()->keys())->toContain('skills.0')
         ->and($validator->errors()->keys())->toContain('experience')
         ->and($validator->errors()->keys())->toContain('schedule')
-        ->and($validator->errors()->keys())->toContain('contract_type');
-});
-
-it('validates max length for worker specific fields', function () {
-    //Arrange
-    $rules = $this->request->rules();
-    $tooLongString = str_repeat('a', 256);
-
-    $data = Advertisement::factory()
-        ->worker()
-        ->make(['availability' => $tooLongString])
-        ->toArray();
-
-    //Act
-    $validator = Validator::make($data, $rules);
-
-    //Assert
-    expect($validator->passes())->toBeFalse()
+        ->and($validator->errors()->keys())->toContain('contract_type')
         ->and($validator->errors()->keys())->toContain('availability');
-});
-
-it('validates salary is prohibited for worker type', function () {
-    //Arrange
-    $rules = $this->request->rules();
-    $data = Advertisement::factory()
-        ->worker()
-        ->make(['salary' => 2000.00])
-        ->toArray();
-
-    //Act
-    $validator = Validator::make($data, $rules);
-
-    //Assert
-    expect($validator->passes())->toBeFalse()
-        ->and($validator->errors()->keys())->toContain('salary');
-});
-
-it('validates salary_expectation is prohibited for employer type', function () {
-    //Arrange
-    $rules = $this->request->rules();
-    $data = Advertisement::factory()
-        ->employer()
-        ->make(['salary_expectation' => 2000.00])
-        ->toArray();
-
-    //Act
-    $validator = Validator::make($data, $rules);
-
-    //Assert
-    expect($validator->passes())->toBeFalse()
-        ->and($validator->errors()->keys())->toContain('salary_expectation');
-});
-
-it('fails validation if type is invalid', function () {
-    //Arrange
-    $rules = $this->request->rules();
-    $data = Advertisement::factory()
-        ->make(['type' => 'invalid-type'])
-        ->toArray();
-
-    //Act
-    $validator = Validator::make($data, $rules);
-
-    //Assert
-    expect($validator->passes())->toBeFalse()
-        ->and($validator->errors()->keys())->toContain('type');
 });
 
 it('fails validation if skills contains non-string values', function () {
     //Arrange
+    auth()->login($this->employer);
     $rules = $this->request->rules();
     $data = Advertisement::factory()
         ->employer()

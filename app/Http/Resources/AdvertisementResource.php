@@ -23,6 +23,7 @@ class AdvertisementResource extends JsonResource
             'availability' => $this->availability,
             'salary_expectation' => $this->salary_expectation,
             'location' => $this->location,
+            'user_id' => $this->user_id,
             'user' => [
                 'id' => $this->user->id,
                 'name' => $this->user->name,

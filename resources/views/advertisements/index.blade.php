@@ -3,6 +3,10 @@
         <div class="container mx-auto px-4 py-0">
             <div class="max-w-4xl mx-auto">
                 <div class="bg-white rounded-xl shadow-lg p-8">
+                    <a href="{{ route('dashboard') }}" class="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6">
+                        @svg('heroicon-s-arrow-left', 'h-5 w-5 mr-2') <!-- Icono de flecha -->
+                        <span class="text-sm font-medium">Volver al Panel de Control</span>
+                    </a>
                     <div class="text-center mb-12">
                         <h2 class="text-4xl font-bold text-gray-800">
                             @svg('heroicon-o-document-text', 'h-5 w-5 text-gray-500 mr-2')

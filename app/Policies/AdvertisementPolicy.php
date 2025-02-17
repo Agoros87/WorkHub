@@ -9,7 +9,7 @@ class AdvertisementPolicy
 {
     public function create(User $user)
     {
-        return true; // Cualquier usuario autenticado puede crear anuncios
+        return $user->hasRole('admin') || $user->hasRole('creator');
     }
 
     public function update(User $user, Advertisement $advertisement)

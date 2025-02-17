@@ -9,9 +9,9 @@ class PageHomeController extends Controller
 {
     public function __invoke()
     {
-        $workerAdvertisements = Advertisement::ofType('worker')->latest()->paginate(3);
+        $workerAdvertisements = Advertisement::OfType('worker')->latest()->paginate(3);
 
-        $employerAdvertisements = Advertisement::ofType('employer')->latest()->paginate(3);
+        $employerAdvertisements = Advertisement::OfType('employer')->latest()->paginate(3);
 
         $workerAdvertisements->each(function ($advertisement) {
             $advertisement->description = Str::limit($advertisement->description, 100);

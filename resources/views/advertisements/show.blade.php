@@ -10,12 +10,21 @@
 
                 <div class="bg-white rounded-xl shadow-lg p-8">
                     <div class="mb-6">
-                        <h1 class="text-3xl font-bold text-gray-800 mb-2 break-words">{{ $advertisement->title }}</h1>
-                        <p class="text-gray-600">
-                            Publicado por
-                            {{ $advertisement->user->company_name ?? $advertisement->user->name }} -
-                            {{ $advertisement->created_at->diffForHumans() }}
-                        </p>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h1 class="text-3xl font-bold text-gray-800 mb-2 break-words">{{ $advertisement->title }}</h1>
+                                <p class="text-gray-600">
+                                    Publicado por
+                                    {{ $advertisement->user->company_name ?? $advertisement->user->name }} -
+                                    {{ $advertisement->created_at->diffForHumans() }}
+                                </p>
+                            </div>
+                            @auth
+                                @if(auth()->id() !== $advertisement->user_id)
+                                    <livewire:favorite-button :advertisement="$advertisement" />
+                                @endif
+                            @endauth
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

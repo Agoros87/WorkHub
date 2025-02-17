@@ -18,6 +18,7 @@ class DashboardController extends Controller
         
         $totalReceivedApplications = $user->receivedApplications()->count();
         $totalSentApplications = $user->jobApplications()->count();
+        $totalFavorites = $user->favoriteAdvertisements()->count();
 
         return view('dashboard', compact(
             'totalAds',
@@ -25,7 +26,8 @@ class DashboardController extends Controller
             'receivedApplications',
             'sentApplications',
             'totalReceivedApplications',
-            'totalSentApplications'
+            'totalSentApplications',
+            'totalFavorites'
         ));
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AdvertisementController;
 use App\Http\Controllers\Api\AuthController;
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::middleware(['auth:sanctum'])->post('/logout', [AuthController::class, 'logout']);
 
 Route::get('/advertisements', [AdvertisementController::class, 'index']);
 Route::get('/advertisements/{advertisement:slug}', [AdvertisementController::class, 'show']);

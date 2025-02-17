@@ -12,7 +12,10 @@
                             {{ auth()->check() ? (auth()->user()->type == 'employer' ? 'Utiliza los filtros para encontrar personal de hostelería' : 'Utiliza los filtros para encontrar trabajo en hostelería') : 'Utiliza los filtros para encontrar anuncios de hostelería' }}
                         </p>
                     </div>
-
+                    <a href="{{ route('dashboard') }}" class="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6">
+                        @svg('heroicon-s-arrow-left', 'h-5 w-5 mr-2') <!-- Icono de flecha -->
+                        <span class="text-sm font-medium">Volver al Panel de Control</span>
+                    </a>
                     <!-- Formulario de Búsqueda -->
                     <div class="grid grid-cols-1 gap-8">
                         <!-- Filtro de Palabra Clave -->

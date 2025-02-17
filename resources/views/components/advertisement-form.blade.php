@@ -1,5 +1,9 @@
 @props(['advertisement' => request()->route('advertisement') ?? new App\Models\Advertisement()])
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <a href="{{ route('welcome') }}" class="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6">
+        @svg('heroicon-s-arrow-left', 'h-5 w-5 mr-2') <!-- Icono de flecha -->
+        <span class="text-sm font-medium">Volver al Inicio</span>
+    </a>
     <!-- Título -->
     <div class="md:col-span-2">
         <label for="title" class="block text-sm font-medium text-gray-700">Título del Anuncio</label>
