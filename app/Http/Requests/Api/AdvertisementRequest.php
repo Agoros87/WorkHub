@@ -2,6 +2,11 @@
 
 namespace App\Http\Requests\Api;
 
+/**
+ * @group Requests
+ * 
+ * Request para validación de anuncios de trabajo en hostelería
+ */
 use App\Rules\ValidAdvertisement;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -13,6 +18,11 @@ class AdvertisementRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Reglas de validación para anuncios
+     * 
+     * @return array<string, array<int, string|Rule|ValidAdvertisement>>
+     */
     public function rules(): array
     {
         return [
@@ -30,6 +40,11 @@ class AdvertisementRequest extends FormRequest
         ];
     }
 
+    /**
+     * Mensajes de error personalizados para las reglas de validación
+     * 
+     * @return array<string, string>
+     */
     public function messages(): array
     {
         return [
