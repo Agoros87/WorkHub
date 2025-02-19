@@ -9,10 +9,8 @@ class AdminUserSeeder extends Seeder
 {
     public function run()
     {
-        // Crear el rol si no existe
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
 
-        // Crear usuario admin
         $admin = User::updateOrCreate(
             ['email' => 'admin@admin.com'],
             [
@@ -23,7 +21,6 @@ class AdminUserSeeder extends Seeder
             ]
         );
 
-        // Asignarle el rol de admin
         $admin->assignRole($adminRole);
     }
 }
