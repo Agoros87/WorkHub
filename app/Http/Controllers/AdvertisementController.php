@@ -6,6 +6,7 @@ use App\Models\Advertisement;
 use App\Http\Requests\AdvertisementRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdvertisementController extends Controller
 {
@@ -79,5 +80,11 @@ class AdvertisementController extends Controller
 
         return to_route('welcome')
             ->with('success', 'Anuncio eliminado correctamente');
+    }
+
+    public function downloadPdf(Advertisement $advertisement)
+    {
+        $pdf = PDF::loadView('advertisements.pdf', compact('advertisement'));
+        return $pdf->download($advertisement->slug . '.pdf');
     }
 }

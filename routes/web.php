@@ -42,7 +42,7 @@ Route::get('/search', function () {
 
     // Rutas para anuncios
 
-Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
+Route::middleware(['auth', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::resource('advertisements', AdvertisementController::class)
         ->except(['index', 'show']);
 
@@ -51,8 +51,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
 Route::resource('advertisements', AdvertisementController::class)
     ->only(['index', 'show']);
+
+Route::get('/advertisements/{advertisement}/pdf', [AdvertisementController::class, 'downloadPdf'])
+    ->name('advertisements.pdf');
+
     // Rutas para aplicar a un anuncio
-Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
+
+Route::middleware(['auth', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::post('/advertisements/{advertisement}/apply', [JobApplicationController::class, 'store'])
         ->name('advertisements.apply');
     Route::get('/job-applications/{jobApplication}', [JobApplicationController::class, 'show'])

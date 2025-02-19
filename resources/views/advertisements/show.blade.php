@@ -102,24 +102,28 @@
                         @endif
                     </div>
 
-                    <!-- Botones de editar y eliminar -->
-                    @can('update', $advertisement)
+                    <!-- Botones de acción -->
                     <div class="mt-8 flex gap-4">
-                            <a href="{{ route('advertisements.edit', $advertisement) }}"
-                               class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                Editar Anuncio
-                            </a>
-                            <form action="{{ route('advertisements.destroy', $advertisement) }}" method="POST" class="inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit"
-                                        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                                        onclick="return confirm('¿Estás seguro de que quieres eliminar este anuncio?')">
-                                    Eliminar Anuncio
-                                </button>
-                            </form>
-                        </div>
-                    @endcan
+                        <a href="{{ route('advertisements.pdf', $advertisement) }}"
+                           class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                            Descargar PDF
+                        </a>
+                        @can('update', $advertisement)
+                        <a href="{{ route('advertisements.edit', $advertisement) }}"
+                           class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            Editar Anuncio
+                        </a>
+                        <form action="{{ route('advertisements.destroy', $advertisement) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                    class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                                    onclick="return confirm('¿Estás seguro de que quieres eliminar este anuncio?')">
+                                Eliminar Anuncio
+                            </button>
+                        </form>
+                        @endcan
+                    </div>
                 </div>
             </div>
 
