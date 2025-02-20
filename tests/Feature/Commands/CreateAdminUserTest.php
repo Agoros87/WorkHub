@@ -5,8 +5,6 @@ use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
     Role::create(['name' => 'admin']);
-    Role::create(['name' => 'creator']);
-    $this->user = User::factory()->create();
 });
 
 it('creates an admin user', function () {
