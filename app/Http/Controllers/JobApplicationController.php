@@ -21,7 +21,7 @@ class JobApplicationController extends Controller
             'advertisement_id' => $advertisement->id,
         ]);
 
-        return redirect()->route('job-applications.show', $jobApplication);
+        return to_route('job-applications.show', $jobApplication);
     }
 
     public function show(JobApplication $jobApplication)
@@ -37,6 +37,6 @@ class JobApplicationController extends Controller
 
         $jobApplication->delete();
 
-        return redirect()->route('dashboard')->with('success', 'Aplicación eliminada correctamente');
+        return to_route('dashboard')->with('success', 'Aplicación eliminada correctamente');
     }
 }

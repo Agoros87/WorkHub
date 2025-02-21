@@ -16,9 +16,7 @@ class JobApplicationStatus extends Component
 
     public function accept()
     {
-        if ($this->jobApplication->advertisement->user_id !== auth()->id()) {
-            abort(403);
-        }
+        $this->authorize('update', $this->jobApplication);
 
         $this->jobApplication->update(['status' => 'accepted']);
         $this->dispatch('status-updated');
@@ -26,9 +24,7 @@ class JobApplicationStatus extends Component
 
     public function reject()
     {
-        if ($this->jobApplication->advertisement->user_id !== auth()->id()) {
-            abort(403);
-        }
+        $this->authorize('update', $this->jobApplication);
 
         $this->jobApplication->update(['status' => 'rejected']);
         $this->dispatch('status-updated');

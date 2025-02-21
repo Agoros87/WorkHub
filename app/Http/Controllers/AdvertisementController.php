@@ -27,13 +27,10 @@ class AdvertisementController extends Controller
 
     public function store(AdvertisementRequest $request)
     {
-        $this->authorize('create', Advertisement::class);
-        $validated = $request->validated();
-        $validated['type'] = auth()->user()->type;
-        $validated['slug'] = Str::slug($validated['title'] . '-' . Str::random(6));
+        $advertisement = auth()->user()->advertisements()->make($request->validated());
+        $advertisement['type'] = auth()->user()->type;
+        $advertisement['slug'] = Str::slug($advertisement['title'] . '-' . Str::random(6));
 
-        $advertisement = new Advertisement($validated);
-        $advertisement->user_id = Auth::id();
         $advertisement->save();
 
         return to_route('advertisements.show', $advertisement)
@@ -42,9 +39,11 @@ class AdvertisementController extends Controller
 
     public function show(Advertisement $advertisement)
     {
-        $hasApplied = auth()->check() ?
-            $advertisement->applications()->where('user_id', auth()->id())->exists() :
-            false;
+        $hasApplied = false;
+
+        if (auth()->check()) {
+            $hasApplied = $advertisement->applications()->where('user_id', auth()->id())->exists();
+        }
 
         return view('advertisements.show', compact('advertisement', 'hasApplied'));
     }
@@ -75,7 +74,6 @@ class AdvertisementController extends Controller
 
     public function destroy(Advertisement $advertisement)
     {
-        $this->authorize('delete', $advertisement);
         $advertisement->delete();
 
         return to_route('welcome')

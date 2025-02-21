@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('advertisements', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->enum('type', ['employer', 'worker']);
             $table->string('title');
             $table->text('description');

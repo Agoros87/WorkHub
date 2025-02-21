@@ -11,7 +11,7 @@ class Advertisement extends Model
 {
     use HasFactory;
 
-    public function getRouteKeyName() // Me ahorro cambiar la ruta para que sea por slug en lugar de id
+    public function getRouteKeyName() // Me ahorro poner en las rutas {modelo:slug} para que sea por slug en lugar de id
     {
         return 'slug';
     }

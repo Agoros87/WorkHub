@@ -44,13 +44,13 @@ Route::get('/search', function () {
 
 Route::middleware(['auth', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::resource('advertisements', AdvertisementController::class)
-        ->except(['index', 'show']);
+        ->except(['show']);
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
-Route::resource('advertisements', AdvertisementController::class)
-    ->only(['index', 'show']);
+Route::get('/advertisements/{advertisement}', [AdvertisementController::class, 'show'])
+    ->name('advertisements.show');
 
 Route::get('/advertisements/{advertisement}/pdf', [AdvertisementController::class, 'downloadPdf'])
     ->name('advertisements.pdf');

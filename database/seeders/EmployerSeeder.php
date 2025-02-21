@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
-use App\Models\Advertisement;
+use Database\Factories\EmployerAdvertisementFactory;
 
 class EmployerSeeder extends Seeder
 {
@@ -14,6 +13,7 @@ class EmployerSeeder extends Seeder
      */
     public function run(): void
     {
+        // Crear empleador de prueba
         $employer = User::factory()->employer()->create([
             'company_name' => 'Pepitos SL',
             'email' => 'pepito@mail.es',
@@ -25,13 +25,11 @@ class EmployerSeeder extends Seeder
             'password' => bcrypt('12345678'),
             'email_verified_at' => now(),
         ]);
-        $employer->assignRole('creator');
-        Advertisement::factory()->employer()->create(['user_id' => $employer->id]);
+        EmployerAdvertisementFactory::new()->count(1)->create(['user_id' => $employer->id]);
 
-
+        // Crear empleadores aleatorios
         User::factory()->employer()->count(20)->create()->each(function ($user) {
-            $user->assignRole('creator');
-            Advertisement::factory()->employer()->count(rand(1, 3))->create(['user_id' => $user->id]);
+            EmployerAdvertisementFactory::new()->count(rand(1, 3))->create(['user_id' => $user->id]);
         });
     }
 }

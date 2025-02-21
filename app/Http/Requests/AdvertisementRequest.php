@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Advertisement;
 use App\Rules\ValidAdvertisement;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -9,7 +10,18 @@ class AdvertisementRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return auth()->user()->can('update', $this->route('advertisement'));
+        // Si hay un advertisement en la ruta
+        if ($advertisement = $this->route('advertisement')) {
+            // Si el método es DELETE, verificar permiso de eliminación
+            if ($this->method() === 'DELETE') {
+                return auth()->user()->can('delete', $advertisement);
+            }
+            // Si no, es una actualización
+            return auth()->user()->can('update', $advertisement);
+        }
+        
+        // Si no hay advertisement, es una creación
+        return auth()->user()->can('create', Advertisement::class);
     }
     public function rules(): array
     {

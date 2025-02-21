@@ -14,7 +14,8 @@ class UpdateFavoriteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'notes' => 'nullable|string|max:150'
+            'notes' => 'nullable|string|max:150',
+            'priority' => 'nullable|in:high,medium,low'
         ];
     }
 
@@ -22,7 +23,8 @@ class UpdateFavoriteRequest extends FormRequest
     {
         return [
             'notes.string' => 'Las notas deben ser texto',
-            'notes.max' => 'Las notas no pueden exceder los 150 caracteres'
+            'notes.max' => 'Las notas no pueden exceder los 150 caracteres',
+            'priority.in' => 'La prioridad debe ser alta, media o baja'
         ];
     }
 }

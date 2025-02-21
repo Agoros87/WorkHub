@@ -51,6 +51,8 @@ class UserFactory extends Factory
                 'lastname' => fake()->lastName(),
                 'company_name' => null
             ];
+        })->afterCreating(function (User $user) {
+            $user->assignRole('creator');
         });
     }
 
@@ -63,6 +65,8 @@ class UserFactory extends Factory
                 'lastname' => null,
                 'company_name' => fake()->company()
             ];
+        })->afterCreating(function (User $user) {
+            $user->assignRole('creator');
         });
     }
 

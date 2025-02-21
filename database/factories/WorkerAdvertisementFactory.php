@@ -7,54 +7,40 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class AdvertisementFactory extends Factory
+class WorkerAdvertisementFactory extends Factory
 {
     protected $model = Advertisement::class;
 
     public function definition(): array
     {
-        $type = $this->faker->randomElement(['employer', 'worker']);
-        $skill= $this->faker->randomElement($this->availableSkill());
-        $title = $this->generateTitle($type, $skill);
-        $description = $this->generateDescription($type, $skill);
-
+        $user = User::factory()->worker()->create();
+        $skill = $this->faker->randomElement($this->availableSkills());
+        $title = "Disponible como $skill";
+        
         return [
-            'user_id' => User::factory(),
-            'type' => $type,
+            'user_id' => $user->id,
+            'type' => 'worker',
             'title' => $title,
-            'description' => $description,
-            'slug' => $this->generateSlug($title),
+            'description' => $this->generateDescription($skill),
+            'slug' => Str::slug($title . '-' . Str::random(6)),
             'location' => fake()->randomElement(config('locations')),
             'skills' => [$skill],
             'experience' => $this->faker->randomElement(['Sin experiencia', '1 año', '2 años', '3 años', '+5 años']),
+            'availability' => $this->faker->randomElement(['Inmediata', 'En 15 días', 'En 1 mes']),
+            'salary_expectation' => $this->faker->randomFloat(2, 1100, 2200),
             'created_at' => now(),
             'updated_at' => now(),
         ];
     }
 
-    private function generateTitle(string $type, string $skill): string
+    private function generateDescription(string $skill): string
     {
-        return $type === 'employer'
-            ? "Se busca $skill con experiencia"
-            : "Disponible como $skill";
-    }
-
-    private function generateDescription(string $type, string $skill): string
-    {
-        $descriptions = $this->skillsAndDescriptions();
+        $descriptions = $this->skillDescriptions();
         $baseDesc = $descriptions[$skill] ?? 'Descripción no disponible.';
-
-        return $type === 'employer'
-            ? "Importante establecimiento de hostelería necesita incorporar $skill. $baseDesc"
-            : "Profesional con experiencia como $skill. $baseDesc";
+        return "Profesional con experiencia como $skill. $baseDesc";
     }
 
-    private function generateSlug(string $title): string
-    {
-        return Str::slug($title . '-' . Str::random(6));
-    }
-
-    private function availableSkill(): array
+    private function availableSkills(): array
     {
         return [
             'Camarero de barra', 'Camarero de sala', 'Ayudante de camarero',
@@ -63,7 +49,7 @@ class AdvertisementFactory extends Factory
         ];
     }
 
-    private function skillsAndDescriptions(): array
+    private function skillDescriptions(): array
     {
         return [
             'Camarero de barra' => 'Experiencia en preparación de bebidas, manejo de TPV y atención al cliente desde barra. Capacidad para trabajar en equipo y en momentos de alta presión.',
@@ -75,24 +61,5 @@ class AdvertisementFactory extends Factory
             'Encargado de sala' => 'Gestión de equipo, organización de turnos, control de stock y atención al cliente. Capacidad de liderazgo.',
             'Personal de catering' => 'Experiencia en montaje de buffets, servicio de banquetes y eventos especiales.'
         ];
-    }
-
-    public function employer(): static
-    {
-        return $this->state(fn () => [
-            'type' => 'employer',
-            'schedule' => $this->faker->randomElement(['Jornada completa', 'Media jornada', 'Fines de semana']),
-            'contract_type' => $this->faker->randomElement(['Indefinido', 'Temporal 6 meses', 'Temporal 3 meses']),
-            'salary' => $this->faker->randomFloat(2, 1100, 2200),
-        ]);
-    }
-
-    public function worker(): static
-    {
-        return $this->state(fn () => [
-            'type' => 'worker',
-            'availability' => $this->faker->randomElement(['Inmediata', 'En 15 días', 'En 1 mes']),
-            'salary_expectation' => $this->faker->randomFloat(2, 1100, 2200),
-        ]);
     }
 }

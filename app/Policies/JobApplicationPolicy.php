@@ -16,8 +16,8 @@ class JobApplicationPolicy
 
     public function update(User $user, JobApplication $jobApplication): bool
     {
-        // Solo el aplicante puede actualizar su aplicación
-        return $user->id === $jobApplication->user_id;
+        // Solo el dueño del anuncio puede actualizar el estado de la aplicación
+        return $user->id === $jobApplication->advertisement->user_id;
     }
 
     public function delete(User $user, JobApplication $jobApplication): bool
