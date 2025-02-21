@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Http\Livewire;
 
-use Livewire\Component;
 use App\Models\JobApplication;
+use Livewire\Component;
 
 class JobApplicationStatus extends Component
 {

@@ -23,77 +23,50 @@
 
     <!-- Sección de Subir CV (solo para workers) -->
     @if(auth()->user()->type == 'worker')
-        <div class="mb-6">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">Subir CV</h3>
-            <div class="space-y-4">
-                <div
-                    x-data="{
-                        isDropping: false,
-                        handleDrop(e) {
-                            e.preventDefault();
-                            const file = e.dataTransfer.files[0];
-                            if (file) {
-                                const input = this.$refs.fileInput;
-                                const dataTransfer = new DataTransfer();
-                                dataTransfer.items.add(file);
-                                input.files = dataTransfer.files;
-                                input.dispatchEvent(new Event('change'));
-                            }
-                            this.isDropping = false;
-                        }
-                    }"
-                    x-on:dragover.prevent="isDropping = true"
-                    x-on:dragleave.prevent="isDropping = false"
-                    x-on:drop.prevent="handleDrop($event)"
-                    :class="{ 'border-indigo-500 bg-indigo-50': isDropping }"
-                    class="transition-colors duration-200 border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer"
-                >
-                    <div class="space-y-2">
-                        <svg class="mx-auto h-10 w-10 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        <div class="flex justify-center text-sm text-gray-600">
-                            <label class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                                <span>Sube un archivo</span>
-                                <input type="file" class="sr-only" wire:model="cv" x-ref="fileInput">
-                            </label>
-                            <p class="pl-1">o arrastra y suelta</p>
-                        </div>
-                        <p class="text-xs text-gray-500">PDF, DOC hasta 2MB</p>
-                    </div>
-                </div>
-                @error('cv') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        <form wire:submit.prevent="uploadCV">
+            <div>
+                <input type="file" wire:model="cv" class="w-full mt-1 block" accept=".pdf,.doc,.docx">
 
-                @if($temporaryCv)
-                    <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
-                        <span class="text-sm text-gray-600">Archivo seleccionado: {{ $temporaryCv->getClientOriginalName() }}</span>
-                        <button
-                            wire:click="uploadCV"
-                            class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        >
-                            Subir CV
-                        </button>
-                    </div>
+                @if ($cv)
+                    <p class="text-sm text-gray-600">Archivo seleccionado: {{ $cv->getClientOriginalName() }}</p>
+                @elseif ($jobApplication->cv_path)
+                    <p class="text-sm text-gray-600">
+                        CV actual:
+                        <a href="{{ asset('storage/' . $jobApplication->cv_path) }}"
+                           class="text-indigo-600 hover:underline"
+                           target="_blank">
+                            Ver CV
+                        </a>
+                    </p>
                 @endif
 
-                @if($jobApplication->cv_path)
-                    <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
-                        <div class="text-sm text-gray-600">
-                            CV actual:
-                            <a href="{{ Storage::url($jobApplication->cv_path) }}" class="text-indigo-600 hover:text-indigo-900" target="_blank">
-                                Ver CV
-                            </a>
-                        </div>
-                        <button
-                            wire:click="deleteCV"
-                            class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                        >
+                @error('cv') <span class="error text-red-500">{{ $message }}</span> @enderror
+
+            @if (session()->has('message'))
+                <p class="text-green-500">{{ session('message') }}</p>
+            @endif
+
+            @if (session()->has('error'))
+                <p class="text-red-500">{{ session('error') }}</p>
+            @endif
+
+                <div class="mt-4 flex gap-2">
+                    <button type="submit"
+                            class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                        Subir CV
+                    </button>
+
+                    @if ($jobApplication->cv_path)
+                        <button type="button"
+                                wire:click="deleteCV"
+                                class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">
                             Eliminar CV
                         </button>
-                    </div>
-                @endif
+                    @endif
+                </div>
             </div>
-        </div>
+        </form>
+
     @endif
 
     <!-- Sección del Chat -->
@@ -101,17 +74,7 @@
         <h3 class="text-lg font-medium text-gray-900 mb-4">Chat</h3>
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
             <!-- Área de Mensajes -->
-            <div
-                class="h-96 overflow-y-auto space-y-4 pr-2"
-                id="chat-messages"
-                x-data="{
-                    scrollToBottom() {
-                        this.$el.scrollTop = this.$el.scrollHeight;
-                    }
-                }"
-                x-init="scrollToBottom"
-                @messages-updated.window="scrollToBottom"
-            >
+            <div class="h-96 overflow-y-auto space-y-4 pr-2" id="chat-messages">
                 @foreach(collect($messages)->sortBy('created_at') as $message)
                     <div class="flex {{ $message['user_id'] === auth()->id() ? 'justify-end' : 'justify-start' }}">
                         <div class="{{ $message['user_id'] === auth()->id() ? 'bg-indigo-100' : 'bg-gray-100' }} rounded-lg px-4 py-2 max-w-sm">
@@ -125,6 +88,10 @@
                 @endforeach
             </div>
 
+
+        </div>
+    </div>
+
             <!-- Formulario de Envío de Mensajes -->
             <div class="mt-4">
                 <form wire:submit.prevent="sendMessage">
@@ -137,7 +104,7 @@
                         >
                         <button
                             type="submit"
-                            class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring focus:ring-indigo-300 disabled:opacity-25 transition"
+                            class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring focus:ring-indigo-300 disabled:opacity-25 transition"
                         >
                             Enviar
                         </button>
