@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>WorkHub - La unión perfecta entre la búsqueda de talento</title>
+    <title>WorkHub - La unión perfecta entre la búsqueda de talento y oportunidades de trabajo</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -89,7 +89,7 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1 class="workhub-title">WorkHub - La unión perfecta entre la búsqueda de talento</h1>
+        <h1 class="workhub-title">WorkHub - La unión perfecta entre la búsqueda de talento y oportunidades de trabajo</h1>
         <h2 class="title">{{ $advertisement->title }}</h2>
         <p class="meta">Publicado por {{ $advertisement->user->company_name ?? $advertisement->user->name }} - {{ $advertisement->created_at->format('d/m/Y') }}</p>
     </div>

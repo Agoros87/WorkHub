@@ -3,6 +3,11 @@
 use App\Models\User;
 use Laravel\Jetstream\Http\Livewire\UpdateProfileInformationForm;
 use Livewire\Livewire;
+use Spatie\Permission\Models\Role;
+
+beforeEach(function () {
+    Role::create(['name' => 'creator']);
+});
 
 test('current profile information is available', function () {
     $user = User::factory()->worker()->create([

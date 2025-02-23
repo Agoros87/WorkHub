@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\PageHomeController;
+use App\Http\Controllers\PageWelcomeController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\FavoriteController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', PageHomeController::class)->name('welcome');
+Route::get('/', PageWelcomeController::class)->name('welcome');
 
 Route::get('/select-role', function () {
     return view('select-role');

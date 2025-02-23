@@ -12,14 +12,10 @@ class AdvertisementRequest extends FormRequest
     {
         // Si hay un advertisement en la ruta
         if ($advertisement = $this->route('advertisement')) {
-            // Si el método es DELETE, verificar permiso de eliminación
-            if ($this->method() === 'DELETE') {
-                return auth()->user()->can('delete', $advertisement);
-            }
+
             // Si no, es una actualización
             return auth()->user()->can('update', $advertisement);
         }
-        
         // Si no hay advertisement, es una creación
         return auth()->user()->can('create', Advertisement::class);
     }

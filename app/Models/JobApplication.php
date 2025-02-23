@@ -19,19 +19,6 @@ class JobApplication extends Model
         'status'
     ];
 
-    protected static function booted()
-    {
-        static::updating(function ($jobApplication) {
-            if ($jobApplication->isDirty('status')) {
-                event(new ApplicationStatusNotification(
-                    $jobApplication,
-                    $jobApplication->getOriginal('status'),
-                    $jobApplication->status
-                ));
-            }
-        });
-    }
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

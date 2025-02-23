@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Events\ApplicationStatusNotification;
 use App\Models\JobApplication;
 use Livewire\Component;
 
@@ -18,16 +19,28 @@ class JobApplicationStatus extends Component
     {
         $this->authorize('update', $this->jobApplication);
 
+        $oldStatus = $this->jobApplication->status;
         $this->jobApplication->update(['status' => 'accepted']);
-        $this->dispatch('status-updated');
+
+        event(new ApplicationStatusNotification(
+            $this->jobApplication,
+            $oldStatus,
+            'accepted'
+        ));
     }
 
     public function reject()
     {
         $this->authorize('update', $this->jobApplication);
 
+        $oldStatus = $this->jobApplication->status;
         $this->jobApplication->update(['status' => 'rejected']);
-        $this->dispatch('status-updated');
+
+        event(new ApplicationStatusNotification(
+            $this->jobApplication,
+            $oldStatus,
+            'rejected'
+        ));
     }
 
     public function render()

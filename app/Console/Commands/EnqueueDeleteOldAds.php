@@ -12,10 +12,16 @@ class EnqueueDeleteOldAds extends Command
 
     public function handle()
     {
-        $days = $this->argument('days');
-        
+        $days = (int) $this->argument('days');
+
+        if ($days <= 0 || $days > 7300) {
+            $this->error('El número de días debe ser un valor positivo mayor a 0 y menor que 7300');
+            return Command::FAILURE;
+        }
+
         DeleteOldAdvertisements::dispatch($days);
-        
+
         $this->info("Job encolado: se eliminarán anuncios de más de {$days} días");
+        return Command::SUCCESS;
     }
 }

@@ -15,7 +15,7 @@ class DeleteOldAdvertisements implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    
+
     private int $daysOld;
 
     /**
@@ -33,7 +33,7 @@ class DeleteOldAdvertisements implements ShouldQueue
     {
         $date = Carbon::now()->subDays($this->daysOld);
 
-        $oldAdvertisements = Advertisement::where('created_at', '<', $date)->get();
+        $oldAdvertisements = Advertisement::where('updated_at', '<', $date)->get();
 
         Log::info("Eliminando {$oldAdvertisements->count()} anuncios antiguos de más de {$this->daysOld} días");
 

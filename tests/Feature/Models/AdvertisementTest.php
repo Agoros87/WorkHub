@@ -3,6 +3,8 @@
 use App\Models\Advertisement;
 use App\Models\User;
 use App\Models\JobApplication;
+use Database\Factories\EmployerAdvertisementFactory;
+use Database\Factories\WorkerAdvertisementFactory;
 use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
@@ -17,14 +19,12 @@ it('allows admin to create employer advertisement', function () {
     $this->actingAs($this->user);
 
     // Act
-    $ad = Advertisement::factory()
-        ->employer()
-        ->create([
-            'user_id' => $this->user->id,
-            'schedule' => 'Jornada completa',
-            'contract_type' => 'Indefinido',
-            'salary' => 1500.00
-        ]);
+    $ad = EmployerAdvertisementFactory::new()->create([
+        'user_id' => $this->user->id,
+        'schedule' => 'Jornada completa',
+        'contract_type' => 'Indefinido',
+        'salary' => 1500.00
+    ]);
 
     // Assert
     expect($ad)
@@ -49,13 +49,11 @@ it('allows creator to create worker advertisement', function () {
     $this->actingAs($this->user);
 
     // Act
-    $ad = Advertisement::factory()
-        ->worker()
-        ->create([
-            'user_id' => $this->user->id,
-            'availability' => 'Inmediata',
-            'salary_expectation' => 1500.00
-        ]);
+    $ad = WorkerAdvertisementFactory::new()->create([
+        'user_id' => $this->user->id,
+        'availability' => 'Inmediata',
+        'salary_expectation' => 1500.00
+    ]);
 
     // Assert
     expect($ad)
@@ -76,7 +74,7 @@ it('allows creator to create worker advertisement', function () {
 it('prevents non-creator users from creating advertisements', function () {
     // Arrange
     $this->actingAs($this->user);
-    $data = Advertisement::factory()->employer()->make([
+    $data = EmployerAdvertisementFactory::new()->make([
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
         'salary' => 1500.00
@@ -95,14 +93,12 @@ it('allows worker to apply to employer advertisement', function () {
     $this->user->type = 'worker';
     $this->user->save();
 
-    $ad = Advertisement::factory()
-        ->employer()
-        ->create([
-            'user_id' => $employer->id,
-            'schedule' => 'Jornada completa',
-            'contract_type' => 'Indefinido',
-            'salary' => 1500.00
-        ]);
+    $ad = EmployerAdvertisementFactory::new()->create([
+        'user_id' => $employer->id,
+        'schedule' => 'Jornada completa',
+        'contract_type' => 'Indefinido',
+        'salary' => 1500.00
+    ]);
 
     // Act & Assert
     expect($this->user->can('apply', [$ad, false]))->toBeTrue();
@@ -116,14 +112,12 @@ it('prevents employer from applying to employer advertisement', function () {
     $this->user->type = 'employer';
     $this->user->save();
 
-    $ad = Advertisement::factory()
-        ->employer()
-        ->create([
-            'user_id' => $employer->id,
-            'schedule' => 'Jornada completa',
-            'contract_type' => 'Indefinido',
-            'salary' => 1500.00
-        ]);
+    $ad = EmployerAdvertisementFactory::new()->create([
+        'user_id' => $employer->id,
+        'schedule' => 'Jornada completa',
+        'contract_type' => 'Indefinido',
+        'salary' => 1500.00
+    ]);
 
     // Act & Assert
     expect($this->user->can('apply', [$ad, false]))->toBeFalse();
@@ -137,13 +131,11 @@ it('allows employer to apply to worker advertisement', function () {
     $this->user->type = 'employer';
     $this->user->save();
 
-    $ad = Advertisement::factory()
-        ->worker()
-        ->create([
-            'user_id' => $worker->id,
-            'availability' => 'Inmediata',
-            'salary_expectation' => 1500.00
-        ]);
+    $ad = WorkerAdvertisementFactory::new()->create([
+        'user_id' => $worker->id,
+        'availability' => 'Inmediata',
+        'salary_expectation' => 1500.00
+    ]);
 
     // Act & Assert
     expect($this->user->can('apply', [$ad, false]))->toBeTrue();
@@ -157,13 +149,11 @@ it('prevents worker from applying to worker advertisement', function () {
     $this->user->type = 'worker';
     $this->user->save();
 
-    $ad = Advertisement::factory()
-        ->worker()
-        ->create([
-            'user_id' => $worker->id,
-            'availability' => 'Inmediata',
-            'salary_expectation' => 1500.00
-        ]);
+    $ad = WorkerAdvertisementFactory::new()->create([
+        'user_id' => $worker->id,
+        'availability' => 'Inmediata',
+        'salary_expectation' => 1500.00
+    ]);
 
     // Act & Assert
     expect($this->user->can('apply', [$ad, false]))->toBeFalse();
@@ -174,14 +164,12 @@ it('prevents non-creator from applying to advertisements', function () {
     $employer = User::factory()->create();
     $employer->assignRole('creator');
 
-    $ad = Advertisement::factory()
-        ->employer()
-        ->create([
-            'user_id' => $employer->id,
-            'schedule' => 'Jornada completa',
-            'contract_type' => 'Indefinido',
-            'salary' => 1500.00
-        ]);
+    $ad = EmployerAdvertisementFactory::new()->create([
+        'user_id' => $employer->id,
+        'schedule' => 'Jornada completa',
+        'contract_type' => 'Indefinido',
+        'salary' => 1500.00
+    ]);
 
     // Act & Assert
     expect($this->user->can('apply', [$ad, false]))->toBeFalse();
@@ -192,16 +180,16 @@ it('filters advertisements by type', function () {
     $this->user->assignRole('admin');
     $this->actingAs($this->user);
     
-    Advertisement::factory()->employer()->create([
+    EmployerAdvertisementFactory::new()->create([
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
         'salary' => 1500.00
     ]);
-    Advertisement::factory()->worker()->create([
+    WorkerAdvertisementFactory::new()->create([
         'availability' => 'Inmediata',
         'salary_expectation' => 1500.00
     ]);
-    Advertisement::factory()->worker()->create([
+    WorkerAdvertisementFactory::new()->create([
         'availability' => 'En 15 días',
         'salary_expectation' => 1800.00
     ]);
@@ -220,19 +208,19 @@ it('finds advertisements by location', function () {
     $this->user->assignRole('admin');
     $this->actingAs($this->user);
     
-    Advertisement::factory()->employer()->create([
+    EmployerAdvertisementFactory::new()->create([
         'location' => 'Madrid Centro',
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
         'salary' => 1500.00
     ]);
-    Advertisement::factory()->employer()->create([
+    EmployerAdvertisementFactory::new()->create([
         'location' => 'Madrid Norte',
         'schedule' => 'Media jornada',
         'contract_type' => 'Temporal',
         'salary' => 1200.00
     ]);
-    Advertisement::factory()->employer()->create([
+    EmployerAdvertisementFactory::new()->create([
         'location' => 'Barcelona',
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
@@ -253,19 +241,19 @@ it('finds advertisements with specific skills', function () {
     $this->user->assignRole('admin');
     $this->actingAs($this->user);
     
-    Advertisement::factory()->employer()->create([
+    EmployerAdvertisementFactory::new()->create([
         'skills' => ['inglés', 'coctelería'],
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
         'salary' => 1500.00
     ]);
-    Advertisement::factory()->employer()->create([
+    EmployerAdvertisementFactory::new()->create([
         'skills' => ['inglés'],
         'schedule' => 'Media jornada',
         'contract_type' => 'Temporal',
         'salary' => 1200.00
     ]);
-    Advertisement::factory()->employer()->create([
+    EmployerAdvertisementFactory::new()->create([
         'skills' => ['coctelería', 'vinos'],
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
@@ -288,19 +276,19 @@ it('orders advertisements by creation date', function () {
     $this->user->assignRole('admin');
     $this->actingAs($this->user);
     
-    $oldest = Advertisement::factory()->employer()->create([
+    $oldest = EmployerAdvertisementFactory::new()->create([
         'created_at' => now()->subDays(2),
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
         'salary' => 1500.00
     ]);
-    $newest = Advertisement::factory()->employer()->create([
+    $newest = EmployerAdvertisementFactory::new()->create([
         'created_at' => now(),
         'schedule' => 'Media jornada',
         'contract_type' => 'Temporal',
         'salary' => 1200.00
     ]);
-    $middle = Advertisement::factory()->employer()->create([
+    $middle = EmployerAdvertisementFactory::new()->create([
         'created_at' => now()->subDay(),
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
@@ -320,7 +308,7 @@ it('belongs to a user', function () {
     $this->user->assignRole('admin');
     $this->actingAs($this->user);
     
-    $ad = Advertisement::factory()->employer()->create([
+    $ad = EmployerAdvertisementFactory::new()->create([
         'user_id' => $this->user->id,
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',

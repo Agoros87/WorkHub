@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Advertisement;
 use Illuminate\Support\Str;
 
-class PageHomeController extends Controller
+class PageWelcomeController extends Controller
 {
     public function __invoke()
     {

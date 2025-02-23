@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between">
             <!-- Enlace con la imagen a la izquierda -->
             <a href="{{ route('welcome') }}" class="flex items-center">
-                <img src="{{ asset('images/iconoWH.jpg') }}" alt="WorkHub Icon" class="h-20 w-20"> <!-- Tamaño aumentado -->
+                <img src="{{ asset('images/iconoWH.png') }}" alt="WorkHub Icon" class="h-20 w-20">
             </a>
             <!-- Contenedor para centrar el texto WorkHub y el icono WH -->
             <div class="flex items-center justify-center flex-grow">

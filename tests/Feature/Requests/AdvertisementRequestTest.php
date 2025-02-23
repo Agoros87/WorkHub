@@ -5,20 +5,21 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Advertisement;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
+use Database\Factories\EmployerAdvertisementFactory;
+use Database\Factories\WorkerAdvertisementFactory;
 
 beforeEach(function () {
     $this->request = new AdvertisementRequest();
     
-    Role::create(['name' => 'admin']);
-    Role::create(['name' => 'employer']);
-    Role::create(['name' => 'worker']);
+    $adminRole = Role::create(['name' => 'admin']);
+    $creatorRole = Role::create(['name' => 'creator']);
     
     $this->employer = User::factory()->create(['type' => 'employer']);
     $this->worker = User::factory()->create(['type' => 'worker']);
     $this->admin = User::factory()->create(['type' => 'admin']);
     
-    $this->employer->assignRole('employer');
-    $this->worker->assignRole('worker');
+    $this->employer->assignRole('creator');
+    $this->worker->assignRole('creator');
     $this->admin->assignRole('admin');
 });
 
@@ -26,7 +27,7 @@ it('validates required fields', function () {
     //Arrange
     auth()->login($this->employer);
     $rules = $this->request->rules();
-    $data = Advertisement::factory()
+    $data = EmployerAdvertisementFactory::new()
         ->make()
         ->only(['title', 'description', 'location', 'skills', 'experience']);
 
@@ -41,7 +42,7 @@ it('validates all fields for admin', function () {
     //Arrange
     auth()->login($this->admin);
     $rules = $this->request->rules();
-    $data = Advertisement::factory()
+    $data = EmployerAdvertisementFactory::new()
         ->make()
         ->only(['title', 'description', 'location', 'skills', 'experience']);
 
@@ -56,7 +57,7 @@ it('fails validation when required fields are missing', function () {
     //Arrange
     auth()->login($this->employer);
     $rules = $this->request->rules();
-    $data = Advertisement::factory()
+    $data = EmployerAdvertisementFactory::new()
         ->make()
         ->only(['title']);
 
@@ -75,8 +76,7 @@ it('validates salary is numeric and positive', function () {
     //Arrange
     auth()->login($this->employer);
     $rules = $this->request->rules();
-    $data = Advertisement::factory()
-        ->employer()
+    $data = EmployerAdvertisementFactory::new()
         ->make(['salary' => -100])
         ->toArray();
 
@@ -92,8 +92,7 @@ it('validates salary_expectation is numeric and positive', function () {
     //Arrange
     auth()->login($this->worker);
     $rules = $this->request->rules();
-    $data = Advertisement::factory()
-        ->worker()
+    $data = WorkerAdvertisementFactory::new()
         ->make(['salary_expectation' => -100])
         ->toArray();
 
@@ -111,7 +110,7 @@ it('validates max length for string fields', function () {
     $rules = $this->request->rules();
     $tooLongString = str_repeat('a', 256);
 
-    $data = Advertisement::factory()
+    $data = EmployerAdvertisementFactory::new()
         ->make([
             'title' => $tooLongString,
             'location' => $tooLongString,
@@ -141,8 +140,7 @@ it('fails validation if skills contains non-string values', function () {
     //Arrange
     auth()->login($this->employer);
     $rules = $this->request->rules();
-    $data = Advertisement::factory()
-        ->employer()
+    $data = EmployerAdvertisementFactory::new()
         ->make(['skills' => ['inglés', 123]])
         ->toArray();
 

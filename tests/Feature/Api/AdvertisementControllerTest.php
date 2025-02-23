@@ -4,6 +4,7 @@ namespace Tests\Feature\Api;
 
 use App\Models\User;
 use App\Models\Advertisement;
+use Database\Factories\EmployerAdvertisementFactory;
 use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
@@ -19,7 +20,7 @@ beforeEach(function () {
 
 it('lists advertisements without authentication', function () {
     // Arrange
-    Advertisement::factory()->count(3)->create();
+    EmployerAdvertisementFactory::new()->count(3)->create();
 
     // Act
     $response = $this->getJson('/api/advertisements');
@@ -57,7 +58,7 @@ it('creates a new advertisement with sanctum authentication', function () {
 
 it('shows a specific advertisement without authentication', function () {
     // Arrange
-    $advertisement = Advertisement::factory()->create();
+    $advertisement = EmployerAdvertisementFactory::new()->create();
 
     // Act
     $response = $this->getJson("/api/advertisements/{$advertisement->slug}");
@@ -69,7 +70,7 @@ it('shows a specific advertisement without authentication', function () {
 
 it('updates an advertisement with sanctum authentication', function () {
     // Arrange
-    $advertisement = Advertisement::factory()->create(['user_id' => $this->creator->id]);
+    $advertisement = EmployerAdvertisementFactory::new()->create(['user_id' => $this->creator->id]);
     $data = [
         'title' => 'Updated Advertisement',
         'description' => 'This is an updated test advertisement.',
@@ -93,7 +94,7 @@ it('updates an advertisement with sanctum authentication', function () {
 
 it('prevents non-owner from updating advertisement with sanctum authentication', function () {
     // Arrange
-    $advertisement = Advertisement::factory()->create(['user_id' => $this->creator->id]);
+    $advertisement = EmployerAdvertisementFactory::new()->create(['user_id' => $this->creator->id]);
     $data = [
         'title' => 'Updated Advertisement',
         'description' => 'This is an updated test advertisement.',
@@ -115,7 +116,7 @@ it('prevents non-owner from updating advertisement with sanctum authentication',
 
 it('deletes an advertisement with sanctum authentication', function () {
     // Arrange
-    $advertisement = Advertisement::factory()->create(['user_id' => $this->creator->id]);
+    $advertisement = EmployerAdvertisementFactory::new()->create(['user_id' => $this->creator->id]);
 
     // Act
     $token = $this->creator->createToken('test-token')->plainTextToken;
@@ -129,7 +130,7 @@ it('deletes an advertisement with sanctum authentication', function () {
 
 it('prevents non-owner from deleting advertisement with sanctum authentication', function () {
     // Arrange
-    $advertisement = Advertisement::factory()->create(['user_id' => $this->creator->id]);
+    $advertisement = EmployerAdvertisementFactory::new()->create(['user_id' => $this->creator->id]);
 
     // Act
     $token = $this->admin->createToken('test-token')->plainTextToken;

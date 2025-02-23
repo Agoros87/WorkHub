@@ -16,7 +16,7 @@ class EmployerAdvertisementFactory extends Factory
         $user = User::factory()->employer()->create();
         $skill = $this->faker->randomElement($this->availableSkills());
         $title = "Se busca $skill con experiencia";
-        
+
         return [
             'user_id' => $user->id,
             'type' => 'employer',
@@ -29,8 +29,8 @@ class EmployerAdvertisementFactory extends Factory
             'schedule' => $this->faker->randomElement(['Jornada completa', 'Media jornada', 'Fines de semana']),
             'contract_type' => $this->faker->randomElement(['Indefinido', 'Temporal 6 meses', 'Temporal 3 meses']),
             'salary' => $this->faker->randomFloat(2, 1100, 2200),
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
+            'updated_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
 

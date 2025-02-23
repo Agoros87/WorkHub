@@ -50,6 +50,7 @@ class AdvertisementController extends Controller
 
     public function edit(Advertisement $advertisement)
     {
+        $this->authorize('update', $advertisement);
         return view('advertisements.edit', compact('advertisement'));
     }
 
@@ -74,6 +75,7 @@ class AdvertisementController extends Controller
 
     public function destroy(Advertisement $advertisement)
     {
+        $this->authorize('delete', $advertisement);
         $advertisement->delete();
 
         return to_route('welcome')

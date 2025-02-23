@@ -1,13 +1,19 @@
 <?php
 
-use App\Models\Advertisement;
+use Database\Factories\WorkerAdvertisementFactory;
+use Database\Factories\EmployerAdvertisementFactory;
+use Database\Seeders\RoleSeeder;
 use function Pest\Laravel\get;
+
+beforeEach(function() {
+    $this->seed(RoleSeeder::class);
+});
 
 it('shows worker advertisements overview', function () {
     //Arrange
-    $firstAds = Advertisement::factory()->create(['type' => 'worker']);
-    $secondAds = Advertisement::factory()->create(['type' => 'worker']);
-    $thirdAds = Advertisement::factory()->create(['type' => 'worker']);
+    $firstAds = WorkerAdvertisementFactory::new()->create();
+    $secondAds = WorkerAdvertisementFactory::new()->create();
+    $thirdAds = WorkerAdvertisementFactory::new()->create();
 
     //Act
 
@@ -30,9 +36,9 @@ it('shows worker advertisements overview', function () {
 
 it('shows employer advertisements overview', function () {
     // Arrange
-    $firstAds = Advertisement::factory()->create(['type' => 'employer']);
-    $secondAds = Advertisement::factory()->create(['type' => 'employer']);
-    $thirdAds = Advertisement::factory()->create(['type' => 'employer']);
+    $firstAds = EmployerAdvertisementFactory::new()->create();
+    $secondAds = EmployerAdvertisementFactory::new()->create();
+    $thirdAds = EmployerAdvertisementFactory::new()->create();
 
     // Act
     $response = get(route('welcome'));
@@ -53,8 +59,8 @@ it('shows employer advertisements overview', function () {
 
 it('paginates advertisements to show only 3 per type', function () {
     // Arrange
-    Advertisement::factory(4)->create(['type' => 'worker']);
-    Advertisement::factory(4)->create(['type' => 'employer']);
+    WorkerAdvertisementFactory::new()->count(4)->create();
+    EmployerAdvertisementFactory::new()->count(4)->create();
 
     // Act
     $response = get(route('welcome'));
@@ -71,13 +77,11 @@ it('paginates advertisements to show only 3 per type', function () {
 
 it('shows advertisements in latest order', function () {
     // Arrange
-    $oldAd = Advertisement::factory()->create([
-        'type' => 'worker',
+    $oldAd = WorkerAdvertisementFactory::new()->create([
         'created_at' => now()->subDays(2)
     ]);
-    
-    $newAd = Advertisement::factory()->create([
-        'type' => 'worker',
+
+    $newAd = WorkerAdvertisementFactory::new()->create([
         'created_at' => now()
     ]);
 
