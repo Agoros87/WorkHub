@@ -1,8 +1,7 @@
 <?php
 
-use App\Models\User;
-use App\Models\Advertisement;
 use App\Models\JobApplication;
+use App\Models\User;
 use Database\Factories\EmployerAdvertisementFactory;
 use Spatie\Permission\Models\Role;
 
@@ -23,7 +22,7 @@ beforeEach(function () {
         'user_id' => $this->employer->id,
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
-        'salary' => 1500.00
+        'salary' => 1500.00,
     ]);
 });
 
@@ -38,7 +37,7 @@ it('allows worker to create job application', function () {
     $response->assertRedirect();
     $this->assertDatabaseHas('job_applications', [
         'user_id' => $this->user->id,
-        'advertisement_id' => $this->advertisement->id
+        'advertisement_id' => $this->advertisement->id,
     ]);
 });
 
@@ -47,7 +46,7 @@ it('prevents duplicate job applications', function () {
     $this->actingAs($this->user);
     JobApplication::create([
         'user_id' => $this->user->id,
-        'advertisement_id' => $this->advertisement->id
+        'advertisement_id' => $this->advertisement->id,
     ]);
 
     // Act
@@ -75,7 +74,7 @@ it('allows user to view own job application', function () {
     $this->actingAs($this->user);
     $jobApplication = JobApplication::create([
         'user_id' => $this->user->id,
-        'advertisement_id' => $this->advertisement->id
+        'advertisement_id' => $this->advertisement->id,
     ]);
 
     // Act
@@ -93,7 +92,7 @@ it('prevents user from viewing other user job application', function () {
     $otherUser->assignRole('creator');
     $jobApplication = JobApplication::create([
         'user_id' => $otherUser->id,
-        'advertisement_id' => $this->advertisement->id
+        'advertisement_id' => $this->advertisement->id,
     ]);
     $this->actingAs($this->user);
 
@@ -108,7 +107,7 @@ it('allows advertisement owner to view job application', function () {
     // Arrange
     $jobApplication = JobApplication::create([
         'user_id' => $this->user->id,
-        'advertisement_id' => $this->advertisement->id
+        'advertisement_id' => $this->advertisement->id,
     ]);
     $this->actingAs($this->employer);
 
@@ -126,7 +125,7 @@ it('allows user to delete own job application', function () {
     $this->actingAs($this->user);
     $jobApplication = JobApplication::create([
         'user_id' => $this->user->id,
-        'advertisement_id' => $this->advertisement->id
+        'advertisement_id' => $this->advertisement->id,
     ]);
 
     // Act
@@ -143,7 +142,7 @@ it('prevents user from deleting other user job application', function () {
     $otherUser->assignRole('creator');
     $jobApplication = JobApplication::create([
         'user_id' => $otherUser->id,
-        'advertisement_id' => $this->advertisement->id
+        'advertisement_id' => $this->advertisement->id,
     ]);
     $this->actingAs($this->user);
 

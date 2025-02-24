@@ -1,21 +1,22 @@
 <?php
 
-use Database\Factories\WorkerAdvertisementFactory;
 use Database\Factories\EmployerAdvertisementFactory;
+use Database\Factories\WorkerAdvertisementFactory;
 use Database\Seeders\RoleSeeder;
+
 use function Pest\Laravel\get;
 
-beforeEach(function() {
+beforeEach(function () {
     $this->seed(RoleSeeder::class);
 });
 
 it('shows worker advertisements overview', function () {
-    //Arrange
+    // Arrange
     $firstAds = WorkerAdvertisementFactory::new()->create();
     $secondAds = WorkerAdvertisementFactory::new()->create();
     $thirdAds = WorkerAdvertisementFactory::new()->create();
 
-    //Act
+    // Act
 
     $response = get(route('welcome'));
 
@@ -78,11 +79,11 @@ it('paginates advertisements to show only 3 per type', function () {
 it('shows advertisements in latest order', function () {
     // Arrange
     $oldAd = WorkerAdvertisementFactory::new()->create([
-        'created_at' => now()->subDays(2)
+        'created_at' => now()->subDays(2),
     ]);
 
     $newAd = WorkerAdvertisementFactory::new()->create([
-        'created_at' => now()
+        'created_at' => now(),
     ]);
 
     // Act

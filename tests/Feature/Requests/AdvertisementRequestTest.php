@@ -1,15 +1,14 @@
 <?php
 
 use App\Http\Requests\AdvertisementRequest;
-use Illuminate\Support\Facades\Validator;
-use App\Models\Advertisement;
 use App\Models\User;
-use Spatie\Permission\Models\Role;
 use Database\Factories\EmployerAdvertisementFactory;
 use Database\Factories\WorkerAdvertisementFactory;
+use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
-    $this->request = new AdvertisementRequest();
+    $this->request = new AdvertisementRequest;
 
     $adminRole = Role::create(['name' => 'admin']);
     $creatorRole = Role::create(['name' => 'creator']);
@@ -24,47 +23,47 @@ beforeEach(function () {
 });
 
 it('validates required fields', function () {
-    //Arrange
+    // Arrange
     auth()->login($this->employer);
     $rules = $this->request->rules();
     $data = EmployerAdvertisementFactory::new()
         ->make()
         ->only(['title', 'description', 'location', 'skills', 'experience']);
 
-    //Act
+    // Act
     $validator = Validator::make($data, $rules);
 
-    //Assert
+    // Assert
     expect($validator->passes())->toBeTrue();
 });
 
 it('validates all fields for admin', function () {
-    //Arrange
+    // Arrange
     auth()->login($this->admin);
     $rules = $this->request->rules();
     $data = EmployerAdvertisementFactory::new()
         ->make()
         ->only(['title', 'description', 'location', 'skills', 'experience']);
 
-    //Act
+    // Act
     $validator = Validator::make($data, $rules);
 
-    //Assert
+    // Assert
     expect($validator->passes())->toBeTrue();
 });
 
 it('fails validation when required fields are missing', function () {
-    //Arrange
+    // Arrange
     auth()->login($this->employer);
     $rules = $this->request->rules();
     $data = EmployerAdvertisementFactory::new()
         ->make()
         ->only(['title']);
 
-    //Act
+    // Act
     $validator = Validator::make($data, $rules);
 
-    //Assert
+    // Assert
     expect($validator->passes())->toBeFalse()
         ->and($validator->errors()->keys())->toContain('description')
         ->and($validator->errors()->keys())->toContain('location')
@@ -73,39 +72,39 @@ it('fails validation when required fields are missing', function () {
 });
 
 it('validates salary is numeric and positive', function () {
-    //Arrange
+    // Arrange
     auth()->login($this->employer);
     $rules = $this->request->rules();
     $data = EmployerAdvertisementFactory::new()
         ->make(['salary' => -100])
         ->toArray();
 
-    //Act
+    // Act
     $validator = Validator::make($data, $rules);
 
-    //Assert
+    // Assert
     expect($validator->passes())->toBeFalse()
         ->and($validator->errors()->keys())->toContain('salary');
 });
 
 it('validates salary_expectation is numeric and positive', function () {
-    //Arrange
+    // Arrange
     auth()->login($this->worker);
     $rules = $this->request->rules();
     $data = WorkerAdvertisementFactory::new()
         ->make(['salary_expectation' => -100])
         ->toArray();
 
-    //Act
+    // Act
     $validator = Validator::make($data, $rules);
 
-    //Assert
+    // Assert
     expect($validator->passes())->toBeFalse()
         ->and($validator->errors()->keys())->toContain('salary_expectation');
 });
 
 it('validates max length for string fields', function () {
-    //Arrange
+    // Arrange
     auth()->login($this->employer);
     $rules = $this->request->rules();
     $tooLongString = str_repeat('a', 256);
@@ -118,14 +117,14 @@ it('validates max length for string fields', function () {
             'experience' => $tooLongString,
             'schedule' => $tooLongString,
             'contract_type' => $tooLongString,
-            'availability' => $tooLongString
+            'availability' => $tooLongString,
         ])
         ->toArray();
 
-    //Act
+    // Act
     $validator = Validator::make($data, $rules);
 
-    //Assert
+    // Assert
     expect($validator->passes())->toBeFalse()
         ->and($validator->errors()->keys())->toContain('title')
         ->and($validator->errors()->keys())->toContain('location')
@@ -137,17 +136,17 @@ it('validates max length for string fields', function () {
 });
 
 it('fails validation if skills contains non-string values', function () {
-    //Arrange
+    // Arrange
     auth()->login($this->employer);
     $rules = $this->request->rules();
     $data = EmployerAdvertisementFactory::new()
         ->make(['skills' => ['inglés', 123]])
         ->toArray();
 
-    //Act
+    // Act
     $validator = Validator::make($data, $rules);
 
-    //Assert
+    // Assert
     expect($validator->passes())->toBeFalse()
         ->and($validator->errors()->keys())->toContain('skills.1');
 });

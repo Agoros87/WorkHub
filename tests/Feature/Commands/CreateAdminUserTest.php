@@ -31,4 +31,3 @@ it('fails when passwords do not match', function () {
         ->expectsOutput('Las contraseñas deben de ser iguales')
         ->assertExitCode(1);
 });
-

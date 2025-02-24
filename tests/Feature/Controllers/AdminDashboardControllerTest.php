@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\User;
 use App\Models\Advertisement;
-use Spatie\Permission\Models\Role;
-use Database\Factories\WorkerAdvertisementFactory;
+use App\Models\User;
 use Database\Factories\EmployerAdvertisementFactory;
+use Database\Factories\WorkerAdvertisementFactory;
+use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
     Role::create(['name' => 'admin']);
@@ -15,13 +15,13 @@ beforeEach(function () {
 
     $this->employer = User::factory()->create([
         'type' => 'employer',
-        'company_name' => 'Test Company'
+        'company_name' => 'Test Company',
     ]);
     $this->employer->assignRole('creator');
 
     $this->worker = User::factory()->create([
         'type' => 'worker',
-        'name' => 'Test Worker'
+        'name' => 'Test Worker',
     ]);
     $this->worker->assignRole('creator');
 });
@@ -35,7 +35,7 @@ it('requires authentication for admin dashboard', function () {
 it('shows admin dashboard to admin users', function () {
     $advertisement = EmployerAdvertisementFactory::new()->create([
         'user_id' => $this->employer->id,
-        'title' => 'Test Advertisement'
+        'title' => 'Test Advertisement',
     ]);
 
     $response = $this->actingAs($this->admin)
@@ -87,7 +87,7 @@ it('denies user deletion to non-admin users', function () {
 it('allows admin to delete worker advertisement', function () {
     $advertisement = WorkerAdvertisementFactory::new()->create([
         'user_id' => $this->worker->id,
-        'title' => 'Worker Ad to Delete'
+        'title' => 'Worker Ad to Delete',
     ]);
 
     $response = $this->actingAs($this->admin)
@@ -102,7 +102,7 @@ it('allows admin to delete worker advertisement', function () {
 it('allows admin to delete employer advertisement', function () {
     $advertisement = EmployerAdvertisementFactory::new()->create([
         'user_id' => $this->employer->id,
-        'title' => 'Employer Ad to Delete'
+        'title' => 'Employer Ad to Delete',
     ]);
 
     $response = $this->actingAs($this->admin)
@@ -117,7 +117,7 @@ it('allows admin to delete employer advertisement', function () {
 it('denies advertisement deletion to non-admin users', function () {
     $advertisement = WorkerAdvertisementFactory::new()->create([
         'user_id' => $this->worker->id,
-        'title' => 'Worker Ad'
+        'title' => 'Worker Ad',
     ]);
 
     $response = $this->actingAs($this->employer)

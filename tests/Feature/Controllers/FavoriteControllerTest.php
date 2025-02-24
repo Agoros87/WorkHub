@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\User;
-use Spatie\Permission\Models\Role;
 use Database\Factories\EmployerAdvertisementFactory;
+use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
     Role::create(['name' => 'admin']);
@@ -27,7 +27,7 @@ it('updates requires authentication', function () {
 
     $response = $this->put(route('favorites.update', 'test-slug'), [
         'notes' => 'Test note',
-        'priority' => 'high'
+        'priority' => 'high',
     ]);
     $response->assertRedirect(route('login'));
 });
@@ -38,7 +38,6 @@ it('deletes requires authentication', function () {
     $response->assertRedirect(route('login'));
 });
 
-
 it('validates favorite update data', function () {
     // Arrange
     $this->user->favoriteAdvertisements()->attach($this->advertisement->id);
@@ -47,18 +46,17 @@ it('validates favorite update data', function () {
     // Act & Assert  Nota demasiado larga
     $response = $this->actingAs($this->user)
         ->put(route('favorites.update', $this->advertisement->slug), [
-            'notes' => $tooLongNote
+            'notes' => $tooLongNote,
         ]);
     $response->assertSessionHasErrors('notes');
 
 });
 
-
 it('deletes favorite', function () {
     // Arrange
     $this->user->favoriteAdvertisements()->attach($this->advertisement->id, [
         'notes' => 'Test note',
-        'priority' => 'high'
+        'priority' => 'high',
     ]);
 
     // Act
@@ -79,7 +77,7 @@ it('returns 404 for non-existent advertisement', function () {
     // Act & Assert - Update
     $response = $this->actingAs($this->user)
         ->put(route('favorites.update', $nonExistentSlug), [
-            'notes' => 'Test note'
+            'notes' => 'Test note',
         ]);
     $response->assertNotFound();
 

@@ -10,10 +10,10 @@ class Favorite extends Model
         'user_id',
         'advertisement_id',
         'notes',
-        'priority'
+        'priority',
     ];
 
     protected $casts = [
-        'priority' => 'string'
+        'priority' => 'string',
     ];
 }

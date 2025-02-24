@@ -2,13 +2,12 @@
 
 namespace App\Actions\Fortify;
 
+use App\Http\Requests\CreateNewUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\CreateNewUserRequest;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
-use Laravel\Jetstream\Jetstream;
 use Spatie\Permission\Models\Role;
-use Illuminate\Validation\ValidationException;
+
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;

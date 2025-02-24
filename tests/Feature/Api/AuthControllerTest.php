@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 beforeEach(function () {
     $this->user = User::factory()->create([
         'email' => 'test@example.com',
-        'password' => Hash::make('password123')
+        'password' => Hash::make('password123'),
     ]);
 });
 
@@ -16,7 +16,7 @@ it('logs in successfully with valid credentials', function () {
     // Arrange
     $credentials = [
         'email' => 'test@example.com',
-        'password' => 'password123'
+        'password' => 'password123',
     ];
 
     // Act
@@ -27,10 +27,10 @@ it('logs in successfully with valid credentials', function () {
         ->assertJsonStructure([
             'token',
             'user',
-            'message'
+            'message',
         ])
         ->assertJson([
-            'message' => 'Login exitoso'
+            'message' => 'Login exitoso',
         ]);
 });
 
@@ -38,7 +38,7 @@ it('fails to login with incorrect credentials', function () {
     // Arrange
     $credentials = [
         'email' => 'test@example.com',
-        'password' => 'wrongpassword'
+        'password' => 'wrongpassword',
     ];
 
     // Act
@@ -47,7 +47,7 @@ it('fails to login with incorrect credentials', function () {
     // Assert
     $response->assertStatus(401)
         ->assertJson([
-            'message' => 'Las credenciales proporcionadas son incorrectas.'
+            'message' => 'Las credenciales proporcionadas son incorrectas.',
         ]);
 });
 
@@ -55,7 +55,7 @@ it('fails to login with validation errors', function () {
     // Arrange
     $credentials = [
         'email' => 'not-an-email',
-        'password' => ''
+        'password' => '',
     ];
 
     // Act
@@ -67,8 +67,8 @@ it('fails to login with validation errors', function () {
             'message',
             'errors' => [
                 'email',
-                'password'
-            ]
+                'password',
+            ],
         ]);
 });
 
@@ -76,7 +76,7 @@ it('fails to login with non-existent user', function () {
     // Arrange
     $credentials = [
         'email' => 'nonexistent@example.com',
-        'password' => 'password123'
+        'password' => 'password123',
     ];
 
     // Act
@@ -85,23 +85,22 @@ it('fails to login with non-existent user', function () {
     // Assert
     $response->assertStatus(401)
         ->assertJson([
-            'message' => 'Las credenciales proporcionadas son incorrectas.'
+            'message' => 'Las credenciales proporcionadas son incorrectas.',
         ]);
 });
-
 
 it('logs out successfully', function () {
     // Arrange
     $token = $this->user->createToken('api-token')->plainTextToken;
 
     // Act
-    $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+    $response = $this->withHeader('Authorization', 'Bearer '.$token)
         ->postJson('/api/logout');
 
     // Assert
     $response->assertOk()
         ->assertJson([
-            'message' => 'Logout exitoso'
+            'message' => 'Logout exitoso',
         ]);
 
     expect($this->user->tokens()->count())->toBe(0);

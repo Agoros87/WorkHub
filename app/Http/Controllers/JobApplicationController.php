@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Advertisement;
 use App\Models\JobApplication;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class JobApplicationController extends Controller

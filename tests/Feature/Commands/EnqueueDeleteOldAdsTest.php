@@ -36,6 +36,7 @@ it('verifies job receives correct days parameter', function () {
         $reflection = new ReflectionClass($job);
         $property = $reflection->getProperty('daysOld');
         $property->setAccessible(true);
+
         return $property->getValue($job) === 45;
     });
 });
@@ -49,6 +50,7 @@ it('verifies job receives default days when not specified', function () {
         $reflection = new ReflectionClass($job);
         $property = $reflection->getProperty('daysOld');
         $property->setAccessible(true);
+
         return $property->getValue($job) === 35;
     });
 });

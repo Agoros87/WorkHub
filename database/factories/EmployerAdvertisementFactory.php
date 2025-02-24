@@ -22,7 +22,7 @@ class EmployerAdvertisementFactory extends Factory
             'type' => 'employer',
             'title' => $title,
             'description' => $this->generateDescription($skill),
-            'slug' => Str::slug($title . '-' . Str::random(6)),
+            'slug' => Str::slug($title.'-'.Str::random(6)),
             'location' => fake()->randomElement(config('locations')),
             'skills' => [$skill],
             'experience' => $this->faker->randomElement(['Sin experiencia', '1 año', '2 años', '3 años', '+5 años']),
@@ -38,6 +38,7 @@ class EmployerAdvertisementFactory extends Factory
     {
         $descriptions = $this->skillDescriptions();
         $baseDesc = $descriptions[$skill] ?? 'Descripción no disponible.';
+
         return "Importante establecimiento de hostelería necesita incorporar $skill. $baseDesc";
     }
 
@@ -46,7 +47,7 @@ class EmployerAdvertisementFactory extends Factory
         return [
             'Camarero de barra', 'Camarero de sala', 'Ayudante de camarero',
             'Barman / Coctelero', 'Camarero de eventos', 'Barista',
-            'Encargado de sala', 'Personal de catering'
+            'Encargado de sala', 'Personal de catering',
         ];
     }
 
@@ -60,7 +61,7 @@ class EmployerAdvertisementFactory extends Factory
             'Camarero de eventos' => 'Experiencia en bodas, eventos corporativos y celebraciones. Capacidad de adaptación y trabajo en equipo.',
             'Barista' => 'Especialista en preparación de café, conocimiento de diferentes métodos de extracción y presentación.',
             'Encargado de sala' => 'Gestión de equipo, organización de turnos, control de stock y atención al cliente. Capacidad de liderazgo.',
-            'Personal de catering' => 'Experiencia en montaje de buffets, servicio de banquetes y eventos especiales.'
+            'Personal de catering' => 'Experiencia en montaje de buffets, servicio de banquetes y eventos especiales.',
         ];
     }
 }

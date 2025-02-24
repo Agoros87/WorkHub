@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\User;
 use App\Models\Advertisement;
-use Spatie\Permission\Models\Role;
+use App\Models\User;
 use Database\Factories\EmployerAdvertisementFactory;
+use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
     Role::create(['name' => 'admin']);
@@ -28,7 +28,7 @@ it('requires authentication for index', function () {
 it('shows only user advertisements in index', function () {
     // Arrange
     $userAds = EmployerAdvertisementFactory::new()->count(3)->create([
-        'user_id' => $this->employer->id
+        'user_id' => $this->employer->id,
     ]);
     EmployerAdvertisementFactory::new()->count(2)->create();
 
@@ -64,7 +64,7 @@ it('shows create form', function () {
 it('stores new advertisement', function () {
     // Arrange
     $adData = EmployerAdvertisementFactory::new()->make([
-        'title' => 'Test Advertisement'
+        'title' => 'Test Advertisement',
     ])->toArray();
 
     // Act
@@ -92,7 +92,7 @@ it('validates required fields on store', function () {
 it('shows advertisement details', function () {
     // Arrange
     $advertisement = EmployerAdvertisementFactory::new()->create([
-        'user_id' => $this->employer->id
+        'user_id' => $this->employer->id,
     ]);
 
     // Act
@@ -108,7 +108,7 @@ it('shows advertisement details', function () {
 it('requires authorization for edit', function () {
     // Arrange
     $advertisement = EmployerAdvertisementFactory::new()->create([
-        'user_id' => $this->employer->id
+        'user_id' => $this->employer->id,
     ]);
 
     // Act & Assert - Otro usuario no puede editar
@@ -127,10 +127,10 @@ it('requires authorization for edit', function () {
 it('requires authorization for update', function () {
     // Arrange
     $advertisement = EmployerAdvertisementFactory::new()->create([
-        'user_id' => $this->employer->id
+        'user_id' => $this->employer->id,
     ]);
     $updateData = EmployerAdvertisementFactory::new()->make([
-        'title' => 'Updated Title'
+        'title' => 'Updated Title',
     ])->toArray();
 
     // Act & Assert - Otro usuario no puede actualizar
@@ -151,10 +151,10 @@ it('requires authorization for update', function () {
 it('allows admin to update any advertisement', function () {
     // Arrange
     $advertisement = EmployerAdvertisementFactory::new()->create([
-        'user_id' => $this->employer->id
+        'user_id' => $this->employer->id,
     ]);
     $updateData = EmployerAdvertisementFactory::new()->make([
-        'title' => 'Admin Updated'
+        'title' => 'Admin Updated',
     ])->toArray();
 
     // Act
@@ -175,7 +175,7 @@ it('allows admin to update any advertisement', function () {
 it('requires authorization for delete', function () {
     // Arrange
     $advertisement = EmployerAdvertisementFactory::new()->create([
-        'user_id' => $this->employer->id
+        'user_id' => $this->employer->id,
     ]);
 
     // Act & Assert - Otro usuario no puede eliminar
@@ -185,7 +185,7 @@ it('requires authorization for delete', function () {
             'description' => $advertisement->description,
             'location' => $advertisement->location,
             'skills' => $advertisement->skills,
-            'experience' => $advertisement->experience
+            'experience' => $advertisement->experience,
         ]);
     $response->assertStatus(403);
 
@@ -196,7 +196,7 @@ it('requires authorization for delete', function () {
             'description' => $advertisement->description,
             'location' => $advertisement->location,
             'skills' => $advertisement->skills,
-            'experience' => $advertisement->experience
+            'experience' => $advertisement->experience,
         ]);
 
     $response->assertRedirect(route('welcome'))
@@ -206,7 +206,7 @@ it('requires authorization for delete', function () {
 it('allows admin to delete any advertisement', function () {
     // Arrange
     $advertisement = EmployerAdvertisementFactory::new()->create([
-        'user_id' => $this->employer->id
+        'user_id' => $this->employer->id,
     ]);
 
     // Act
@@ -216,7 +216,7 @@ it('allows admin to delete any advertisement', function () {
             'description' => $advertisement->description,
             'location' => $advertisement->location,
             'skills' => $advertisement->skills,
-            'experience' => $advertisement->experience
+            'experience' => $advertisement->experience,
         ]);
 
     // Assert
@@ -228,7 +228,7 @@ it('allows admin to delete any advertisement', function () {
 it('generates pdf download', function () {
     // Arrange
     $advertisement = EmployerAdvertisementFactory::new()->create([
-        'user_id' => $this->employer->id
+        'user_id' => $this->employer->id,
     ]);
 
     // Act
@@ -237,5 +237,5 @@ it('generates pdf download', function () {
     // Assert
     $response->assertOk()
         ->assertHeader('content-type', 'application/pdf')
-        ->assertHeader('content-disposition', 'attachment; filename=' . $advertisement->slug . '.pdf');
+        ->assertHeader('content-disposition', 'attachment; filename='.$advertisement->slug.'.pdf');
 });

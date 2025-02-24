@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Api;
 
-use App\Models\User;
 use App\Models\Advertisement;
+use App\Models\User;
 use Database\Factories\EmployerAdvertisementFactory;
 use Spatie\Permission\Models\Role;
 
 beforeEach(function () {
-    if (!Role::where('name', 'creator')->exists()) {
+    if (! Role::where('name', 'creator')->exists()) {
         Role::create(['name' => 'creator']);
     }
 
@@ -30,7 +30,6 @@ it('lists advertisements without authentication', function () {
         ->assertJsonCount(3, 'data');
 });
 
-
 it('creates a new advertisement with sanctum authentication', function () {
     // Arrange
     $data = [
@@ -41,12 +40,12 @@ it('creates a new advertisement with sanctum authentication', function () {
         'experience' => '2-3 años',
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
-        'salary' => 1500.00
+        'salary' => 1500.00,
     ];
 
     // Act
     $token = $this->creator->createToken('test-token')->plainTextToken;
-    $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+    $response = $this->withHeader('Authorization', 'Bearer '.$token)
         ->postJson('/api/advertisements', $data);
 
     // Assert
@@ -79,12 +78,12 @@ it('updates an advertisement with sanctum authentication', function () {
         'experience' => '2-3 años',
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
-        'salary' => 1500.00
+        'salary' => 1500.00,
     ];
 
     // Act
     $token = $this->creator->createToken('test-token')->plainTextToken;
-    $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+    $response = $this->withHeader('Authorization', 'Bearer '.$token)
         ->putJson("/api/advertisements/{$advertisement->slug}", $data);
 
     // Assert
@@ -102,12 +101,12 @@ it('prevents non-owner from updating advertisement with sanctum authentication',
         'skills' => ['PHP', 'Laravel', 'Vue.js'],
         'experience' => '2-3 años',
         'availability' => 'Inmediata',
-        'salary_expectation' => 2000.00
+        'salary_expectation' => 2000.00,
     ];
 
     // Act
     $token = $this->admin->createToken('test-token')->plainTextToken;
-    $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+    $response = $this->withHeader('Authorization', 'Bearer '.$token)
         ->putJson("/api/advertisements/{$advertisement->slug}", $data);
 
     // Assert
@@ -120,7 +119,7 @@ it('deletes an advertisement with sanctum authentication', function () {
 
     // Act
     $token = $this->creator->createToken('test-token')->plainTextToken;
-    $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+    $response = $this->withHeader('Authorization', 'Bearer '.$token)
         ->deleteJson("/api/advertisements/{$advertisement->slug}");
 
     // Assert
@@ -134,7 +133,7 @@ it('prevents non-owner from deleting advertisement with sanctum authentication',
 
     // Act
     $token = $this->admin->createToken('test-token')->plainTextToken;
-    $response = $this->withHeader('Authorization', 'Bearer ' . $token)
+    $response = $this->withHeader('Authorization', 'Bearer '.$token)
         ->deleteJson("/api/advertisements/{$advertisement->slug}");
 
     // Assert

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Events\ApplicationStatusNotification;
 
 class JobApplication extends Model
 {
@@ -16,7 +15,7 @@ class JobApplication extends Model
         'user_id',
         'advertisement_id',
         'cv_path',
-        'status'
+        'status',
     ];
 
     public function user(): BelongsTo

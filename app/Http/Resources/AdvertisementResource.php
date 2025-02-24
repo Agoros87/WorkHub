@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 /**
  * @group Resources
- * 
+ *
  * @property int $id ID del anuncio
  * @property string $type Tipo de anuncio (employer/worker)
  * @property string $title Título del anuncio

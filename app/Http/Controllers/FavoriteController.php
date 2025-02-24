@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Advertisement;
 use App\Http\Requests\UpdateFavoriteRequest;
+use App\Models\Advertisement;
 
 class FavoriteController extends Controller
 {
@@ -27,6 +27,7 @@ class FavoriteController extends Controller
     {
         $advertisement = Advertisement::where('slug', $slug)->firstOrFail();
         auth()->user()->favoriteAdvertisements()->detach($advertisement->id);
+
         return back()->with('success', 'Anuncio eliminado de favoritos con éxito');
     }
 }

@@ -14,11 +14,11 @@ class ChatMessage extends Model
         'job_application_id',
         'user_id',
         'message',
-        'read'
+        'read',
     ];
 
     protected $casts = [
-        'read' => 'boolean'
+        'read' => 'boolean',
     ];
 
     public function jobApplication(): BelongsTo

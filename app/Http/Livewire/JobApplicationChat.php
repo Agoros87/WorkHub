@@ -11,12 +11,13 @@ class JobApplicationChat extends Component
 {
     use WithFileUploads;
 
-
     public $message = '';
-    public $cv;
-    public $messages;
-    public $jobApplication;
 
+    public $cv;
+
+    public $messages;
+
+    public $jobApplication;
 
     public function mount(JobApplication $jobApplication)
     {
@@ -35,8 +36,9 @@ class JobApplicationChat extends Component
 
     public function uploadCV()
     {
-        if (!$this->cv) {
+        if (! $this->cv) {
             session()->flash('error', 'Debes de seleccionar un archivo antes');
+
             return;
         }
 
@@ -93,12 +95,12 @@ class JobApplicationChat extends Component
     public function sendMessage()
     {
         $this->validate([
-            'message' => 'required|string'
+            'message' => 'required|string',
         ]);
 
         $this->jobApplication->messages()->create([
             'user_id' => auth()->id(),
-            'message' => $this->message
+            'message' => $this->message,
         ]);
 
         $this->reset('message');

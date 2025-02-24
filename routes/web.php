@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\PageWelcomeController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\FavoriteController;
-use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\JobApplicationController;
+use App\Http\Controllers\PageWelcomeController;
 use App\Http\Livewire\SearchAdvertisements;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Middleware\RoleMiddleware;
@@ -15,7 +15,7 @@ Route::get('/', PageWelcomeController::class)->name('welcome');
 Route::get('/select-role', function () {
     return view('select-role');
 })->name('select-role');
-    // Rutas para autenticación y registro
+// Rutas para autenticación y registro
 
 Route::get('/register/employer', function () {
     return view('auth.register-employer');
@@ -25,7 +25,7 @@ Route::get('/register/worker', function () {
     return view('auth.register-worker');
 })->name('register.worker');
 
-    // Rutas para términos y política de privacidad
+// Rutas para términos y política de privacidad
 
 Route::get('/terms-of-service', function () {
     return view('terms', [
@@ -41,14 +41,14 @@ Route::get('/privacy-policy', function () {
 
 Route::get('/search', SearchAdvertisements::class)->name('search');
 
-    // Rutas para anuncios
+// Rutas para anuncios
 
-Route::middleware(['auth', 'verified', RoleMiddleware::using(['creator','admin'])])->group(function () {
+Route::middleware(['auth', 'verified', RoleMiddleware::using(['creator', 'admin'])])->group(function () {
     Route::resource('advertisements', AdvertisementController::class)
         ->except(['show']);
 });
 
-Route::middleware(['auth', 'verified', RoleMiddleware::using(['creator','admin'])])->group(function () {
+Route::middleware(['auth', 'verified', RoleMiddleware::using(['creator', 'admin'])])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
@@ -58,9 +58,9 @@ Route::get('/advertisements/{advertisement}', [AdvertisementController::class, '
 Route::get('/advertisements/{advertisement}/pdf', [AdvertisementController::class, 'downloadPdf'])
     ->name('advertisements.pdf');
 
-    // Rutas para aplicar a un anuncio
+// Rutas para aplicar a un anuncio
 
-Route::middleware(['auth', 'verified', RoleMiddleware::using(['creator','admin'])])->group(function () {
+Route::middleware(['auth', 'verified', RoleMiddleware::using(['creator', 'admin'])])->group(function () {
     Route::post('/advertisements/{advertisement}/apply', [JobApplicationController::class, 'store'])
         ->name('advertisements.apply');
     Route::get('/job-applications/{jobApplication}', [JobApplicationController::class, 'show'])

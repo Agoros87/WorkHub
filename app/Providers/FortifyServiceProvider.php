@@ -31,7 +31,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::registerView(function () {
             return redirect('/');
         });
-        
+
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);

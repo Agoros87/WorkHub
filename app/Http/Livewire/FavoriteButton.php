@@ -8,6 +8,7 @@ use Livewire\Component;
 class FavoriteButton extends Component
 {
     public Advertisement $advertisement;
+
     public $isFavorite = false;
 
     public function mount(Advertisement $advertisement)
@@ -27,11 +28,11 @@ class FavoriteButton extends Component
         } else {
             auth()->user()->favoriteAdvertisements()->attach($this->advertisement->id, [
                 'notes' => null,
-                'priority' => 'medium'
+                'priority' => 'medium',
             ]);
         }
 
-        $this->isFavorite = !$this->isFavorite;
+        $this->isFavorite = ! $this->isFavorite;
     }
 
     public function render()

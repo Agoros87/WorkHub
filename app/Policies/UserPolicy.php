@@ -14,6 +14,6 @@ class UserPolicy
     public function delete(User $user, User $targetUser)
     {
         // Un admin puede eliminar cualquier usuario excepto otros admins
-        return $user->hasRole('admin') && !$targetUser->hasRole('admin');
+        return $user->hasRole('admin') && ! $targetUser->hasRole('admin');
     }
 }

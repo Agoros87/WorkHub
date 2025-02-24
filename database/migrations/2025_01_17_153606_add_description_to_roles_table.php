@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('roles', function (Blueprint $table) {
-            $table->string('description')->nullable()->after('guard_name');;
+            $table->string('description')->nullable()->after('guard_name');
         });
     }
 

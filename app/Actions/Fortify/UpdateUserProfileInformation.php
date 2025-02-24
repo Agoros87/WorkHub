@@ -28,7 +28,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         if ($user->type === 'worker') {
             $rules['name'] = ['required', 'string', 'max:255'];
             $rules['lastname'] = ['required', 'string', 'max:255'];
-            $rules['date_of_birth'] = ['required', 'date', 'before_or_equal:' . now()->subYears(16)->toDateString()];
+            $rules['date_of_birth'] = ['required', 'date', 'before_or_equal:'.now()->subYears(16)->toDateString()];
             $rules['gender'] = ['required', 'string', 'in:male,female,other'];
         } else {
             $rules['company_name'] = ['required', 'string', 'max:255'];

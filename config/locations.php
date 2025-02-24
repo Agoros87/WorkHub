@@ -1,6 +1,6 @@
 <?php
 
-return  $locations = [
+return $locations = [
     'Ávila', 'Alicante', 'Albacete', 'Almería', 'Barcelona',
     'Badajoz', 'Bilbao', 'Burgos', 'Cádiz', 'Castellón de la Plana',
     'Ceuta', 'Córdoba', 'Cuenca', 'Granada', 'Gijón',
@@ -10,6 +10,6 @@ return  $locations = [
     'Pontevedra', 'Palencia', 'Ronda', 'Salamanca', 'San Sebastián',
     'Segovia', 'Santiago de Compostela', 'Sevilla', 'Soria', 'Tarragona',
     'Teruel', 'Toledo', 'Valladolid', 'Valencia', 'Vigo',
-    'Zaragoza'
+    'Zaragoza',
 
-    ];
+];

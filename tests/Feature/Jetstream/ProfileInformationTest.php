@@ -16,7 +16,7 @@ test('current profile information is available', function () {
         'location' => 'Test City',
         'lastname' => 'Test Lastname',
         'date_of_birth' => now()->subYears(20),
-        'gender' => 'male'
+        'gender' => 'male',
     ]);
 
     $this->actingAs($user);
@@ -35,7 +35,6 @@ test('current profile information is available', function () {
     expect($component->state['gender'])->toEqual($user->gender);
 });
 
-
 test('profile information can be updated', function () {
     $user = User::factory()->worker()->create([
         'name' => 'Original Name',
@@ -43,7 +42,7 @@ test('profile information can be updated', function () {
         'location' => 'New City',
         'lastname' => 'New Lastname',
         'date_of_birth' => now()->subYears(20)->format('Y-m-d'),
-        'gender' => 'male'
+        'gender' => 'male',
     ]);
 
     $this->actingAs($user);

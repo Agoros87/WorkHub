@@ -15,11 +15,11 @@ beforeEach(function () {
 it('deletes advertisements older than specified days', function () {
     // Arrange
     $oldAd = WorkerAdvertisementFactory::new()->create([
-        'updated_at' => Carbon::now()->subDays(40)
+        'updated_at' => Carbon::now()->subDays(40),
     ]);
 
     $recentAd = WorkerAdvertisementFactory::new()->create([
-        'updated_at' => Carbon::now()->subDays(20)
+        'updated_at' => Carbon::now()->subDays(20),
     ]);
 
     // Act
@@ -41,15 +41,15 @@ it('deletes advertisements older than specified days', function () {
 it('uses default value of 35 days when not specified', function () {
     // Arrange
     $ad36DaysOld = WorkerAdvertisementFactory::new()->create([
-        'updated_at' => Carbon::now()->subDays(36)
+        'updated_at' => Carbon::now()->subDays(36),
     ]);
 
     $ad34DaysOld = WorkerAdvertisementFactory::new()->create([
-        'updated_at' => Carbon::now()->subDays(34)
+        'updated_at' => Carbon::now()->subDays(34),
     ]);
 
     // Act
-    (new DeleteOldAdvertisements())->handle();
+    (new DeleteOldAdvertisements)->handle();
 
     // Assert
     expect(Advertisement::find($ad36DaysOld->id))->toBeNull();
@@ -59,7 +59,7 @@ it('uses default value of 35 days when not specified', function () {
 it('handles empty result set gracefully', function () {
     // Arrange
     WorkerAdvertisementFactory::new()->create([
-        'updated_at' => Carbon::now()->subDays(20)
+        'updated_at' => Carbon::now()->subDays(20),
     ]);
 
     // Act
@@ -78,11 +78,11 @@ it('handles empty result set gracefully', function () {
 it('deletes multiple old advertisements', function () {
     // Arrange
     $oldAds = WorkerAdvertisementFactory::new()->count(3)->create([
-        'updated_at' => Carbon::now()->subDays(40)
+        'updated_at' => Carbon::now()->subDays(40),
     ]);
 
     $recentAd = WorkerAdvertisementFactory::new()->create([
-        'updated_at' => Carbon::now()->subDays(20)
+        'updated_at' => Carbon::now()->subDays(20),
     ]);
 
     // Act

@@ -19,13 +19,13 @@ class ValidAdvertisement implements ValidationRule
 
         if ($type === 'employer') {
             if (in_array($attribute, ['contract_type', 'salary', 'schedule']) && $value === null) {
-                $fail('El campo ' . $attribute . ' es requerido para empleadores.');
+                $fail('El campo '.$attribute.' es requerido para empleadores.');
             }
         }
 
         if ($type === 'worker') {
             if (in_array($attribute, ['salary_expectation', 'availability']) && $value === null) {
-                $fail('El campo ' . $attribute . ' es requerido para trabajadores.');
+                $fail('El campo '.$attribute.' es requerido para trabajadores.');
             }
         }
     }

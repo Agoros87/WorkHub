@@ -8,25 +8,24 @@ namespace App\Http\Controllers\Api;
  * APIs para gestionar anuncios de trabajo
  */
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\AdvertisementRequest;
+use App\Http\Resources\AdvertisementResource;
 use App\Models\Advertisement;
 use Illuminate\Http\Request;
-use App\Http\Resources\AdvertisementResource;
-use App\Http\Requests\Api\AdvertisementRequest;
-use App\Http\Requests\AdvertisementRequest as WebAdvertisementRequest;
 use Illuminate\Support\Str;
 
 class AdvertisementController extends Controller
 {
     /**
      * Listar Anuncios
-     * 
+     *
      * Obtiene una lista paginada de anuncios que puede ser filtrada por varios criterios.
-     * 
+     *
      * @queryParam type string Filtrar por tipo de anuncio (employer/worker). Example: worker
      * @queryParam location string Filtrar por ubicación. Example: Madrid
      * @queryParam skills array Filtrar por habilidades requeridas. Example: ["Camarero de barra","Camarero de sala"]
      * @queryParam keyword string Buscar por palabra clave en título o descripción. Example: Barista
-     * 
+     *
      * @response scenario="success" status=200 {
      *     "data": [
      *         {
@@ -86,11 +85,11 @@ class AdvertisementController extends Controller
 
     /**
      * Crear Anuncio
-     * 
+     *
      * Crea un nuevo anuncio de trabajo.
-     * 
+     *
      * @authenticated
-     * 
+     *
      * @bodyParam title string required Título del anuncio. Example: Camarero de barra con experiencia en coctelería
      * @bodyParam description string required Descripción detallada del anuncio. Example: Buscamos camarero de barra con experiencia en coctelería
      * @bodyParam location string required Ubicación del trabajo. Example: Madrid
@@ -101,7 +100,7 @@ class AdvertisementController extends Controller
      * @bodyParam availability string Disponibilidad. Example: Inmediata
      * @bodyParam salary numeric Salario ofrecido (para empresas). Example: 35000
      * @bodyParam salary_expectation numeric Expectativa salarial (para candidatos). Example: 40000
-     * 
+     *
      * @response scenario="success" status=201 {
      *     "data": {
      *         "id": 1,
@@ -127,7 +126,6 @@ class AdvertisementController extends Controller
      *         "updated_at": "2025-02-17T23:26:05.000000Z"
      *     }
      * }
-     * 
      * @response status=422 scenario="validation error" {
      *     "message": "Los datos proporcionados no son válidos.",
      *     "errors": {
@@ -140,7 +138,7 @@ class AdvertisementController extends Controller
     {
         $advertisement = auth()->user()->advertisements()->make($request->validated());
         $advertisement['type'] = auth()->user()->type;
-        $advertisement['slug'] = Str::slug($advertisement['title'] . '-' . Str::random(6));
+        $advertisement['slug'] = Str::slug($advertisement['title'].'-'.Str::random(6));
 
         $advertisement->save();
 
@@ -149,11 +147,11 @@ class AdvertisementController extends Controller
 
     /**
      * Ver Anuncio
-     * 
+     *
      * Obtiene los detalles de un anuncio específico.
-     * 
+     *
      * @urlParam advertisement required El ID del anuncio. Example: 1
-     * 
+     *
      * @response scenario="success" status=200 {
      *     "data": {
      *         "id": 1,
@@ -179,7 +177,6 @@ class AdvertisementController extends Controller
      *         "updated_at": "2025-02-17T23:26:05.000000Z"
      *     }
      * }
-     * 
      * @response status=404 scenario="not found" {
      *     "message": "No se encontró el anuncio"
      * }
@@ -191,13 +188,13 @@ class AdvertisementController extends Controller
 
     /**
      * Actualizar Anuncio
-     * 
+     *
      * Actualiza un anuncio existente.
-     * 
+     *
      * @authenticated
-     * 
+     *
      * @urlParam advertisement required El ID del anuncio. Example: 1
-     * 
+     *
      * @bodyParam title string required Título del anuncio. Example: Camarero de barra con experiencia en coctelería
      * @bodyParam description string required Descripción detallada del anuncio. Example: Se ofrece camarero de barra con experiencia en coctelería
      * @bodyParam location string required Ubicación del trabajo. Example: Madrid
@@ -208,7 +205,7 @@ class AdvertisementController extends Controller
      * @bodyParam availability string Disponibilidad. Example: Inmediata
      * @bodyParam salary numeric Salario ofrecido (para empresas). Example: 40000
      * @bodyParam salary_expectation numeric Expectativa salarial (para candidatos). Example: 45000
-     * 
+     *
      * @response scenario="success" status=200 {
      *     "data": {
      *         "id": 1,
@@ -234,11 +231,9 @@ class AdvertisementController extends Controller
      *         "updated_at": "2025-02-17T23:26:05.000000Z"
      *     }
      * }
-     * 
      * @response status=403 scenario="unauthorized" {
      *     "message": "No está autorizado para actualizar este anuncio"
      * }
-     * 
      * @response status=404 scenario="not found" {
      *     "message": "No se encontró el anuncio"
      * }
@@ -255,7 +250,7 @@ class AdvertisementController extends Controller
             : auth()->user()->type;
 
         if ($validated['title'] !== $advertisement->title) {
-            $validated['slug'] = Str::slug($validated['title'] . '-' . Str::random(6));
+            $validated['slug'] = Str::slug($validated['title'].'-'.Str::random(6));
         }
 
         $advertisement->update($validated);
@@ -265,21 +260,19 @@ class AdvertisementController extends Controller
 
     /**
      * Eliminar Anuncio
-     * 
+     *
      * Elimina un anuncio existente.
-     * 
+     *
      * @authenticated
-     * 
+     *
      * @urlParam advertisement required El ID del anuncio. Example: 1
-     * 
+     *
      * @response scenario="success" status=200 {
      *     "message": "Anuncio eliminado correctamente"
      * }
-     * 
      * @response status=403 scenario="unauthorized" {
      *     "message": "No está autorizado para eliminar este anuncio"
      * }
-     * 
      * @response status=404 scenario="not found" {
      *     "message": "No se encontró el anuncio"
      * }

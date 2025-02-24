@@ -10,7 +10,7 @@ class JobApplicationPolicy
     public function view(User $user, JobApplication $jobApplication): bool
     {
         // El usuario puede ver la aplicación si es el aplicante o el dueño del anuncio
-        return $user->id === $jobApplication->user_id || 
+        return $user->id === $jobApplication->user_id ||
                $user->id === $jobApplication->advertisement->user_id;
     }
 
@@ -23,7 +23,7 @@ class JobApplicationPolicy
     public function delete(User $user, JobApplication $jobApplication): bool
     {
         // Tanto el aplicante como el dueño del anuncio pueden eliminar la aplicación
-        return $user->id === $jobApplication->user_id || 
+        return $user->id === $jobApplication->user_id ||
                $user->id === $jobApplication->advertisement->user_id;
     }
 }

@@ -24,7 +24,7 @@ class AdvertisementPolicy
 
     public function apply(User $user, Advertisement $advertisement, bool $hasApplied)
     {
-        if (!$user->hasRole('creator')) {
+        if (! $user->hasRole('creator')) {
             return false;
         }
 

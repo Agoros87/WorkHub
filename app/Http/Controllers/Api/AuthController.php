@@ -17,12 +17,12 @@ class AuthController extends Controller
 {
     /**
      * Login
-     * 
+     *
      * Inicia sesión y devuelve el token de acceso.
-     * 
+     *
      * @bodyParam email string required Email del usuario. Example: camarero@restaurante.com
      * @bodyParam password string required Contraseña del usuario. Example: password123
-     * 
+     *
      * @response scenario="success" status=200 {
      *     "token": "2|4CzHh0S4Cq8Z9yIBq6lqW9GjQKz...",
      *     "user": {
@@ -35,11 +35,9 @@ class AuthController extends Controller
      *     },
      *     "message": "Login exitoso"
      * }
-     * 
      * @response status=401 scenario="credenciales incorrectas" {
      *     "message": "Las credenciales proporcionadas son incorrectas."
      * }
-     * 
      * @response status=422 scenario="validación fallida" {
      *     "message": "Error de validación",
      *     "errors": {
@@ -58,9 +56,9 @@ class AuthController extends Controller
 
             $user = User::where('email', $request->email)->first();
 
-            if (!$user || !Hash::check($request->password, $user->password)) {
+            if (! $user || ! Hash::check($request->password, $user->password)) {
                 return response()->json([
-                    'message' => 'Las credenciales proporcionadas son incorrectas.'
+                    'message' => 'Las credenciales proporcionadas son incorrectas.',
                 ], 401);
             }
 
@@ -69,33 +67,32 @@ class AuthController extends Controller
             return response()->json([
                 'token' => $token,
                 'user' => $user,
-                'message' => 'Login exitoso'
+                'message' => 'Login exitoso',
             ], 200);
 
         } catch (ValidationException $e) {
             return response()->json([
                 'message' => 'Error de validación',
-                'errors' => $e->errors()
+                'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error en el servidor',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
 
     /**
      * Logout
-     * 
+     *
      * Cierra la sesión del usuario actual invalidando el token.
-     * 
+     *
      * @authenticated
-     * 
+     *
      * @response scenario="success" status=200 {
      *     "message": "Logout exitoso"
      * }
-     * 
      * @response status=500 scenario="error" {
      *     "message": "Error al cerrar sesión",
      *     "error": "Mensaje de error detallado"
@@ -105,11 +102,12 @@ class AuthController extends Controller
     {
         try {
             $request->user()->currentAccessToken()->delete();
+
             return response()->json(['message' => 'Logout exitoso'], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error al cerrar sesión',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ], 500);
         }
     }

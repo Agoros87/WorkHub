@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 /**
  * @group Requests
- * 
+ *
  * Request para validación de anuncios de trabajo en hostelería
  */
 use App\Rules\ValidAdvertisement;
@@ -20,29 +20,29 @@ class AdvertisementRequest extends FormRequest
 
     /**
      * Reglas de validación para anuncios
-     * 
+     *
      * @return array<string, array<int, string|Rule|ValidAdvertisement>>
      */
     public function rules(): array
     {
         return [
-            'title' => [new ValidAdvertisement(),'required','string','max:255'],
-            'description' => [new ValidAdvertisement(),'required','string'],
-            'location' => [new ValidAdvertisement(),'required','string','max:255'],
-            'skills' => [new ValidAdvertisement(),'required','array'],
-            'skills.*' => [new ValidAdvertisement(),'string','max:255'],
-            'experience' => [new ValidAdvertisement(),'required','string','max:255'],
-            'schedule' => [new ValidAdvertisement(),'string', 'max:255'],
-            'contract_type' => [new ValidAdvertisement(),'string', 'max:255'],
-            'availability' => [new ValidAdvertisement(),'string', 'max:255'],
-            'salary' => [new ValidAdvertisement(),'numeric', 'min:0'],
-            'salary_expectation' => [new ValidAdvertisement(),'numeric', 'min:0'],
+            'title' => [new ValidAdvertisement, 'required', 'string', 'max:255'],
+            'description' => [new ValidAdvertisement, 'required', 'string'],
+            'location' => [new ValidAdvertisement, 'required', 'string', 'max:255'],
+            'skills' => [new ValidAdvertisement, 'required', 'array'],
+            'skills.*' => [new ValidAdvertisement, 'string', 'max:255'],
+            'experience' => [new ValidAdvertisement, 'required', 'string', 'max:255'],
+            'schedule' => [new ValidAdvertisement, 'string', 'max:255'],
+            'contract_type' => [new ValidAdvertisement, 'string', 'max:255'],
+            'availability' => [new ValidAdvertisement, 'string', 'max:255'],
+            'salary' => [new ValidAdvertisement, 'numeric', 'min:0'],
+            'salary_expectation' => [new ValidAdvertisement, 'numeric', 'min:0'],
         ];
     }
 
     /**
      * Mensajes de error personalizados para las reglas de validación
-     * 
+     *
      * @return array<string, string>
      */
     public function messages(): array

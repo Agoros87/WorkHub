@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Advertisement;
 use App\Http\Requests\AdvertisementRequest;
+use App\Models\Advertisement;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdvertisementController extends Controller
 {
-
     public function index()
     {
         $advertisements = Advertisement::where('user_id', Auth::id())
@@ -29,7 +28,7 @@ class AdvertisementController extends Controller
     {
         $advertisement = auth()->user()->advertisements()->make($request->validated());
         $advertisement['type'] = auth()->user()->type;
-        $advertisement['slug'] = Str::slug($advertisement['title'] . '-' . Str::random(6));
+        $advertisement['slug'] = Str::slug($advertisement['title'].'-'.Str::random(6));
 
         $advertisement->save();
 
@@ -51,6 +50,7 @@ class AdvertisementController extends Controller
     public function edit(Advertisement $advertisement)
     {
         $this->authorize('update', $advertisement);
+
         return view('advertisements.edit', compact('advertisement'));
     }
 
@@ -64,7 +64,7 @@ class AdvertisementController extends Controller
             : auth()->user()->type;
 
         if ($validated['title'] !== $advertisement->title) {
-            $validated['slug'] = Str::slug($validated['title'] . '-' . Str::random(6));
+            $validated['slug'] = Str::slug($validated['title'].'-'.Str::random(6));
         }
 
         $advertisement->update($validated);
@@ -85,6 +85,7 @@ class AdvertisementController extends Controller
     public function downloadPdf(Advertisement $advertisement)
     {
         $pdf = PDF::loadView('advertisements.pdf', compact('advertisement'));
-        return $pdf->download($advertisement->slug . '.pdf');
+
+        return $pdf->download($advertisement->slug.'.pdf');
     }
 }

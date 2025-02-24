@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\User;
 use Database\Factories\EmployerAdvertisementFactory;
+use Illuminate\Database\Seeder;
 
 class EmployerSeeder extends Seeder
 {

@@ -15,7 +15,6 @@ class DeleteOldAdvertisements implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-
     private int $daysOld;
 
     /**

@@ -20,6 +20,6 @@ class ApplicationStatusEmail extends Mailable
     public function build()
     {
         return $this->view('emails.application-status-email')
-                    ->subject('Actualización del Estado de tu Aplicación - WorkHub');
+            ->subject('Actualización del Estado de tu Aplicación - WorkHub');
     }
 }

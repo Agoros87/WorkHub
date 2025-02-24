@@ -2,7 +2,6 @@
 
 use App\Models\Advertisement;
 use App\Models\User;
-use App\Models\JobApplication;
 use Database\Factories\EmployerAdvertisementFactory;
 use Database\Factories\WorkerAdvertisementFactory;
 use Spatie\Permission\Models\Role;
@@ -22,7 +21,7 @@ it('allows creator to create worker advertisement', function () {
     $ad = WorkerAdvertisementFactory::new()->create([
         'user_id' => $this->user->id,
         'availability' => 'Inmediata',
-        'salary_expectation' => 1500.00
+        'salary_expectation' => 1500.00,
     ]);
 
     // Assert
@@ -45,7 +44,7 @@ it('prevents non-creator users from creating advertisements', function () {
     $data = EmployerAdvertisementFactory::new()->make([
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
-        'salary' => 1500.00
+        'salary' => 1500.00,
     ])->toArray();
 
     // Act & Assert
@@ -65,7 +64,7 @@ it('allows worker to apply to employer advertisement', function () {
         'user_id' => $employer->id,
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
-        'salary' => 1500.00
+        'salary' => 1500.00,
     ]);
 
     // Act & Assert
@@ -84,7 +83,7 @@ it('prevents employer from applying to employer advertisement', function () {
         'user_id' => $employer->id,
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
-        'salary' => 1500.00
+        'salary' => 1500.00,
     ]);
 
     // Act & Assert
@@ -102,7 +101,7 @@ it('allows employer to apply to worker advertisement', function () {
     $ad = WorkerAdvertisementFactory::new()->create([
         'user_id' => $worker->id,
         'availability' => 'Inmediata',
-        'salary_expectation' => 1500.00
+        'salary_expectation' => 1500.00,
     ]);
 
     // Act & Assert
@@ -120,7 +119,7 @@ it('prevents worker from applying to worker advertisement', function () {
     $ad = WorkerAdvertisementFactory::new()->create([
         'user_id' => $worker->id,
         'availability' => 'Inmediata',
-        'salary_expectation' => 1500.00
+        'salary_expectation' => 1500.00,
     ]);
 
     // Act & Assert
@@ -136,7 +135,7 @@ it('prevents non-creator from applying to advertisements', function () {
         'user_id' => $employer->id,
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
-        'salary' => 1500.00
+        'salary' => 1500.00,
     ]);
 
     // Act & Assert
@@ -151,15 +150,15 @@ it('filters advertisements by type', function () {
     EmployerAdvertisementFactory::new()->create([
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
-        'salary' => 1500.00
+        'salary' => 1500.00,
     ]);
     WorkerAdvertisementFactory::new()->create([
         'availability' => 'Inmediata',
-        'salary_expectation' => 1500.00
+        'salary_expectation' => 1500.00,
     ]);
     WorkerAdvertisementFactory::new()->create([
         'availability' => 'En 15 días',
-        'salary_expectation' => 1800.00
+        'salary_expectation' => 1800.00,
     ]);
 
     // Act
@@ -180,19 +179,19 @@ it('finds advertisements by location', function () {
         'location' => 'Madrid Centro',
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
-        'salary' => 1500.00
+        'salary' => 1500.00,
     ]);
     EmployerAdvertisementFactory::new()->create([
         'location' => 'Madrid Norte',
         'schedule' => 'Media jornada',
         'contract_type' => 'Temporal',
-        'salary' => 1200.00
+        'salary' => 1200.00,
     ]);
     EmployerAdvertisementFactory::new()->create([
         'location' => 'Barcelona',
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
-        'salary' => 1800.00
+        'salary' => 1800.00,
     ]);
 
     // Act
@@ -213,19 +212,19 @@ it('finds advertisements with specific skills', function () {
         'skills' => ['inglés', 'coctelería'],
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
-        'salary' => 1500.00
+        'salary' => 1500.00,
     ]);
     EmployerAdvertisementFactory::new()->create([
         'skills' => ['inglés'],
         'schedule' => 'Media jornada',
         'contract_type' => 'Temporal',
-        'salary' => 1200.00
+        'salary' => 1200.00,
     ]);
     EmployerAdvertisementFactory::new()->create([
         'skills' => ['coctelería', 'vinos'],
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
-        'salary' => 1800.00
+        'salary' => 1800.00,
     ]);
 
     // Act
@@ -248,19 +247,19 @@ it('orders advertisements by creation date', function () {
         'created_at' => now()->subDays(2),
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
-        'salary' => 1500.00
+        'salary' => 1500.00,
     ]);
     $newest = EmployerAdvertisementFactory::new()->create([
         'created_at' => now(),
         'schedule' => 'Media jornada',
         'contract_type' => 'Temporal',
-        'salary' => 1200.00
+        'salary' => 1200.00,
     ]);
     $middle = EmployerAdvertisementFactory::new()->create([
         'created_at' => now()->subDay(),
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
-        'salary' => 1800.00
+        'salary' => 1800.00,
     ]);
 
     // Act
@@ -280,7 +279,7 @@ it('belongs to a user', function () {
         'user_id' => $this->user->id,
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
-        'salary' => 1500.00
+        'salary' => 1500.00,
     ]);
 
     // Act

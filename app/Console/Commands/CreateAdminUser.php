@@ -11,6 +11,7 @@ use Spatie\Permission\Models\Role;
 class CreateAdminUser extends Command
 {
     protected $signature = 'admin:create';
+
     protected $description = 'Crea un nuevo usuario administrador';
 
     public function handle()
@@ -32,6 +33,7 @@ class CreateAdminUser extends Command
 
         if ($password !== $confirmPassword) {
             $this->error('Las contraseñas deben de ser iguales');
+
             return 1;
         }
 
@@ -40,6 +42,7 @@ class CreateAdminUser extends Command
             foreach ($validator->errors()->all() as $error) {
                 $this->error($error);
             }
+
             return 1;
         }
 
@@ -56,9 +59,11 @@ class CreateAdminUser extends Command
             $user->assignRole($adminRole);
 
             $this->info('Usuario administrador creado exitosamente');
+
             return 0;
         } catch (\Exception $e) {
-            $this->error('Error al crear el usuario: ' . $e->getMessage());
+            $this->error('Error al crear el usuario: '.$e->getMessage());
+
             return 1;
         }
     }
