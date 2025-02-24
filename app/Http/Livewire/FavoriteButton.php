@@ -22,10 +22,6 @@ class FavoriteButton extends Component
 
     public function toggleFavorite()
     {
-        if (!auth()->check()) {
-            return redirect()->route('login');
-        }
-
         if ($this->isFavorite) {
             auth()->user()->favoriteAdvertisements()->detach($this->advertisement->id);
         } else {

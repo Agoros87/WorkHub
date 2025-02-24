@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\User;
-use App\Models\Advertisement;
 use Spatie\Permission\Models\Role;
 use Database\Factories\EmployerAdvertisementFactory;
 
@@ -18,19 +17,23 @@ beforeEach(function () {
     $this->advertisement = EmployerAdvertisementFactory::new()->create();
 });
 
-it('requires authentication', function () {
+it('index requires authentication', function () {
     // Index requiere autenticación
     $response = $this->get(route('favorites.index'));
     $response->assertRedirect(route('login'));
+});
 
-    // Update requiere autenticación
+it('updates requires authentication', function () {
+
     $response = $this->put(route('favorites.update', 'test-slug'), [
         'notes' => 'Test note',
         'priority' => 'high'
     ]);
     $response->assertRedirect(route('login'));
+});
 
-    // Delete requiere autenticación
+it('deletes requires authentication', function () {
+
     $response = $this->delete(route('favorites.destroy', 'test-slug'));
     $response->assertRedirect(route('login'));
 });

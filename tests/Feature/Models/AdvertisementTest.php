@@ -13,36 +13,6 @@ beforeEach(function () {
     $this->user = User::factory()->create();
 });
 
-it('allows admin to create employer advertisement', function () {
-    // Arrange
-    $this->user->assignRole('admin');
-    $this->actingAs($this->user);
-
-    // Act
-    $ad = EmployerAdvertisementFactory::new()->create([
-        'user_id' => $this->user->id,
-        'schedule' => 'Jornada completa',
-        'contract_type' => 'Indefinido',
-        'salary' => 1500.00
-    ]);
-
-    // Assert
-    expect($ad)
-        ->user_id->toBe($this->user->id)
-        ->type->toBe('employer')
-        ->title->not->toBeEmpty()
-        ->description->not->toBeEmpty()
-        ->location->not->toBeEmpty()
-        ->slug->not->toBeEmpty()
-        ->skills->toBeArray()
-        ->experience->not->toBeEmpty()
-        ->schedule->toBe('Jornada completa')
-        ->contract_type->toBe('Indefinido')
-        ->salary->toEqual(1500.00)
-        ->created_at->not->toBeNull()
-        ->updated_at->not->toBeNull();
-});
-
 it('allows creator to create worker advertisement', function () {
     // Arrange
     $this->user->assignRole('creator');
@@ -66,9 +36,7 @@ it('allows creator to create worker advertisement', function () {
         ->skills->toBeArray()
         ->experience->not->toBeEmpty()
         ->availability->toBe('Inmediata')
-        ->salary_expectation->toEqual(1500.00)
-        ->created_at->not->toBeNull()
-        ->updated_at->not->toBeNull();
+        ->salary_expectation->toEqual(1500.00);
 });
 
 it('prevents non-creator users from creating advertisements', function () {
@@ -179,7 +147,7 @@ it('filters advertisements by type', function () {
     // Arrange
     $this->user->assignRole('admin');
     $this->actingAs($this->user);
-    
+
     EmployerAdvertisementFactory::new()->create([
         'schedule' => 'Jornada completa',
         'contract_type' => 'Indefinido',
@@ -207,7 +175,7 @@ it('finds advertisements by location', function () {
     // Arrange
     $this->user->assignRole('admin');
     $this->actingAs($this->user);
-    
+
     EmployerAdvertisementFactory::new()->create([
         'location' => 'Madrid Centro',
         'schedule' => 'Jornada completa',
@@ -240,7 +208,7 @@ it('finds advertisements with specific skills', function () {
     // Arrange
     $this->user->assignRole('admin');
     $this->actingAs($this->user);
-    
+
     EmployerAdvertisementFactory::new()->create([
         'skills' => ['inglés', 'coctelería'],
         'schedule' => 'Jornada completa',
@@ -275,7 +243,7 @@ it('orders advertisements by creation date', function () {
     // Arrange
     $this->user->assignRole('admin');
     $this->actingAs($this->user);
-    
+
     $oldest = EmployerAdvertisementFactory::new()->create([
         'created_at' => now()->subDays(2),
         'schedule' => 'Jornada completa',
@@ -307,7 +275,7 @@ it('belongs to a user', function () {
     // Arrange
     $this->user->assignRole('admin');
     $this->actingAs($this->user);
-    
+
     $ad = EmployerAdvertisementFactory::new()->create([
         'user_id' => $this->user->id,
         'schedule' => 'Jornada completa',

@@ -12,7 +12,7 @@
                     <div class="mb-6">
                         <div class="flex justify-between items-start">
                             <div>
-                                <h1 class="text-3xl font-bold text-gray-800 mb-2 break-words">{{ $advertisement->title }}</h1>
+                                <h1 class="text-3xl bg-clip-text font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-600 break-words">{{ $advertisement->title }}</h1>
                                 <p class="text-gray-600">
                                     Publicado por
                                     {{ $advertisement->user->company_name ?? $advertisement->user->name }} -

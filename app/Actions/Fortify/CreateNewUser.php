@@ -29,6 +29,8 @@ class CreateNewUser implements CreatesNewUsers
 
         $this->assignCreatorRole($user);
 
+        $user->sendEmailVerificationNotification();
+
         return $user;
     }
 

@@ -40,35 +40,54 @@ class JobApplicationChat extends Component
             return;
         }
 
-        $this->validate([
-            'cv' => 'required|file|mimes:pdf,doc,docx|max:10240',
-        ]);
+        $this->validateCV();
 
-        // Eliminar el CV anterior si existe
-        if ($this->jobApplication->cv_path) {
-            Storage::disk('public')->delete($this->jobApplication->cv_path);
-        }
+        $this->deleteOldCV();
 
-        // Guardo el nuevo CV
-        $path = $this->cv->store('cvs', 'public');
+        $path = $this->storeNewCVInDisk();
+        $this->updateCVPathInDataBase($path);
 
-        // Actualizo la base de datos con la nueva ruta
-        $this->jobApplication->update(['cv_path' => $path]);
-
-        // Limpio input
-        $this->reset('cv');
-
+        $this->resetCVInput();
         session()->flash('message', 'CV subido correctamente');
     }
 
     public function deleteCV()
     {
         if ($this->jobApplication->cv_path) {
-            Storage::disk('public')->delete($this->jobApplication->cv_path);
-            $this->jobApplication->update(['cv_path' => null]);
+            $this->deleteOldCV();
+            $this->updateCVPathInDataBase(null);
 
             session()->flash('message', 'CV eliminado correctamente.');
         }
+    }
+
+    protected function validateCV()
+    {
+        $this->validate([
+            'cv' => 'required|file|mimes:pdf,doc,docx|max:10240',
+        ]);
+    }
+
+    protected function deleteOldCV()
+    {
+        if ($this->jobApplication->cv_path) {
+            Storage::disk('public')->delete($this->jobApplication->cv_path);
+        }
+    }
+
+    protected function storeNewCVInDisk()
+    {
+        return $this->cv->store('cvs', 'public');
+    }
+
+    protected function updateCVPathInDataBase($path)
+    {
+        $this->jobApplication->update(['cv_path' => $path]);
+    }
+
+    protected function resetCVInput()
+    {
+        $this->reset('cv');
     }
 
     public function sendMessage()

@@ -11,16 +11,11 @@
 
 <x-main-navigation />
 
-<!-- Mensaje Flash de Éxito -->
-@if(session('success'))
-    <div
-        x-data="{ show: true }"
-        x-init="setTimeout(() => show = false, 4000)"
-        x-show="show"
-        class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-16"
-        role="alert">
-        <strong class="font-bold">Éxito!</strong>
-        <span class="block sm:inline">{{ session('success') }}</span>
+@if (session('success'))
+    <div class="w-full bg-green-100 border border-green-400 text-green-700 px-4 py-3 mt-16" role="alert">
+        <div class="container mx-auto">
+            <span class="block sm:inline">{{ session('success') }}</span>
+        </div>
     </div>
 @endif
 

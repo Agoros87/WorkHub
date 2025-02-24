@@ -22,7 +22,8 @@ class JobApplicationPolicy
 
     public function delete(User $user, JobApplication $jobApplication): bool
     {
-        // Solo el aplicante puede eliminar su aplicación
-        return $user->id === $jobApplication->user_id;
+        // Tanto el aplicante como el dueño del anuncio pueden eliminar la aplicación
+        return $user->id === $jobApplication->user_id || 
+               $user->id === $jobApplication->advertisement->user_id;
     }
 }

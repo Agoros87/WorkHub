@@ -4,7 +4,7 @@
             <div class="max-w-4xl mx-auto">
                 <div class="bg-white rounded-xl shadow-lg p-8">
                     <div class="text-center mb-12">
-                        <h2 class="text-4xl font-bold text-gray-800">
+                        <h2 class="text-4xl bg-clip-text font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
                             Selecciona tu tipo de cuenta
                         </h2>
                         <p class="mt-4 text-lg text-gray-600">

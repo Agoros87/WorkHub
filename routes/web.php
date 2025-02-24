@@ -5,7 +5,10 @@ use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Livewire\SearchAdvertisements;
 use Illuminate\Support\Facades\Route;
+use Spatie\Permission\Middleware\RoleMiddleware;
 
 Route::get('/', PageWelcomeController::class)->name('welcome');
 
@@ -36,16 +39,16 @@ Route::get('/privacy-policy', function () {
     ]);
 })->name('policy.show');
 
-Route::get('/search', function () {
-    return view('search');
-})->name('search');
+Route::get('/search', SearchAdvertisements::class)->name('search');
 
     // Rutas para anuncios
 
-Route::middleware(['auth', config('jetstream.auth_session'), 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', RoleMiddleware::using(['creator','admin'])])->group(function () {
     Route::resource('advertisements', AdvertisementController::class)
         ->except(['show']);
+});
 
+Route::middleware(['auth', 'verified', RoleMiddleware::using(['creator','admin'])])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
@@ -57,7 +60,7 @@ Route::get('/advertisements/{advertisement}/pdf', [AdvertisementController::clas
 
     // Rutas para aplicar a un anuncio
 
-Route::middleware(['auth', config('jetstream.auth_session'), 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', RoleMiddleware::using(['creator','admin'])])->group(function () {
     Route::post('/advertisements/{advertisement}/apply', [JobApplicationController::class, 'store'])
         ->name('advertisements.apply');
     Route::get('/job-applications/{jobApplication}', [JobApplicationController::class, 'show'])
@@ -69,4 +72,11 @@ Route::middleware(['auth', config('jetstream.auth_session'), 'verified'])->group
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::put('/favorites/{slug}', [FavoriteController::class, 'update'])->name('favorites.update');
     Route::delete('/favorites/{slug}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
+});
+
+// Rutas de administración
+Route::middleware(['auth', 'verified', RoleMiddleware::using('admin')])->group(function () {
+    Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin.admin-dashboard');
+    Route::delete('/admin/users/{user}', [AdminDashboardController::class, 'deleteUser'])->name('admin.users.delete');
+    Route::delete('/admin/advertisements/{advertisement}', [AdminDashboardController::class, 'deleteAdvertisement'])->name('admin.advertisements.delete');
 });

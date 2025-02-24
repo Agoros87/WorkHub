@@ -1,7 +1,7 @@
 @props(['advertisement' => request()->route('advertisement') ?? new App\Models\Advertisement()])
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <a href="{{ route('welcome') }}" class="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6">
-        @svg('heroicon-s-arrow-left', 'h-5 w-5 mr-2') <!-- Icono de flecha -->
+        @svg('heroicon-s-arrow-left', 'h-5 w-5 mr-2')
         <span class="text-sm font-medium">Volver al Inicio</span>
     </a>
     <!-- Título -->
@@ -57,7 +57,6 @@
         </div>
         <x-input-error for="skills" class="mt-2" />
     </div>
-
 
     <!-- Experiencia -->
     <div class="md:col-span-2">

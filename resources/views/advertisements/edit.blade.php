@@ -5,7 +5,7 @@
             <div class="max-w-4xl mx-auto">
                 <!-- Encabezado del formulario -->
                 <div class="text-center mb-8">
-                    <h2 class="mt-0 text-4xl font-bold text-gray-800">
+                    <h2 class="mt-0 text-4xl bg-clip-text font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
                         @if(auth()->user()->hasRole('admin'))
                             {{ $advertisement->type === 'employer' ? 'Editar Oferta de Trabajo' : 'Editar Búsqueda de Empleo' }}
                         @else

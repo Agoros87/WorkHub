@@ -4,7 +4,6 @@ use App\Models\User;
 use App\Models\Advertisement;
 use Spatie\Permission\Models\Role;
 use Database\Factories\EmployerAdvertisementFactory;
-use Database\Factories\WorkerAdvertisementFactory;
 
 beforeEach(function () {
     Role::create(['name' => 'admin']);

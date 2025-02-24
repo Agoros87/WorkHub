@@ -3,10 +3,10 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
                 <a href="{{ route('dashboard') }}" class="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6">
-                    @svg('heroicon-s-arrow-left', 'h-5 w-5 mr-2') <!-- Icono de flecha -->
+                    @svg('heroicon-s-arrow-left', 'h-5 w-5 mr-2')
                     <span class="text-sm font-medium">Volver al Panel de Control</span>
                 </a>
-                <h2 class="text-2xl font-bold mb-4 text-black">Mis Favoritos</h2>
+                <h2 class="text-3xl bg-clip-text font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-600">Mis Favoritos</h2>
 
                 @if (session('success'))
                     <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">

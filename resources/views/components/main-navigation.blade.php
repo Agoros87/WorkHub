@@ -19,10 +19,8 @@
                         <a href="{{ route('search') }}" class="hover:text-blue-300">Buscar Anuncios</a>
                     @endif
                     <a href="{{ route('advertisements.create') }}" class="hover:text-blue-300">Publicar Oferta</a>
-                    <a href="{{ url('/contacto') }}" class="hover:text-blue-300">Contacto</a>
                 @else
                     <a href="{{ route('search') }}" class="hover:text-blue-300">Buscar Anuncios</a>
-                    <a href="{{ url('/contacto') }}" class="hover:text-blue-300">Contacto</a>
                 @endauth
             </nav>
         </div>
@@ -64,7 +62,6 @@
                 @endif
                 <a href="{{ route('advertisements.create') }}" class="hover:text-blue-300">Publicar Oferta</a>
             @endauth
-            <a href="{{ url('/contacto') }}" class="hover:text-blue-300">Contacto</a>
             <!-- Login y Register para invitados -->
             @guest
                 <a href="{{ route('login') }}" class="hover:text-blue-300">Inicio Sesión</a>

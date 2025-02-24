@@ -42,14 +42,3 @@
     </div>
 </footer>
 
-@push('social-meta')
-    <meta name="description" content="WorkHub es la plataforma líder para conectar talento hostelero con oportunidades de trabajo.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{{ route('welcome') }}">
-    <meta property="og:title" content="WorkHub">
-    <meta property="og:description" content="WorkHub es la plataforma líder para conectar talento hostelero con oportunidades de trabajo.">
-    <meta name="twitter:card" content="summary_large_image">
-    @endpush
-
-    @stack('scripts')
-

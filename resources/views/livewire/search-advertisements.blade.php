@@ -4,7 +4,7 @@
             <div class="max-w-4xl mx-auto">
                 <div class="bg-white rounded-xl shadow-lg p-8">
                     <div class="text-center mb-12">
-                        <h2 class="text-4xl font-bold text-gray-800">
+                        <h2 class="text-4xl bg-clip-text font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
                             @svg('heroicon-o-map-pin', 'h-5 w-5 text-gray-500 mr-2')
                             {{ auth()->check() ? (auth()->user()->type == 'employer' ? 'Buscar Camareros' : 'Buscar Trabajo de Camarero') : 'Buscar Anuncios' }}
                         </h2>
@@ -54,10 +54,9 @@
                                 </span>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     @foreach (config('skills') as $skill)
-                                        @php $id = Str::slug($skill); @endphp
-                                        <label for="category-{{ $id }}" class="flex items-center space-x-3 cursor-pointer">
+                                        <label for="category-{{ Str::slug($skill) }}" class="flex items-center space-x-3 cursor-pointer">
                                             <input type="checkbox" wire:model.live="selectedCategories" value="{{ $skill }}"
-                                                   id="category-{{ $id }}"
+                                                   id="category-{{ Str::slug($skill) }}"
                                                    class="form-checkbox h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
                                             <span class="text-gray-700">{{ $skill }}</span>
                                         </label>
@@ -112,11 +111,6 @@
                         </div>
 
                         <div class="mt-8">
-                            <div class="flex justify-between items-center mb-4">
-                                <p class="text-gray-600">
-                                    Mostrando {{ $results->firstItem() ?? 0 }} - {{ $results->lastItem() ?? 0 }} de {{ $total }} resultados
-                                </p>
-                            </div>
                             {{ $results->onEachSide(2)->links() }}
                         </div>
                     </div>

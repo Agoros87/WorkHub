@@ -8,7 +8,7 @@
                         <span class="text-sm font-medium">Volver al Panel de Control</span>
                     </a>
                     <div class="text-center mb-12">
-                        <h2 class="text-4xl font-bold text-gray-800">
+                        <h2 class="text-4xl bg-clip-text font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
                             @svg('heroicon-o-document-text', 'h-5 w-5 text-gray-500 mr-2')
                             Mis Anuncios
                         </h2>

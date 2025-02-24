@@ -51,7 +51,7 @@ class Advertisement extends Model
         return $query;
     }
 
-    public function scopereturnOppositeType($query, ?string $type)
+    public function scopeReturnOppositeType($query, ?string $type)
     {
         if (!empty($type)) {
             $oppositeType = $type === 'employer' ? 'worker' : 'employer';
@@ -82,14 +82,14 @@ class Advertisement extends Model
 
     public function scopeSearchKeyword($query, ?string $keyword)
     {
-        if (!empty($keyword)) {
-            $keyword = '%' . trim($keyword) . '%';
-            return $query->where(function ($q) use ($keyword) {
-                $q->where('title', 'like', $keyword)
-                    ->orWhere('description', 'like', $keyword);
-            });
+        if (blank($keyword)) {
+            return $query;
         }
-        return $query;
+
+        return $query->where(fn($q) =>
+        $q->where('title', 'like', "%$keyword%")
+            ->orWhere('description', 'like', "%$keyword%")
+        );
     }
 
     public function scopeLatest($query)

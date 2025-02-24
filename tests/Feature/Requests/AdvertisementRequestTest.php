@@ -10,14 +10,14 @@ use Database\Factories\WorkerAdvertisementFactory;
 
 beforeEach(function () {
     $this->request = new AdvertisementRequest();
-    
+
     $adminRole = Role::create(['name' => 'admin']);
     $creatorRole = Role::create(['name' => 'creator']);
-    
+
     $this->employer = User::factory()->create(['type' => 'employer']);
     $this->worker = User::factory()->create(['type' => 'worker']);
     $this->admin = User::factory()->create(['type' => 'admin']);
-    
+
     $this->employer->assignRole('creator');
     $this->worker->assignRole('creator');
     $this->admin->assignRole('admin');

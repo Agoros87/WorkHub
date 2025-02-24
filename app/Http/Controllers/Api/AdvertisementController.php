@@ -138,14 +138,11 @@ class AdvertisementController extends Controller
      */
     public function store(AdvertisementRequest $request)
     {
-        $data = $request->validated();
-        $user = auth()->user();
+        $advertisement = auth()->user()->advertisements()->make($request->validated());
+        $advertisement['type'] = auth()->user()->type;
+        $advertisement['slug'] = Str::slug($advertisement['title'] . '-' . Str::random(6));
 
-        $data['user_id'] = $user->id;
-        $data['type'] = $user->type;
-        $data['slug'] = Str::slug($data['title'] . '-' . Str::random(6));
-
-        $advertisement = Advertisement::create($data);
+        $advertisement->save();
 
         return new AdvertisementResource($advertisement);
     }
@@ -250,10 +247,18 @@ class AdvertisementController extends Controller
     {
         $this->authorize('update', $advertisement);
 
-        $data = $request->validated();
-        $data['slug'] = Str::slug($data['title']);
+        $validated = $request->validated();
 
-        $advertisement->update($data);
+        // Si es admin dejo el type del anuncio o del usuario
+        $validated['type'] = auth()->user()->hasRole('admin')
+            ? $advertisement->type
+            : auth()->user()->type;
+
+        if ($validated['title'] !== $advertisement->title) {
+            $validated['slug'] = Str::slug($validated['title'] . '-' . Str::random(6));
+        }
+
+        $advertisement->update($validated);
 
         return new AdvertisementResource($advertisement);
     }
