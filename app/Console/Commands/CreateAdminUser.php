@@ -25,17 +25,12 @@ class CreateAdminUser extends Command
             'name' => $name,
             'email' => $email,
             'password' => $password,
+            'password_confirmation' => $confirmPassword,
         ], [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8',
+            'email' => 'required|email|unique:users,email', //Debe ser único en la columna email de la tabla users
+            'password' => 'required|min:8|confirmed',
         ]);
-
-        if ($password !== $confirmPassword) {
-            $this->error('Las contraseñas deben de ser iguales');
-
-            return 1;
-        }
 
         if ($validator->fails()) {
             $this->error('Errores de validación:');

@@ -19,4 +19,4 @@ class AlwaysAcceptJson
 
         return $next($request);
     }
-}
+}  //Para que acepte siempre json sin enviar el header Accept: application/json

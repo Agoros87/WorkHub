@@ -42,15 +42,15 @@ class Advertisement extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function scopeOfType($query, ?string $type)
-    {
+    //laravel pasa $query automaticamente como primer parametro
+    public function scopeOfType($query, ?string $type) //? Puede ser null o string uso en api
+    { // Busca/devuelve el tipo que le pasamos
         if (!empty($type)) {
             return $query->where('type', $type);
         }
         return $query;
     }
-
+        //Busca/devuelve el tipo contrario al que le pasamos
     public function scopeReturnOppositeType($query, ?string $type)
     {
         if (!empty($type)) {
@@ -62,7 +62,7 @@ class Advertisement extends Model
     }
 
 
-    public function scopeInLocation($query, ?string $location)
+    public function scopeInLocation($query, ?string $location) // Busca/devuelve la localización que le pasamos
     {
         if (!empty($location)) {
             return $query->where('location', 'like', "%{$location}%");
@@ -71,7 +71,7 @@ class Advertisement extends Model
     }
 
     public function scopeWithSkills($query, array $skills)
-    {
+    {  // Busca/devuelve las habilidades que le pasamos en un array de habilidades separadas por comas en la base de datos en formato JSON
         if (!empty($skills)) {
             foreach ($skills as $skill) {
                 $query->whereJsonContains('skills', trim($skill));
@@ -81,7 +81,7 @@ class Advertisement extends Model
     }
 
     public function scopeSearchKeyword($query, ?string $keyword)
-    {
+    { // Busca/devuelve el keyword que le pasamos en el título o descripción
         if (blank($keyword)) {
             return $query;
         }
@@ -92,7 +92,7 @@ class Advertisement extends Model
         );
     }
 
-    public function scopeLatest($query)
+    public function scopeLatest($query) // Ordena los anuncios por fecha de creación de forma descendente
     {
         return $query->orderBy('created_at', 'desc');
     }
@@ -102,7 +102,7 @@ class Advertisement extends Model
         return $this->hasMany(JobApplication::class);
     }
 
-    public function favoritedBy(): BelongsToMany
+    public function favoritedBy(): BelongsToMany // saca los usuarios que han marcado como favorito un anuncio no lo uso
     {
         return $this->belongsToMany(User::class, 'favorites')
                     ->withPivot(['notes', 'priority']);

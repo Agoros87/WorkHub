@@ -58,11 +58,11 @@ class AdvertisementController extends Controller
     {
         $validated = $request->validated();
 
-        // Si es admin dejo el type del anuncio o del usuario
+        // Si es admin dejo el type del anuncio o del usuario (puedo ahorrarmelo xk el admin no tiene type
         $validated['type'] = auth()->user()->hasRole('admin')
             ? $advertisement->type
             : auth()->user()->type;
-
+        // Si el título cambia, actualizo el slug
         if ($validated['title'] !== $advertisement->title) {
             $validated['slug'] = Str::slug($validated['title'].'-'.Str::random(6));
         }

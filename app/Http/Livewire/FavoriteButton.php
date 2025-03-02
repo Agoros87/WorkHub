@@ -14,10 +14,10 @@ class FavoriteButton extends Component
     public function mount(Advertisement $advertisement)
     {
         $this->advertisement = $advertisement;
-        if (auth()->check()) {
+        if (auth()->check()) { //busco si el anuncio es favorito del usuario autenticado
             $this->isFavorite = auth()->user()->favoriteAdvertisements()
                 ->where('advertisement_id', $advertisement->id)
-                ->exists();
+                ->exists(); //si existe el anuncio en la tabla de favoritos se pone a true
         }
     }
 

@@ -12,13 +12,14 @@ class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
 
-    public function create(array $input): User
-    {
-        $request = app(CreateNewUserRequest::class); // Uso el contenedor de servicios de Laravel para inyectar las dependencias necesarias como el validador, el traductor, etc.
-        $request->replace($input);
-        $request->validateResolved();
+    public function create(array $input): User //No admite form request porque no recibe la solicitud HTTP completa sino solo los datos del formulario
+    {                                               //Funcion global para acceder al contenedor de servicios de Laravel
+        $request = app(CreateNewUserRequest::class); // Uso el contenedor de servicios de Laravel para inyectar
+                                                            // las dependencias necesarias como el validador, el traductor, etc.
+        $request->replace($input); // Le proprociono manualmente los datos que se validarían como si vinieran de una solicitud HTTP real.
+        $request->validateResolved(); // Valido los datos manualmente con el validador de Laravel.
 
-        return $this->createUser($request->validated());
+        return $this->createUser($request->validated()); // Creo el usuario con los datos validados.
     }
 
     protected function createUser(array $input): User

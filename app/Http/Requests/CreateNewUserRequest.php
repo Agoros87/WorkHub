@@ -37,9 +37,9 @@ class CreateNewUserRequest extends FormRequest
         // Reglas específicas según el tipo de usuario
         if ($this->input('type') === 'worker') {
             $rules['name'] = ['required', 'string', 'max:255'];
-            $rules['lastname'] = ['required', 'string', 'max:255'];
+            $rules['lastname'] = ['required', 'string', 'max:255'];   //convierto a formato fecha
             $rules['date_of_birth'] = ['required', 'date', 'before_or_equal:'.now()->subYears(16)->toDateString()];
-            $rules['gender'] = ['required', 'string', 'in:male,female,other'];
+            $rules['gender'] = ['required', 'string', 'in:male,female,other']; // anterior o igual a  la fecha actual menos 16 años:
         } else {
             $rules['company_name'] = ['required', 'string', 'max:255'];
             $rules['tax_id'] = ['required', 'string', 'max:20'];

@@ -81,18 +81,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Advertisement::class);
     }
 
-    public function jobApplications()
+    public function jobApplications() //Relación directa entre el usuario y las solicitudes de empleo que él ha creado/enviado
     {
         return $this->hasMany(JobApplication::class, 'user_id');
     }
-
-    public function receivedApplications()
+//Relación indirecta entre el usuario y las solicitudes de empleo que ha recibido a través de sus anuncios
+    public function receivedApplications() //acceder a todas las aplicaciones que un usuario ha recibido sin necesidad de acceder primero a Advertisement
     {
         return $this->hasManyThrough(
-            JobApplication::class,
-            Advertisement::class,
-            'user_id',
-            'advertisement_id'
+            JobApplication::class, //Modelo de destino
+            Advertisement::class, //Modelo intermedio
         );
     }
 
@@ -100,6 +98,6 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(Advertisement::class, 'favorites')
             ->withPivot(['notes', 'priority'])
-            ->orderByRaw("FIELD(favorites.priority, 'high', 'medium', 'low')");
+            ->orderByRaw("FIELD(favorites.priority, 'high', 'medium', 'low')"); //Ordena los anuncios favoritos por prioridad
     }
 }

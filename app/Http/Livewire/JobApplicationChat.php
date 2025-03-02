@@ -21,14 +21,14 @@ class JobApplicationChat extends Component
 
     public function mount(JobApplication $jobApplication)
     {
-        $this->jobApplication = $jobApplication;
-        $this->loadMessages();
+        $this->jobApplication = $jobApplication; //Guarda la instancia de la aplicación de trabajo
+        $this->loadMessages(); //Carga los mensajes de la aplicación de trabajo
     }
 
     public function loadMessages()
     {
         $this->messages = $this->jobApplication->messages()
-            ->with('user')
+            ->with('user') //Carga anticipada de el usuario que envió el mensaje
             ->orderBy('created_at', 'asc')
             ->get()
             ->toArray();
@@ -36,20 +36,20 @@ class JobApplicationChat extends Component
 
     public function uploadCV()
     {
-        if (! $this->cv) {
+        if (! $this->cv) { //Comprueba si se ha subido un archivo
             session()->flash('error', 'Debes de seleccionar un archivo antes');
 
             return;
         }
 
-        $this->validateCV();
+        $this->validateCV(); //Valida el archivo
 
-        $this->deleteOldCV();
+        $this->deleteOldCV(); //Elimina el archivo anterior si existe
 
-        $path = $this->storeNewCVInDisk();
-        $this->updateCVPathInDataBase($path);
+        $path = $this->storeNewCVInDisk(); //Guarda el archivo en el disco
+        $this->updateCVPathInDataBase($path); //Actualiza la ruta en la base de datos
 
-        $this->resetCVInput();
+        $this->resetCVInput(); //Resetea el input del archivo
         session()->flash('message', 'CV subido correctamente');
     }
 
@@ -97,7 +97,7 @@ class JobApplicationChat extends Component
         $this->validate([
             'message' => 'required|string',
         ]);
-
+//Crea un nuevo mensaje en la aplicación de trabajo y lo guarda en el modelo chatmessages con el usuario que lo envió y el mensaje
         $this->jobApplication->messages()->create([
             'user_id' => auth()->id(),
             'message' => $this->message,

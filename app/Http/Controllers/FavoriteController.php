@@ -16,8 +16,8 @@ class FavoriteController extends Controller
 
     public function update(UpdateFavoriteRequest $request, $slug)
     {
-        $advertisement = Advertisement::where('slug', $slug)->firstOrFail();
-        auth()->user()->favoriteAdvertisements()
+        $advertisement = Advertisement::where('slug', $slug)->firstOrFail(); //busco el anuncio por el slug si no existe lanza una excepción 404
+        auth()->user()->favoriteAdvertisements() 
             ->updateExistingPivot($advertisement->id, $request->validated());
 
         return back()->with('success', 'Favorito actualizado');

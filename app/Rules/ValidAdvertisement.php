@@ -16,8 +16,9 @@ class ValidAdvertisement implements ValidationRule
         }
 
         $type = $user->type;
+                                //in_array($value, $array); le pasas el valor y el array
+        if ($type === 'employer') {  //comprueba si esta el campo del request en el array y si es null
 
-        if ($type === 'employer') {
             if (in_array($attribute, ['contract_type', 'salary', 'schedule']) && $value === null) {
                 $fail('El campo '.$attribute.' es requerido para empleadores.');
             }

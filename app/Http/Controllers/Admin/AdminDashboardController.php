@@ -12,9 +12,9 @@ class AdminDashboardController extends Controller
     {
         $this->authorize('viewAny', User::class);
 
-        $users = User::latest()->paginate(10);
+        $users = User::latest()->paginate(10); //carga anticipada de anuncios con sus usuarios
         $advertisements = Advertisement::with('user')->latest()->paginate(10);
-
+//muestro la vista con los usuarios y anuncios
         return view('admin-dashboard', compact('users', 'advertisements'));
     }
 

@@ -71,7 +71,7 @@ class AdvertisementController extends Controller
      */
     public function index(Request $request)
     {
-
+        //modifico dinamicamente la consulta en base a los parametros de la url
         $advertisements = Advertisement::query()
             ->OfType($request->query('type'))
             ->inLocation($request->query('location'))

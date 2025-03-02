@@ -23,7 +23,7 @@ class SearchAdvertisements extends Component
     protected $queryString = [ // Para que los parametros de la URL sean persistentes y visibles
         'keyword' => ['except' => ''],
         'location' => ['except' => ''],
-        'selectedCategories' => ['except' => []],
+        'selectedCategories' => ['except' => []], //COn except si esta vacio no se muestra en la URL
     ];
 
     public function mount() // Guardo el type del usuario autenticado y cargo las ubicaciones
@@ -37,15 +37,15 @@ class SearchAdvertisements extends Component
     public function render() // hago la consulta a la base de datos con los filtros seleccionados
     {
         $query = Advertisement::query()
-            ->returnOppositeType(auth()->check() ? $this->type : null)
+            ->returnOppositeType(auth()->check() ? $this->type : null) //busca anuncios del tipo contrario al del usuario autenticado
             ->inLocation($this->location)
             ->withSkills($this->selectedCategories)
             ->searchKeyword($this->keyword)
             ->latest();
 
         return view('livewire.search-advertisements', [
-            'results' => $query->paginate(4),
-            'total' => $query->count(),
-        ])->layout('layouts.app');
+            'results' => $query->paginate(4), // Pagino los resultados de la consulta a la base de datos con 4 anuncios por página
+            'total' => $query->count(), // Cuento el total de anuncios
+        ])->layout('layouts.app'); // Indico que use el layout app.blade.php para renderizar la vista de livewire
     }
 }

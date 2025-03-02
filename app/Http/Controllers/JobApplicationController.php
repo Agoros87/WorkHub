@@ -11,7 +11,7 @@ class JobApplicationController extends Controller
     use AuthorizesRequests;
 
     public function store(Advertisement $advertisement)
-    {
+    { //Almacena la aplicacion del aplicante en el modelo JobApplication y lo manda al chat
         $hasApplied = $advertisement->applications()->where('user_id', auth()->id())->exists();
         $this->authorize('apply', [$advertisement, $hasApplied]);
 
@@ -24,14 +24,14 @@ class JobApplicationController extends Controller
     }
 
     public function show(JobApplication $jobApplication)
-    {
+    { //Muestra la aplicacion del aplicante el chat
         $this->authorize('view', $jobApplication);
 
         return view('job-applications.show', compact('jobApplication'));
     }
 
     public function destroy(JobApplication $jobApplication)
-    {
+    {//Elimina la aplicacion del aplicante del dashboard
         $this->authorize('delete', $jobApplication);
 
         $jobApplication->delete();

@@ -141,7 +141,7 @@
                                                 <h4 class="font-semibold text-lg text-gray-800">
                                                     {{ $application->advertisement->title }}
                                                     <span class="text-sm text-gray-600">
-                                                        de {{ $application->user->name ?? $application->user->company_name}}
+                                                        de {{ $application->advertisement->user->name ?? $application->advertisement->user->company_name}}
                                                     </span>
                                                 </h4>
                                                 <p class="text-sm text-gray-600">

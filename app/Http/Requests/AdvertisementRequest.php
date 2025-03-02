@@ -13,11 +13,11 @@ class AdvertisementRequest extends FormRequest
         // Si hay un advertisement en la ruta
         if ($advertisement = $this->route('advertisement')) {
 
-            // Si no, es una actualización
+            // Es una actualización, solo puede el dueño del anuncio
             return auth()->user()->can('update', $advertisement);
         }
 
-        // Si no hay advertisement, es una creación
+        // Si no hay advertisement, es una creación y pueden los creadores
         return auth()->user()->can('create', Advertisement::class);
     }
 
@@ -31,6 +31,7 @@ class AdvertisementRequest extends FormRequest
             'skills' => [new ValidAdvertisement, 'required', 'array'],
             'skills.*' => [new ValidAdvertisement, 'string', 'max:255'],
             'experience' => [new ValidAdvertisement, 'required', 'string', 'max:255'],
+            //solo compruebo estos campos con la regla ValidAdvertisement
             'schedule' => [new ValidAdvertisement, 'string', 'max:255'],
             'contract_type' => [new ValidAdvertisement, 'string', 'max:255'],
             'availability' => [new ValidAdvertisement, 'string', 'max:255'],

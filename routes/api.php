@@ -43,10 +43,17 @@ Route::middleware(['auth:sanctum'])->post('/logout', [AuthController::class, 'lo
 */
 
 // Rutas públicas de anuncios
-Route::get('/advertisements', [AdvertisementController::class, 'index']);
-Route::get('/advertisements/{advertisement:slug}', [AdvertisementController::class, 'show']);
+Route::get('/advertisements', [AdvertisementController::class, 'index'])->name('api.advertisements.index');
+Route::get('/advertisements/{advertisement:slug}', [AdvertisementController::class, 'show'])->name('api.advertisements.show');
 
 // Rutas protegidas de anuncios
-Route::apiResource('advertisements', AdvertisementController::class)
-    ->parameters(['advertisements' => 'advertisement:slug'])
-    ->middleware(['auth:sanctum'])->except(['index', 'show']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('advertisements', AdvertisementController::class)
+        ->parameters(['advertisements' => 'advertisement:slug'])
+        ->names([
+            'store' => 'api.advertisements.store',
+            'update' => 'api.advertisements.update',
+            'destroy' => 'api.advertisements.destroy',
+        ])
+        ->except(['index', 'show']);
+});

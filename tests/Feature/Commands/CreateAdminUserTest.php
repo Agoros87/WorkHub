@@ -28,6 +28,6 @@ it('fails when passwords do not match', function () {
         ->expectsQuestion('Email del administrador', 'admin@example.com')
         ->expectsQuestion('Contraseña', 'password')
         ->expectsQuestion('Confirmar contraseña', 'different-password')
-        ->expectsOutput('Las contraseñas deben de ser iguales')
+        ->expectsOutput('La confirmación de contraseña no coincide.')
         ->assertExitCode(1);
 });

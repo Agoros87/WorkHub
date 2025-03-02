@@ -12,14 +12,14 @@ class DashboardController extends Controller
             return redirect()->route('admin.admin-dashboard');
         }
 
-        return view('dashboard', [
-            'totalAds' => $this->getTotalAds($user),
-            'dependsOfTypeText' => $this->getTypeText($user),
-            'receivedApplications' => $this->getReceivedApplications($user),
-            'sentApplications' => $this->getSentApplications($user),
-            'totalReceivedApplications' => $this->getTotalReceivedApplications($user),
-            'totalSentApplications' => $this->getTotalSentApplications($user),
-            'totalFavorites' => $this->getTotalFavorites($user),
+        return view('dashboard', [//cada clave del array se convierte en una variable en la vista
+            'totalAds' => $this->getTotalAds($user), //total de anuncios
+            'dependsOfTypeText' => $this->getTypeText($user), //dependiendo del tipo de usuario muestro un texto u otro
+            'receivedApplications' => $this->getReceivedApplications($user), //aplicaciones recibidas
+            'sentApplications' => $this->getSentApplications($user), //aplicaciones enviadas
+            'totalReceivedApplications' => $this->getTotalReceivedApplications($user), //numero total de aplicaciones recibidas
+            'totalSentApplications' => $this->getTotalSentApplications($user), //numero total de aplicaciones enviadas
+            'totalFavorites' => $this->getTotalFavorites($user), //numero total de favoritos
         ]);
     }
 
@@ -34,12 +34,12 @@ class DashboardController extends Controller
     }
 
     private function getReceivedApplications($user)
-    {
+    { //carga anticipada de las 5 ultimas aplicaciones recibidas con los usuarios y mensajes relacionados
         return $user->receivedApplications()->with(['user', 'messages'])->latest()->take(5)->get();
     }
 
     private function getSentApplications($user)
-    {
+    {//carga anticipada de las 5 ultimas aplicaciones enviadas con los anuncios y usuario que lo publico y mensajes relacionados
         return $user->jobApplications()->with(['advertisement.user', 'messages'])->latest()->take(5)->get();
     }
 
