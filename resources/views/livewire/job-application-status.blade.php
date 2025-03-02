@@ -1,5 +1,5 @@
 <div>
-    @can('update', $jobApplication) 
+    @can('update', $jobApplication)
         <div class="p-4 flex gap-4 justify-end">
             @if($jobApplication->status !== 'accepted')
                 <button wire:click="accept" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">

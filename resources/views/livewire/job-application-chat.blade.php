@@ -24,39 +24,53 @@
     <!-- Sección de Subir CV (solo para workers) -->
     @if(auth()->user()->type == 'worker')
         <form wire:submit.prevent="uploadCV">
-            <div>
-                <input type="file" wire:model="cv" class="w-full mt-1 block" accept=".pdf,.doc,.docx">
+            <div class="bg-gray-100 p-4 rounded-lg shadow">
+                <!-- Contenedor de Drag & Drop -->
+                <div class="relative w-full h-20 flex flex-col items-center justify-center border-dashed border-2 border-gray-400 rounded-lg cursor-pointer hover:bg-gray-200 transition">
+                    <!-- Input de archivo (oculto pero funcional) -->
+                    <input type="file" wire:model="cv"
+                           class="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+                           accept=".pdf,.doc,.docx">
 
-                @if ($cv)
-                    <p class="text-sm text-gray-600">Archivo seleccionado: {{ $cv->getClientOriginalName() }}</p>
-                @elseif ($jobApplication->cv_path)
-                    <p class="text-sm text-gray-600">
-                        CV actual:
-                        <a href="{{ asset('storage/' . $jobApplication->cv_path) }}"
-                           class="text-indigo-600 hover:underline"
-                           target="_blank">
-                            Ver CV
-                        </a>
-                    </p>
+                    <!-- Texto de instrucciones -->
+                    <p class="text-gray-600">Arrastra y suelta tu CV aquí o pulse y seleccióne su archivo</p>
+                    <p class="text-sm text-gray-500">(Formatos permitidos: .pdf, .doc, .docx)</p>
+                </div>
+
+                <!-- Mostrar el archivo seleccionado o el CV actual -->
+                <div class="mt-2">
+                    @if ($cv)
+                        <p class="text-sm text-gray-600">Archivo seleccionado: {{ $cv->getClientOriginalName() }}</p>
+                    @elseif ($jobApplication && $jobApplication->cv_path)
+                        <p class="text-sm text-gray-600">
+                            CV actual:
+                            <a href="{{ asset('storage/' . $jobApplication->cv_path) }}"
+                               class="text-indigo-600 hover:underline"
+                               target="_blank">
+                                Ver CV
+                            </a>
+                        </p>
+                    @endif
+                </div>
+
+                <!-- Mensajes de error -->
+                @error('cv') <span class="error text-red-500">{{ $message }}</span> @enderror
+                @if (session()->has('message'))
+                    <p class="text-green-500">{{ session('message') }}</p>
+                @endif
+                @if (session()->has('error'))
+                    <p class="text-red-500">{{ session('error') }}</p>
                 @endif
 
-                @error('cv') <span class="error text-red-500">{{ $message }}</span> @enderror
-
-            @if (session()->has('message'))
-                <p class="text-green-500">{{ session('message') }}</p>
-            @endif
-
-            @if (session()->has('error'))
-                <p class="text-red-500">{{ session('error') }}</p>
-            @endif
-
+                <!-- Botón separado para subir el CV -->
                 <div class="mt-4 flex gap-2">
+                    @if($cv)
                     <button type="submit"
                             class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
                         Subir CV
                     </button>
-
-                    @if ($jobApplication->cv_path)
+                    @endif
+                    @if ($jobApplication && $jobApplication->cv_path)
                         <button type="button"
                                 wire:click="deleteCV"
                                 class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">
@@ -66,7 +80,6 @@
                 </div>
             </div>
         </form>
-
     @endif
 
     <!-- Sección del Chat -->
