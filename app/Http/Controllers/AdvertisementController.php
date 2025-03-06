@@ -29,6 +29,7 @@ class AdvertisementController extends Controller
         $advertisement = auth()->user()->advertisements()->make($request->validated());
         $advertisement['type'] = auth()->user()->type;
         $advertisement['slug'] = Str::slug($advertisement['title'].'-'.Str::random(6));
+        $advertisement['expiration_date'] = now()->addDays(30);
 
         $advertisement->save();
 
@@ -80,6 +81,15 @@ class AdvertisementController extends Controller
 
         return to_route('welcome')
             ->with('success', 'Anuncio eliminado correctamente');
+    }
+
+    public function renewAdvertisement(Advertisement $advertisement)
+    {
+        $this->authorize('update', $advertisement);
+        $advertisement->update(['expiration_date' => now()->addDays(30)]);
+
+        return to_route('advertisements.show', $advertisement)
+            ->with('success', 'Anuncio renovado correctamente');
     }
 
     public function downloadPdf(Advertisement $advertisement)

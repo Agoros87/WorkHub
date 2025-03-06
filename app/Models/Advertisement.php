@@ -29,13 +29,15 @@ class Advertisement extends Model
         'salary',
         'availability',
         'salary_expectation',
-        'location'
+        'location',
+        'expiration_date'
     ];
 
     protected $casts = [
         'skills' => 'array',
         'salary' => 'decimal:2',
-        'salary_expectation' => 'decimal:2'
+        'salary_expectation' => 'decimal:2',
+        'expiration_date' => 'datetime',
     ];
 
     public function user()

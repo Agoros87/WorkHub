@@ -28,8 +28,10 @@ class WorkerAdvertisementFactory extends Factory
             'experience' => $this->faker->randomElement(['Sin experiencia', '1 año', '2 años', '3 años', '+5 años']),
             'availability' => $this->faker->randomElement(['Inmediata', 'En 15 días', 'En 1 mes']),
             'salary_expectation' => $this->faker->randomFloat(2, 1100, 2200),
-            'created_at' => now(),
-            'updated_at' => now(),
+            'expiration_date' => $this->faker->dateTimeBetween('+1 week', '+1 month'),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
+            'updated_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
+
         ];
     }
 

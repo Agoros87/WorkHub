@@ -14,9 +14,16 @@
                             <div>
                                 <h1 class="text-3xl bg-clip-text font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-600 break-words">{{ $advertisement->title }}</h1>
                                 <p class="text-gray-600">
-                                    Publicado por
-                                    {{ $advertisement->user->company_name ?? $advertisement->user->name }} -
-                                    {{ $advertisement->created_at->diffForHumans() }}
+                                    @if($advertisement->created_at == $advertisement->update_at)
+                                        Publicado por {{ $advertisement->user->company_name ?? $advertisement->user->name }} -
+                                        {{ $advertisement->created_at->diffForHumans() }}
+                                    @else
+                                        Modificado por {{ $advertisement->user->company_name ?? $advertisement->user->name }} -
+                                        {{ $advertisement->updated_at->diffForHumans() }}
+                                    @endif
+                                </p>
+                                <p class="text-red-600">
+                                    Caduca {{ $advertisement->expiration_date->diffForHumans() }}
                                 </p>
                             </div>
                             @auth
@@ -125,6 +132,17 @@
                                 </button>
                             </form>
                         @endcan
+                        @can('update', $advertisement)
+                            <form action="{{ route('advertisements.renew', $advertisement) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit"
+                                        class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    Renovar anuncio
+                                </button>
+                            </form>
+                        @endcan
+
                     </div>
                 </div>
             </div>

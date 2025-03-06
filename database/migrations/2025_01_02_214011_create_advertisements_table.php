@@ -26,6 +26,7 @@ return new class extends Migration
             $table->decimal('salary_expectation', 10, 2)->nullable();
             // Campos comunes
             $table->string('location');
+            $table->date('expiration_date')->default(now()->addDays(30));
             $table->timestamps();
         });
     }

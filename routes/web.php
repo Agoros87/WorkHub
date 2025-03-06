@@ -71,6 +71,10 @@ Route::middleware(['auth', 'verified', RoleMiddleware::using(['creator', 'admin'
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::put('/favorites/{slug}', [FavoriteController::class, 'update'])->name('favorites.update');
     Route::delete('/favorites/{slug}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
+
+    // Ruta para renovar anuncio
+    Route::put('/advertisements/{advertisement}', [AdvertisementController::class, 'renewAdvertisement'])
+        ->name('advertisements.renew');
 });
     //Ruta publica para mostrar un anuncio
 Route::get('/advertisements/{advertisement}', [AdvertisementController::class, 'show'])

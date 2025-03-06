@@ -29,6 +29,7 @@ class EmployerAdvertisementFactory extends Factory
             'schedule' => $this->faker->randomElement(['Jornada completa', 'Media jornada', 'Fines de semana']),
             'contract_type' => $this->faker->randomElement(['Indefinido', 'Temporal 6 meses', 'Temporal 3 meses']),
             'salary' => $this->faker->randomFloat(2, 1100, 2200),
+            'expiration_date' => $this->faker->dateTimeBetween('+1 week', '+1 month'),
             'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'updated_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
